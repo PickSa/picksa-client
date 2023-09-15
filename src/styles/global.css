@@ -1,0 +1,32 @@
+@font-face {
+    font-family: 'Pretendard-Regular';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
+
+html {
+    width: 100%;
+    margin: 0;
+    font-size: 62.5%;
+    overflow: scroll;
+    scroll-snap-type: y mandatory;
+    scroll-padding-top: 65px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    font-family: 'Pretendard-Regular';
+}
+
+html::-webkit-scrollbar {
+    display: none;
+}
+
+body {
+    font-size: 10px;
+    margin: 0;
+    padding: 0;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+}
+  
