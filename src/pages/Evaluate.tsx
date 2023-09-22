@@ -1,6 +1,13 @@
+import NavBar from "../components/common/NavBar"
+import { ArticleFlex, PageFlex } from "../styles/globalStyle"
+
 const Evaluate = () => {
   return (
-    <div>Evaluate</div>
+    <PageFlex>
+      <NavBar />
+      <ArticleFlex>
+      </ArticleFlex>
+    </PageFlex>
   )
 }
 

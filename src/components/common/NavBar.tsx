@@ -11,6 +11,10 @@ const NavBar = () => {
 	useEffect(() => {
 		if (pathname.includes('pre-lionlist')) {
 			setTab(TABS.LIONLIST);
+    } else if (pathname.includes('evaluate')){
+      setTab(TABS.EVALUATE);
+    } else {
+      setTab(TABS.HOME);
     }
 	}, [pathname]);
 
@@ -24,7 +28,7 @@ const NavBar = () => {
         <img onClick={() => navigate(`/`)} src='/img/logo.svg'/>
         <MenuPageBox className={(tab===TABS.LIONLIST)?'active':''} onClick={() => onClickhandel(`pre-lionlist`)}>아기 사자</MenuPageBox>
         <MenuPageBox>서류 질문</MenuPageBox>
-        <MenuPageBox>지원 평가</MenuPageBox>
+        <MenuPageBox className={(tab===TABS.EVALUATE)?'active':''} onClick={() => onClickhandel(`evaluate`)}>지원 평가</MenuPageBox>
         <MenuPageBox>면접 시간</MenuPageBox>
       </MenuWrapper>
       <MenuWrapper>
@@ -59,8 +63,7 @@ const MenuPageBox = styled.div`
   &.logout{
     gap: 1rem;
   }
-  &.active,
-  &:active{
+  &.active{
     color:#0368FF;
     border-bottom: 2px solid #0368FF;
   }
