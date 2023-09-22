@@ -3,6 +3,7 @@ import {MdOutlineLogout} from "react-icons/md"
 import { useLocation, useNavigate } from "react-router-dom";
 import { TABS } from "../../assets/tabs";
 import { useEffect, useState } from "react";
+import { SpaceBetweenFlex } from "../../styles/globalStyle";
 
 const NavBar = () => {
   const { pathname } = useLocation();
@@ -23,7 +24,7 @@ const NavBar = () => {
     navigate(`/${page}`);
   }
   return (
-    <NavWrapper>
+    <SpaceBetweenFlex className="navbar">
       <MenuWrapper>
         <img onClick={() => navigate(`/`)} src='/img/logo.svg'/>
         <MenuPageBox className={(tab===TABS.LIONLIST)?'active':''} onClick={() => onClickhandel(`pre-lionlist`)}>아기 사자</MenuPageBox>
@@ -34,22 +35,15 @@ const NavBar = () => {
       <MenuWrapper>
         <MenuPageBox className="logout"><MdOutlineLogout />Log Out</MenuPageBox>
       </MenuWrapper>
-    </NavWrapper>
+    </SpaceBetweenFlex>
   )
 }
 
 export default NavBar
 
-const NavWrapper = styled.div`
-  width: 98%;
-  display: flex;
-  border: 1px solid black;
-  justify-content: space-between;
-`
-
 const MenuWrapper = styled.div`
   display: flex;
-  border: 1px solid red;
+  /* border: 1px solid red; */
 `
 const MenuPageBox = styled.div`
   display: flex;
