@@ -1,14 +1,18 @@
 import { styled } from "styled-components"
+import { SpaceBetweenFlex } from "../../styles/globalStyle"
 
 const ListFilter = () => {
   return (
-    <FilterWrapper>
-      <FilterSelection>ALL</FilterSelection>
-      <FilterSelection>기획</FilterSelection>
-      <FilterSelection>디자인</FilterSelection>
-      <FilterSelection>프론트엔드</FilterSelection>
-      <FilterSelection>백엔드</FilterSelection>
-    </FilterWrapper>
+    <SpaceBetweenFlex>
+      <FilterWrapper>
+        <FilterSelection>ALL</FilterSelection>
+        <FilterSelection>기획</FilterSelection>
+        <FilterSelection>디자인</FilterSelection>
+        <FilterSelection>프론트엔드</FilterSelection>
+        <FilterSelection>백엔드</FilterSelection>
+      </FilterWrapper>
+      <div>dropdown</div>
+    </SpaceBetweenFlex>
   )
 }
 
