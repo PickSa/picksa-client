@@ -5,12 +5,21 @@ export const PageFlex = styled.div`
     width: 100%;
     flex-direction: column;
     align-items: center;
+    &.landing{
+        background-image: linear-gradient(rgba(0, 0, 0, 0.527), rgba(0, 0, 0, 0.5)), url(/img/HomeBG.png);
+        background-size: cover;
+    }
 `
 
 export const ArticleFlex = styled.div`
     display: flex;
     flex-direction: column;
     width: 95%;
+    &.landing{
+        height: 94vh;
+        justify-content: center;
+        align-items: center;
+    }
     /* border: 1px solid black; */
 `
 
@@ -39,6 +48,6 @@ export const SpaceBetweenFlex = styled.div`
   justify-content: space-between;
   &.navbar{
     width: 98%;
-    margin-top: 1rem;
+    margin-top: 1.5rem;
   }
 `

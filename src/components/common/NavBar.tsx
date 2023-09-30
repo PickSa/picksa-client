@@ -5,7 +5,7 @@ import { TABS } from "../../assets/tabs";
 import { useEffect, useState } from "react";
 import { SpaceBetweenFlex } from "../../styles/globalStyle";
 
-const NavBar = () => {
+const NavBar = ({ where }: { where: string }) => {
   const { pathname } = useLocation();
 	const [tab, setTab] = useState(TABS.HOME);
 
@@ -23,20 +23,37 @@ const NavBar = () => {
   const onClickhandel = (page:string) => {
     navigate(`/${page}`);
   }
-  return (
-    <SpaceBetweenFlex className="navbar">
-      <MenuWrapper>
-        <img onClick={() => navigate(`/`)} src='/img/logo.svg'/>
-        <MenuPageBox className={(tab===TABS.LIONLIST)?'active':''} onClick={() => onClickhandel(`pre-lionlist`)}>아기 사자</MenuPageBox>
-        <MenuPageBox>서류 질문</MenuPageBox>
-        <MenuPageBox className={(tab===TABS.EVALUATE)?'active':''} onClick={() => onClickhandel(`evaluate`)}>지원 평가</MenuPageBox>
-        <MenuPageBox>면접 시간</MenuPageBox>
-      </MenuWrapper>
-      <MenuWrapper>
-        <MenuPageBox className="logout"><MdOutlineLogout />Log Out</MenuPageBox>
-      </MenuWrapper>
-    </SpaceBetweenFlex>
-  )
+  if (where === 'landing') {
+    return (
+      <SpaceBetweenFlex className="navbar">
+        <MenuWrapper>
+          <img onClick={() => navigate(`/`)} src='/img/logo-main.svg'/>
+          <MenuPageBox className='landing' onClick={() => onClickhandel(`pre-lionlist`)}>아기 사자</MenuPageBox>
+          <MenuPageBox className='landing'>서류 질문</MenuPageBox>
+          <MenuPageBox className='landing' onClick={() => onClickhandel(`evaluate`)}>지원 평가</MenuPageBox>
+          <MenuPageBox className='landing'>면접 시간</MenuPageBox>
+        </MenuWrapper>
+        <MenuWrapper>
+          <MenuPageBox className="logout"><MdOutlineLogout />Log Out</MenuPageBox>
+        </MenuWrapper>
+      </SpaceBetweenFlex>
+    )
+  } else {
+    return (
+      <SpaceBetweenFlex className="navbar">
+        <MenuWrapper>
+          <img onClick={() => navigate(`/`)} src='/img/logo.svg'/>
+          <MenuPageBox className={(tab===TABS.LIONLIST)?'active':''} onClick={() => onClickhandel(`pre-lionlist`)}>아기 사자</MenuPageBox>
+          <MenuPageBox>서류 질문</MenuPageBox>
+          <MenuPageBox className={(tab===TABS.EVALUATE)?'active':''} onClick={() => onClickhandel(`evaluate`)}>지원 평가</MenuPageBox>
+          <MenuPageBox>면접 시간</MenuPageBox>
+        </MenuWrapper>
+        <MenuWrapper>
+          <MenuPageBox className="logout"><MdOutlineLogout />Log Out</MenuPageBox>
+        </MenuWrapper>
+      </SpaceBetweenFlex>
+    );
+  }
 }
 
 export default NavBar
@@ -60,5 +77,8 @@ const MenuPageBox = styled.div`
   &.active{
     color:#0368FF;
     border-bottom: 2px solid #0368FF;
+  }
+  &.landing{
+    color: #DDDDDD;
   }
 `
