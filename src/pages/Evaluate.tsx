@@ -12,9 +12,8 @@ const Evaluate = () => {
           setIsOpen(true);
       };
   return (
-    <>      
-      <NavBar />
-      
+    <PageFlex>      
+      <NavBar where="evaluate" />
       <ContainerWrapper>
         <FileContainer>
         <SlideBtn role="button" onClick={toggleSide}>
@@ -27,7 +26,7 @@ const Evaluate = () => {
         </EvaluateContainer>
         </ContainerWrapper>  
         {isOpen && <Overlay onClick={toggleSide} />}      
-    </>
+    </PageFlex>
 
   )
 }

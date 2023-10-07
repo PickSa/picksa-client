@@ -7,7 +7,7 @@ import ListTable from "../components/lionlist/ListTable"
 const LionList = () => {
   return (
     <PageFlex>
-      <NavBar />
+      <NavBar where="lionlist" />
       <ArticleFlex>
         <Title>지원자 명단</Title>
         <ListFilter />
