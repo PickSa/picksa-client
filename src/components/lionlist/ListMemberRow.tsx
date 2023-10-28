@@ -1,6 +1,6 @@
 import { css, styled } from "styled-components"
 import { GridContent } from "../../styles/globalStyle"
-import { memberType } from "./ListTable"
+import { memberType } from "./TestDatas"
 
 const ListMemberRow = (props:memberType) => {
   return (
