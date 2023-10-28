@@ -1,15 +1,20 @@
 import { styled } from "styled-components"
 import { SpaceBetweenFlex } from "../../styles/globalStyle"
+import { useState } from "react"
 
 const ListFilter = () => {
+  const [activeFilter, setActiveFilter] = useState("all");
+  const handleFilterClick = (part:string) => {
+    setActiveFilter(part);
+  }
   return (
     <SpaceBetweenFlex>
       <FilterWrapper>
-        <FilterSelection>ALL</FilterSelection>
-        <FilterSelection>기획</FilterSelection>
-        <FilterSelection>디자인</FilterSelection>
-        <FilterSelection>프론트엔드</FilterSelection>
-        <FilterSelection>백엔드</FilterSelection>
+        <FilterSelection className={activeFilter==="all" ? "active" : ""} onClick={() => handleFilterClick("all")}>ALL</FilterSelection>
+        <FilterSelection className={activeFilter==="pm" ? "active" : ""} onClick={() => handleFilterClick("pm")}>기획</FilterSelection>
+        <FilterSelection className={activeFilter==="design" ? "active" : ""} onClick={() => handleFilterClick("design")}>디자인</FilterSelection>
+        <FilterSelection className={activeFilter==="fe" ? "active" : ""} onClick={() => handleFilterClick("fe")}>프론트엔드</FilterSelection>
+        <FilterSelection className={activeFilter==="be" ? "active" : ""} onClick={() => handleFilterClick("be")}>백엔드</FilterSelection>
       </FilterWrapper>
       <div>dropdown</div>
     </SpaceBetweenFlex>
@@ -34,7 +39,10 @@ const FilterSelection = styled.div`
   color: #A0A0A0;
   padding: 0.5rem;
   border-radius: 15px;
-  /* background-color: blue; */
+  &.active{
+    color: white;
+    background-color: blue;
+  }
 `
 
 export default ListFilter
