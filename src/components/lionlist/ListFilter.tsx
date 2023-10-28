@@ -1,22 +1,50 @@
 import { styled } from "styled-components"
 import { SpaceBetweenFlex } from "../../styles/globalStyle"
-import { useState } from "react"
+import { memberType, TestDatasall, TestDataspm, TestDatasdesign, TestDatasfe, TestDatasbe } from "./TestDatas";
+import Select from "react-select"
+import { useEffect, useState } from "react";
 
-const ListFilter = () => {
-  const [activeFilter, setActiveFilter] = useState("all");
+const sortOpt = [
+  {value: "-----기본-----", label: "-----기본-----"},
+  {value: "1차 점수 높은순", label: "1차 점수 높은 순"},
+  {value: "1차 결과순", label: "1차 결과순"},
+  {value: "1차 평가상태순", label: "1차 평가상태순"},
+]
+
+type FilterProps = {
+  activeFilter : string;
+  memberDatas : memberType[];
+  setActiveFilter : React.Dispatch<React.SetStateAction<string>>;
+  setMemberDatas : React.Dispatch<React.SetStateAction<memberType[]>>;
+}
+
+const ListFilter = (props:FilterProps) => {
+  const [selectedSort, setSelectedSort] = useState({value: "-----기본-----", label: "-----기본-----"});
+  useEffect(() => {
+    console.log(selectedSort);
+  }, [selectedSort])
   const handleFilterClick = (part:string) => {
-    setActiveFilter(part);
+    props.setActiveFilter(part);
+
+    //아래 필터 부분 추후 route로는 백틱 이용한 형식으로 수정. 현재는 테스트용
+    if(part==='all'){props.setMemberDatas(TestDatasall)}
+    else if (part==='pm'){props.setMemberDatas(TestDataspm)}
+    else if (part==='design'){props.setMemberDatas(TestDatasdesign)}
+    else if (part==='fe'){props.setMemberDatas(TestDatasfe)}
+    else {props.setMemberDatas(TestDatasbe)}
   }
   return (
     <SpaceBetweenFlex>
       <FilterWrapper>
-        <FilterSelection className={activeFilter==="all" ? "active" : ""} onClick={() => handleFilterClick("all")}>ALL</FilterSelection>
-        <FilterSelection className={activeFilter==="pm" ? "active" : ""} onClick={() => handleFilterClick("pm")}>기획</FilterSelection>
-        <FilterSelection className={activeFilter==="design" ? "active" : ""} onClick={() => handleFilterClick("design")}>디자인</FilterSelection>
-        <FilterSelection className={activeFilter==="fe" ? "active" : ""} onClick={() => handleFilterClick("fe")}>프론트엔드</FilterSelection>
-        <FilterSelection className={activeFilter==="be" ? "active" : ""} onClick={() => handleFilterClick("be")}>백엔드</FilterSelection>
+        <FilterSelection className={props.activeFilter==="all" ? "active" : ""} onClick={() => handleFilterClick("all")}>ALL</FilterSelection>
+        <FilterSelection className={props.activeFilter==="pm" ? "active" : ""} onClick={() => handleFilterClick("pm")}>기획</FilterSelection>
+        <FilterSelection className={props.activeFilter==="design" ? "active" : ""} onClick={() => handleFilterClick("design")}>디자인</FilterSelection>
+        <FilterSelection className={props.activeFilter==="fe" ? "active" : ""} onClick={() => handleFilterClick("fe")}>프론트엔드</FilterSelection>
+        <FilterSelection className={props.activeFilter==="be" ? "active" : ""} onClick={() => handleFilterClick("be")}>백엔드</FilterSelection>
       </FilterWrapper>
-      <div>dropdown</div>
+      <SelectWrapper>
+        <Select className="select-box" options={(sortOpt)} value={selectedSort} onChange={(opt)=>{opt && setSelectedSort(opt)}}/>
+      </SelectWrapper>
     </SpaceBetweenFlex>
   )
 }
@@ -42,6 +70,15 @@ const FilterSelection = styled.div`
   &.active{
     color: white;
     background-color: blue;
+  }
+`
+
+const SelectWrapper = styled.div`
+  display: flex;
+  width : 10%;
+  justify-content: flex-end;
+  & > .select-box {
+    width: 100%;
   }
 `
 
