@@ -11,7 +11,7 @@ const router = createBrowserRouter([
     },
     {
         path: "/pre-lionlist",
-        element: <Timetable />,
+        element: <LionList />,
     },
     {
         path: "/evaluate",
