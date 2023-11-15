@@ -14,6 +14,8 @@ const NavBar = ({ where }: { where: string }) => {
 			setTab(TABS.LIONLIST);
     } else if (pathname.includes('evaluate')){
       setTab(TABS.EVALUATE);
+    } else if (pathname.includes('timetable')){
+      setTab(TABS.TIMETABLE);
     } else {
       setTab(TABS.HOME);
     }
@@ -31,7 +33,7 @@ const NavBar = ({ where }: { where: string }) => {
           <MenuPageBox className='landing' onClick={() => onClickhandel(`pre-lionlist`)}>아기 사자</MenuPageBox>
           <MenuPageBox className='landing'>서류 질문</MenuPageBox>
           <MenuPageBox className='landing' onClick={() => onClickhandel(`evaluate`)}>지원 평가</MenuPageBox>
-          <MenuPageBox className='landing'>면접 시간</MenuPageBox>
+          <MenuPageBox className='landing' onClick={() => onClickhandel(`timetable`)}>면접 시간</MenuPageBox>
         </MenuWrapper>
         <MenuWrapper>
           <MenuPageBox className="logout"><MdOutlineLogout />Log Out</MenuPageBox>
@@ -46,7 +48,7 @@ const NavBar = ({ where }: { where: string }) => {
           <MenuPageBox className={(tab===TABS.LIONLIST)?'active':''} onClick={() => onClickhandel(`pre-lionlist`)}>아기 사자</MenuPageBox>
           <MenuPageBox>서류 질문</MenuPageBox>
           <MenuPageBox className={(tab===TABS.EVALUATE)?'active':''} onClick={() => onClickhandel(`evaluate`)}>지원 평가</MenuPageBox>
-          <MenuPageBox>면접 시간</MenuPageBox>
+          <MenuPageBox className={(tab===TABS.TIMETABLE)?'active':''} onClick={() => onClickhandel(`timetable`)}>면접 시간</MenuPageBox>
         </MenuWrapper>
         <MenuWrapper>
           <MenuPageBox className="logout"><MdOutlineLogout />Log Out</MenuPageBox>

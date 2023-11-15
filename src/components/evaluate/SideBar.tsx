@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import CloseButton from '../../assets/evaluate/CloseButton.png'
 import Checkbox from '../../assets/evaluate/Checkbox.png'
@@ -23,7 +23,17 @@ function SideBar({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any }) {
   const toggleSide = () => {
     setIsOpen(false);
   };
- 
+  
+const [checked, setChecked] = useState({
+  planning: false,
+  design: false,
+  frontend: false,
+  backend: false,
+});
+
+const handleChange = (part) => (event) => {
+  setChecked({ ...checked, [part]: event.target.checked });
+};
   return (
     <SideBarWrap id="sidebar" ref={outside} className={isOpen ? 'open' : ''}>
       
@@ -38,34 +48,23 @@ function SideBar({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any }) {
       <ApplicantByPart>
         <Part>기획
           <NameTag>에이드리안
-          <img
-              src={Checkbox}
-              alt="check"
-            />
+          <input type="checkbox" checked={checked.planning} onChange={handleChange('planning')} />
           </NameTag>
+          
         </Part>
         <Part>디자인
           <NameTag>에이드리안
-          <img
-              src={Checkbox}
-              alt="check"
-            />
+          <input type="checkbox" checked={checked.design} onChange={handleChange('design')} />
           </NameTag>
         </Part>
         <Part>프론트엔드
           <NameTag>에이드리안
-          <img
-              src={Checkbox}
-              alt="check"
-            />
+          <input type="checkbox" checked={checked.frontend} onChange={handleChange('frontend')} />
           </NameTag>
         </Part>
         <Part>백엔드
           <NameTag>에이드리안
-          <img
-              src={Checkbox}
-              alt="check"
-            />
+          <input type="checkbox" checked={checked.backend} onChange={handleChange('backend')} />
           </NameTag>
         </Part>
 
@@ -161,6 +160,18 @@ line-height: 150%;
 
 color: #000000;
 
+
+`;
+const CheckBox = styled.div`
+/* Vector */
+
+position: absolute;
+left: 16.67%;
+right: 16.67%;
+top: 16.67%;
+bottom: 16.67%;
+
+background: #000000;
 
 `;
 
