@@ -55,7 +55,7 @@ const FilterWrapper = styled.div`
   margin: 0.5rem 1rem 0.5rem 1rem;
   padding-right: 1rem;
   padding-left: 1rem;
-  gap: 1rem;
+  gap: 0.5rem;
   border: 1px solid #DDDDDD;
   border-radius: 20px;
 `
@@ -65,11 +65,14 @@ const FilterSelection = styled.div`
   font-size: 1.5rem;
   font-weight: bold;
   color: #A0A0A0;
-  padding: 0.5rem;
+  padding: 0.5rem 1rem 0.5rem 1rem;
   border-radius: 15px;
   &.active{
     color: white;
-    background-color: blue;
+    background-color: rgba(3, 104, 255, 1);
+  }
+  &:hover{
+    cursor: pointer;
   }
 `
 

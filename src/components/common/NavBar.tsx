@@ -60,7 +60,11 @@ export default NavBar
 
 const MenuWrapper = styled.div`
   display: flex;
-  /* border: 1px solid red; */
+  & > img{
+    &:hover{
+      cursor: pointer;
+    }
+  }
 `
 const MenuPageBox = styled.div`
   display: flex;
@@ -71,6 +75,9 @@ const MenuPageBox = styled.div`
   padding: 1rem 0 1rem 0;
   margin : 0 2rem 0 2rem;
   font-weight: bolder;
+  &:hover{
+    cursor: pointer;
+  }
   &.logout{
     gap: 1rem;
   }
