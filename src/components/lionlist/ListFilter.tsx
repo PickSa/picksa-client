@@ -1,6 +1,6 @@
 import { styled } from "styled-components"
 import { SpaceBetweenFlex } from "../../styles/globalStyle"
-import { memberType, TestDatasall, TestDataspm, TestDatasdesign, TestDatasfe, TestDatasbe } from "./TestDatas";
+import { memberType, TestDatasall, TestDataspm, TestDatasdesign, TestDatasfe, TestDatasbe } from "../../dummy/TestDatasMember";
 import Select from "react-select"
 import { useEffect, useState } from "react";
 

@@ -1,7 +1,7 @@
 import { styled } from "styled-components"
 import { GridContent } from "../../styles/globalStyle"
 import ListMemberRow from "./ListMemberRow"
-import { memberType } from "./TestDatas"
+import { memberType } from "../../dummy/TestDatasMember"
 
 const ListTable = (props: {memberDatas:memberType[]}) => {
   return (

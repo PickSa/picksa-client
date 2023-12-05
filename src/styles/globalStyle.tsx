@@ -9,6 +9,9 @@ export const PageFlex = styled.div`
         background-image: linear-gradient(rgba(0, 0, 0, 0.527), rgba(0, 0, 0, 0.5)), url(/img/HomeBG.png);
         background-size: cover;
     }
+    &.docquest-background{
+        background-color: rgba(221, 221, 221, 1);
+    }
 `
 
 export const ArticleFlex = styled.div`
@@ -20,7 +23,11 @@ export const ArticleFlex = styled.div`
         justify-content: center;
         align-items: center;
     }
-    /* border: 1px solid black; */
+    &.lion-detail-row{
+        flex-direction: row;
+        justify-content: space-between;
+        margin-top: 2rem;
+    }
 `
 
 export const GridContent = styled.div`
@@ -40,6 +47,9 @@ export const GridContent = styled.div`
         padding-bottom: 0.8rem;
         border-bottom: 1px solid #DDDDDD;
     }
+    &:hover{
+        cursor: pointer;
+    }
 `
 
 export const SpaceBetweenFlex = styled.div`
@@ -47,7 +57,16 @@ export const SpaceBetweenFlex = styled.div`
   /* border: 1px solid black; */
   justify-content: space-between;
   &.navbar{
-    width: 98%;
-    margin-top: 1.5rem;
+    width: 96%;
+    padding-top: 1.5rem;
+    padding-left: 2%;
+    padding-right: 2%;
+    background-color: white;
+  }
+  &.navbar-landing{
+    width: 96%;
+    padding-top: 1.5rem;
+    padding-left: 2%;
+    padding-right: 2%;
   }
 `

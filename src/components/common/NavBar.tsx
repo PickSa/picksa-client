@@ -12,6 +12,8 @@ const NavBar = ({ where }: { where: string }) => {
 	useEffect(() => {
 		if (pathname.includes('pre-lionlist')) {
 			setTab(TABS.LIONLIST);
+    } else if (pathname.includes('document-question')) {
+      setTab(TABS.DOCQUEST);
     } else if (pathname.includes('evaluate')){
       setTab(TABS.EVALUATE);
     } else if (pathname.includes('timetable')){
@@ -27,11 +29,11 @@ const NavBar = ({ where }: { where: string }) => {
   }
   if (where === 'landing') {
     return (
-      <SpaceBetweenFlex className="navbar">
+      <SpaceBetweenFlex className="navbar-landing">
         <MenuWrapper>
           <img onClick={() => navigate(`/`)} src='/img/logo-main.svg'/>
           <MenuPageBox className='landing' onClick={() => onClickhandel(`pre-lionlist`)}>아기 사자</MenuPageBox>
-          <MenuPageBox className='landing'>서류 질문</MenuPageBox>
+          <MenuPageBox className='landing' onClick={() => onClickhandel(`document-question`)}>서류 질문</MenuPageBox>
           <MenuPageBox className='landing' onClick={() => onClickhandel(`evaluate`)}>지원 평가</MenuPageBox>
           <MenuPageBox className='landing' onClick={() => onClickhandel(`timetable`)}>면접 시간</MenuPageBox>
         </MenuWrapper>
@@ -46,7 +48,7 @@ const NavBar = ({ where }: { where: string }) => {
         <MenuWrapper>
           <img onClick={() => navigate(`/`)} src='/img/logo.svg'/>
           <MenuPageBox className={(tab===TABS.LIONLIST)?'active':''} onClick={() => onClickhandel(`pre-lionlist`)}>아기 사자</MenuPageBox>
-          <MenuPageBox>서류 질문</MenuPageBox>
+          <MenuPageBox className={(tab===TABS.DOCQUEST)?'active':''} onClick={() => onClickhandel(`document-question`)}>서류 질문</MenuPageBox>
           <MenuPageBox className={(tab===TABS.EVALUATE)?'active':''} onClick={() => onClickhandel(`evaluate`)}>지원 평가</MenuPageBox>
           <MenuPageBox className={(tab===TABS.TIMETABLE)?'active':''} onClick={() => onClickhandel(`timetable`)}>면접 시간</MenuPageBox>
         </MenuWrapper>
@@ -63,6 +65,9 @@ export default NavBar
 const MenuWrapper = styled.div`
   display: flex;
   /* border: 1px solid red; */
+  & > img{
+    cursor: pointer;
+  }
 `
 const MenuPageBox = styled.div`
   display: flex;
@@ -82,5 +87,8 @@ const MenuPageBox = styled.div`
   }
   &.landing{
     color: #DDDDDD;
+  }
+  &:hover{
+    cursor: pointer;
   }
 `

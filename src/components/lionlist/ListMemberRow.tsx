@@ -1,10 +1,12 @@
 import { css, styled } from "styled-components"
 import { GridContent } from "../../styles/globalStyle"
-import { memberType } from "./TestDatas"
+import { memberType } from "../../dummy/TestDatasMember"
+import { useNavigate } from "react-router-dom"
 
 const ListMemberRow = (props:memberType) => {
+    const router = useNavigate();
   return (
-    <GridContent className="member">
+    <GridContent className="member" onClick={()=>{router(`${props.id}`)}}>
         <PartHighlight part={props.part}>{props.part}</PartHighlight>
         <div>{props.name}</div>
         <div>{props.primeNum}</div>
