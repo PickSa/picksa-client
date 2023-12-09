@@ -1,7 +1,7 @@
 import NavBar from "../components/common/NavBar"
 import { ArticleFlex, PageFlex } from "../styles/globalStyle"
 import styled from "styled-components"
-import EvaluateContainerContent from "../components/evaluate/EvaluateContainerContent"
+import EvaluateContainerContent from "../components/evaluate/EvaluateContainerContent2"
 import SlideButton from '../assets/evaluate/SlideButton.png'
 import { useState } from 'react';
 import ListTimeTable from "../components/timetable/ListTimeTable"
