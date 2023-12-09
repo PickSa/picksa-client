@@ -1,48 +1,57 @@
+import React, { useState } from 'react';
 import CurrentEval from '../../assets/evaluate/CurrentEval.png'
 import styled from 'styled-components'
-import Pass from '../../assets/evaluate/pass.png'
-import Nopass from '../../assets/evaluate/Nopass.png'
-import Uncertain from '../../assets/evaluate/uncertain.png'
-import Logo from '../../assets/evaluate/Logo.png'
-import ToggleButton from '../../assets/evaluate/ToggleButton'
 import Comment from '../../assets/evaluate/Comment'
-const EvaluateContainerContent = () => {
+interface ButtonProps {
+    selected: boolean;
+}
+const EvaluateContainerContent: React.FC = () => {
+    const [passSelected, setPassSelected] = useState(false);
+    const [failSelected, setFailSelected] = useState(false);
     return(
-        <>
-        
+        <>        
         <VolunteerContainer>
             <VolunteerContainer1>
                 <NameContainer>
-                    <Name>김사자
-                    <img src={CurrentEval} alt="Current Evaluation" />
-                    </Name>
-                    <EvalNum>10명 중 8명 찬성</EvalNum>
+                    <Name>김사자</Name>
+                    <img src={CurrentEval} alt="Current Evaluation" />                    
                 </NameContainer>
                 <Evaluate>
-                    <img src={Pass} alt="Pass" />
-                    <img src={Nopass} alt="No Pass" />
-                    <img src={Uncertain} alt="Uncertain" />
+                    <EvaluateNumContainer1>
+                        <Text1>전체평가</Text1>
+                        <Text2>9/10</Text2>
+                    </EvaluateNumContainer1>
+                    <EvaluateNumContainer1>
+                        <Text1>최종평가</Text1>
+                        <Text1></Text1>
+                    </EvaluateNumContainer1>
                 </Evaluate>
             </VolunteerContainer1>
-            <VolunteerContainer2>
-                <Interviewer>
-                    <img src={Logo} alt="Logo" />
-                    <InterviewerName>박재윤</InterviewerName>
-                    <ToggleButton></ToggleButton>
-                    
-                    
-                </Interviewer>
-                <EvaluateContent>
-                    <EvaluateText>
-                    </EvaluateText>
+            <VolunteerContainer1>
+                <VolunteerContainer3>
+                <NameContainer2>
+                        <Name>개인평가</Name>
+                        <Text1>박재윤</Text1>
+                </NameContainer2>
+                <NameContainer3>
+                    <EvaluateButtonPass selected={passSelected} onClick={() => {setPassSelected(true); setFailSelected(false);}}>합격</EvaluateButtonPass>
+                    <EvaluateButtonFail selected={failSelected} onClick={() => {setFailSelected(true); setPassSelected(false);}}>불합격</EvaluateButtonFail>
+                </NameContainer3>
+                <NameContainer2>
+                    <TextBox>텍스트를 입력하세요</TextBox>
+                </NameContainer2>
+                <EvaluateNumContainer3>
                     <RegisterButton>등록</RegisterButton>
-                </EvaluateContent>        
-            </VolunteerContainer2>
-            <VolunteerContainer3>
-                <Comment></Comment>
-                <Comment></Comment>
-                <Comment></Comment>
-            </VolunteerContainer3>
+                </EvaluateNumContainer3>
+                </VolunteerContainer3>
+                <VolunteerContainer4>
+                    <Name>개인 코멘트</Name>
+                    <Comment></Comment>
+                    <Comment></Comment>
+                    <Comment></Comment>
+                </VolunteerContainer4>       
+            </VolunteerContainer1>
+            
         </VolunteerContainer>
 
         </>
@@ -51,137 +60,98 @@ const EvaluateContainerContent = () => {
 export default EvaluateContainerContent
 
 const VolunteerContainer = styled.div`
+width: 460px;
 display: flex;
 flex-direction: column;
-align-items: center;
-padding: 0px;
-gap: 20px;
+align-items: flex-start;
+padding: 25px;
+gap: 10px;
+background: #F7F8FA;
 `
 const VolunteerContainer1 = styled.div`
+box-sizing: border-box;
 display: flex;
 flex-direction: column;
-align-items: center;
-padding: 0px;
+align-items: flex-start;
+padding-left: 16px;
 gap: 20px;
-
 `
 const NameContainer = styled.div`
-display: flex;
-flex-direction: column;
-align-items: center;
-padding: 0px;
-gap: 20px;
-
-`
-const Name = styled.div`
-display: flex;
-flex-direction: row;
-padding: 0px;
-gap: 20px;
-font-family: 'Pretendard Variable';
-font-style: normal;
-font-weight: 700;
-font-size: 24px;
-line-height: 1.5;
-color: #000000;
-`
-const EvalNum = styled.div`
-height: 36px;
-font-family: 'Pretendard Variable';
-font-style: normal;
-font-weight: 700;
-font-size: 23px;
-line-height: 150%;
-
-color: #000000;
-
-`
-const Evaluate = styled.div`
+width: 410px;
 display: flex;
 flex-direction: row;
 justify-content: space-between;
 align-items: center;
-padding: 0px 40px;
-gap: 36px;
-
-width: 365px;
-
+padding: 0px;
+gap: 20px;
+border-bottom: 1px solid #000000;
 `
-const VolunteerContainer2 = styled.div`
-
-box-sizing: border-box;
-display: flex;
-flex-direction: column;
-align-items: flex-end;
-padding: 28px 0px;
-gap: 16px;
-width: 365px;
-height: 295px;
-border-width: 1px 0px;
-border-style: solid;
-border-color: #DDDDDD;
-
-`
-const Interviewer = styled.div`
+const NameContainer2 = styled.div`
+width: 410px;
 display: flex;
 flex-direction: row;
+justify-content: space-between;
 align-items: center;
-padding: 0px 0px 0px 10px;
-gap: 20px;
-
-width: 365px;
-height: 36px;
+padding: 0px;
+gap: 18px;
 `
-const InterviewerName = styled.div`
+const NameContainer3 = styled.div`
+width: 410px;
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+padding: 0px;
+gap: 0px;
+`
+const Name = styled.div`
 font-family: 'Pretendard Variable';
 font-style: normal;
 font-weight: 700;
-font-size: 17px;
-line-height: 20px;
+font-size: 18px;
+line-height: 50px;
 
 color: #000000;
 `
-const EvaluateContent= styled.div`
-display: flex;
-flex-direction: column;
-align-items: flex-end;
-padding: 0px;
-gap: 8px;
-
-width: 365px;
-height: 187px;
-`
-const EvaluateText= styled.input`
-box-sizing: border-box;
+const Evaluate = styled.div`
 display: flex;
 flex-direction: column;
 align-items: flex-start;
-padding: 8px 10px;
-
-width: 365px;
-height: 147px;
-
-background: #FFFFFF;
-/* Light Gray */
-border: 1px solid #DDDDDD;
-border-radius: 10px;
-font-family: 'Pretendard Variable';
+padding-bottom: 20px;
+gap: 20px;
+width: 410px;
+border-bottom: 1px solid #000000;
+`
+const EvaluateNumContainer1 = styled.div`
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 0px;
+gap: 16px;
+`
+const Text1 = styled.div`
+font-family: 'Pretendard';
 font-style: normal;
-font-weight: 400;
-font-size: 13px;
+font-weight: 500;
+font-size: 14px;
 line-height: 150%;
-/* or 20px */
-
 color: #000000;
 `
+const Text2 = styled.div`
+font-family: 'Pretendard';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 150%;
+color: #000000;
+
+`
+
 const VolunteerContainer3 = styled.div`
 display: flex;
 flex-direction: column;
 align-items: flex-start;
-padding: 0px;
-gap: 16px;
-width: 365px;
-height: 506px;
+gap: 12px;
 `
 const RegisterButton = styled.button`
 display: flex;
@@ -189,9 +159,7 @@ flex-direction: row;
 justify-content: center;
 align-items: center;
 padding: 8px 10px;
-
 height: 32px;
-
 background: #DDDDDD;
 border-radius: 30px;
 font-family: 'Pretendard Variable';
@@ -199,11 +167,90 @@ font-style: normal;
 font-weight: 500;
 font-size: 13px;
 line-height: 16px;
-/* identical to box height */
+color: #000000;
+`
+const EvaluateNumContainer3 = styled.div`
+display: flex;
+flex-direction: row;
+justify-content: flex-end;
+padding: 0px;
+gap: 8px;
+`
+
+const EvaluateButtonPass = styled.button<ButtonProps>`
+box-sizing: border-box;
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 4px 8px;
+gap: 8px;
+width: 186px;
+height: 29px;
+background: #FFFFFF;
+border: 1px solid #A0A0A0;
+border-radius: 2px;
+font-family: 'Pretendard';
+font-style: normal;
+font-weight: 500;
+font-size: 14px;
+line-height: 150%;
+color: #A0A0A0;
+background: ${props => props.selected ? '#0368FF' : '#FFFFFF'};
+color: ${props => props.selected ? '#FFFFFF' : '#A0A0A0'};
+`
+const EvaluateButtonFail = styled.button<ButtonProps>`
+box-sizing: border-box;
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 4px 8px;
+
+width: 186px;
+height: 29px;
+
+background: ${props => props.selected ? '#FF0101' : '#FFFFFF'};
+color: ${props => props.selected ? '#FFFFFF' : '#A0A0A0'};
+border: 1px solid #A0A0A0;
+border-radius: 2px;
+font-family: 'Pretendard';
+font-style: normal;
+font-weight: 500;
+font-size: 14px;
+line-height: 150%;
+/* identical to box height, or 21px */
+
+`
+const TextBox = styled.textarea`
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 12px;
+gap: 8px;
+height: 129px;
+width: 410px;
+
+background: #FFFFFF;
+border: 1px solid #000000;
+border-radius: 2px;
+font-family: 'Pretendard';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 150%;
+/* or 21px */
 
 color: #000000;
 `
-
-
-
-
+const VolunteerContainer4 = styled.div`
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 16px;
+gap: 8px;
+`
