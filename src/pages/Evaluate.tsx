@@ -5,6 +5,7 @@ import EvaluateContainerContent from "../components/evaluate/EvaluateContainerCo
 import SlideButton from '../assets/evaluate/SlideButton.png'
 import { useState } from 'react';
 import SideBar from '../components/evaluate/SideBar';
+import PassFailFilter from "../components/evaluate/PassFailFilter";
 
 const Evaluate = () => {
   const [isOpen, setIsOpen] = useState(false);

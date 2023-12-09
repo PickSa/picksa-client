@@ -2,12 +2,36 @@ import React, { useState } from 'react';
 import CurrentEval from '../../assets/evaluate/CurrentEval.png'
 import styled from 'styled-components'
 import Comment from '../../assets/evaluate/Comment'
+import PassFailFilter from "./PassFailFilter";
 interface ButtonProps {
     selected: boolean;
 }
 const EvaluateContainerContent: React.FC = () => {
     const [passSelected, setPassSelected] = useState(false);
     const [failSelected, setFailSelected] = useState(false);
+    const [comments, setComments] = useState<string[]>([]);
+    const [texts, setTexts] = useState<string>("텍스트를 입력하세요.");
+    const handleTextClick = ()=>{
+        setTexts("");
+    };
+    const handleButtonClick = async () => {
+        //서버에 전송할 코드
+        console.log(texts);
+        setComments([...comments, texts]);
+        setTexts("");
+    };
+    const handlePassClick = async () =>{
+        setPassSelected(true);
+        setFailSelected(false);
+        //서버에 "합격"을 전송하는 코드를 작성
+        console.log("합격");
+    };
+    const handleFailClick = async () =>{
+        setPassSelected(false);
+        setFailSelected(true);
+        //서버에 "불합격"을 전송하는 코드를 작성
+        console.log("불합격");
+    }
     return(
         <>        
         <VolunteerContainer>
@@ -23,7 +47,7 @@ const EvaluateContainerContent: React.FC = () => {
                     </EvaluateNumContainer1>
                     <EvaluateNumContainer1>
                         <Text1>최종평가</Text1>
-                        <Text1></Text1>
+                        <PassFailFilter></PassFailFilter>
                     </EvaluateNumContainer1>
                 </Evaluate>
             </VolunteerContainer1>
@@ -34,21 +58,21 @@ const EvaluateContainerContent: React.FC = () => {
                         <Text1>박재윤</Text1>
                 </NameContainer2>
                 <NameContainer3>
-                    <EvaluateButtonPass selected={passSelected} onClick={() => {setPassSelected(true); setFailSelected(false);}}>합격</EvaluateButtonPass>
-                    <EvaluateButtonFail selected={failSelected} onClick={() => {setFailSelected(true); setPassSelected(false);}}>불합격</EvaluateButtonFail>
+                    <EvaluateButtonPass selected={passSelected} onClick={handlePassClick}>합격</EvaluateButtonPass>
+                    <EvaluateButtonFail selected={failSelected} onClick={handleFailClick}>불합격</EvaluateButtonFail>
                 </NameContainer3>
                 <NameContainer2>
-                    <TextBox>텍스트를 입력하세요</TextBox>
+                    <TextBox value={texts} onClick={handleTextClick} onChange={e=>setTexts(e.target.value)}></TextBox>
                 </NameContainer2>
                 <EvaluateNumContainer3>
-                    <RegisterButton>등록</RegisterButton>
+                    <RegisterButton onClick={handleButtonClick}>등록</RegisterButton>
                 </EvaluateNumContainer3>
                 </VolunteerContainer3>
                 <VolunteerContainer4>
                     <Name>개인 코멘트</Name>
-                    <Comment></Comment>
-                    <Comment></Comment>
-                    <Comment></Comment>
+                    {comments.map((comment, index)=>(
+                        <Comment key={index} content = {comment}></Comment>
+                    ))}
                 </VolunteerContainer4>       
             </VolunteerContainer1>
             
@@ -170,6 +194,7 @@ line-height: 16px;
 color: #000000;
 `
 const EvaluateNumContainer3 = styled.div`
+width: 100%;
 display: flex;
 flex-direction: row;
 justify-content: flex-end;
@@ -222,7 +247,7 @@ line-height: 150%;
 /* identical to box height, or 21px */
 
 `
-const TextBox = styled.textarea`
+const TextBox = styled.input`
 box-sizing: border-box;
 
 /* Auto layout */
