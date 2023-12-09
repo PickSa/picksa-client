@@ -84,7 +84,7 @@ const EvaluateContainerContent: React.FC = () => {
 export default EvaluateContainerContent
 
 const VolunteerContainer = styled.div`
-width: 460px;
+width: 550px;
 display: flex;
 flex-direction: column;
 align-items: flex-start;
@@ -93,6 +93,7 @@ gap: 10px;
 background: #F7F8FA;
 `
 const VolunteerContainer1 = styled.div`
+width: 100%;
 box-sizing: border-box;
 display: flex;
 flex-direction: column;
@@ -101,7 +102,7 @@ padding-left: 16px;
 gap: 20px;
 `
 const NameContainer = styled.div`
-width: 410px;
+width: 90%;
 display: flex;
 flex-direction: row;
 justify-content: space-between;
@@ -111,7 +112,7 @@ gap: 20px;
 border-bottom: 1px solid #000000;
 `
 const NameContainer2 = styled.div`
-width: 410px;
+width: 90%;
 display: flex;
 flex-direction: row;
 justify-content: space-between;
@@ -120,7 +121,7 @@ padding: 0px;
 gap: 18px;
 `
 const NameContainer3 = styled.div`
-width: 410px;
+width: 90%;
 display: flex;
 flex-direction: row;
 justify-content: space-between;
@@ -138,12 +139,12 @@ line-height: 50px;
 color: #000000;
 `
 const Evaluate = styled.div`
+width: 90%;
 display: flex;
 flex-direction: column;
 align-items: flex-start;
 padding-bottom: 20px;
 gap: 20px;
-width: 410px;
 border-bottom: 1px solid #000000;
 `
 const EvaluateNumContainer1 = styled.div`
@@ -172,6 +173,7 @@ color: #000000;
 `
 
 const VolunteerContainer3 = styled.div`
+width: 95%;
 display: flex;
 flex-direction: column;
 align-items: flex-start;
@@ -258,7 +260,7 @@ align-items: center;
 padding: 12px;
 gap: 8px;
 height: 129px;
-width: 410px;
+width: 100%;
 
 background: #FFFFFF;
 border: 1px solid #000000;
@@ -278,4 +280,5 @@ flex-direction: column;
 align-items: flex-start;
 padding: 16px;
 gap: 8px;
+width: 100%;
 `

@@ -23,7 +23,7 @@ align-items: flex-end;
 padding: 18px;
 gap: 10px;
 
-width: 360px;
+width: 420px;
 height: 195px;
 
 /* Blue/Blue2 */
@@ -45,7 +45,7 @@ color: #B0B0B0;
 
 `
 const CommentContent = styled.div`
-width: 345px;
+width: 90%;
 height: 147px;
 
 font-family: 'Pretendard Variable';
@@ -54,7 +54,7 @@ font-weight: 400;
 font-size: 14px;
 line-height: 150%;
 /* or 21px */
-
+padding: 20px;
 color: #000000;
 `
 

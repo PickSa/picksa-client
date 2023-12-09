@@ -51,11 +51,12 @@ const ListFilter = () => {
 
 const SelectWrapper = styled.div`
   display: flex;
-  width : 100%;
+  width : 120px;
   justify-content: flex-end;
-  & > .select-box {
-    width: 100%;
-  }
+   & > .select-box {
+     width: 100%;
+   }
+
 `
 
 export default ListFilter
