@@ -91,6 +91,7 @@ align-items: flex-start;
 padding: 25px;
 gap: 10px;
 background: #F7F8FA;
+border-radius: 10px;
 `
 const VolunteerContainer1 = styled.div`
 width: 100%;
@@ -196,7 +197,7 @@ line-height: 16px;
 color: #000000;
 `
 const EvaluateNumContainer3 = styled.div`
-width: 100%;
+width: 90%;
 display: flex;
 flex-direction: row;
 justify-content: flex-end;
