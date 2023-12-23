@@ -34,6 +34,16 @@ const NavBar = ({ where }: { where: string }) => {
     navigate(`/${page}`);
   }
 
+  const onClickLogout = async() => {
+    setAccessToken("");
+    setUserinfo({
+      isUser: false,
+      user: {
+        username: "",
+      }
+    })
+  }
+
   const onClickLogin = async() => {
     const result = await getLoginLink();
     if(result === false) {
@@ -101,7 +111,7 @@ const NavBar = ({ where }: { where: string }) => {
             userinfo.isUser ? 
             <>
             <MenuPageBox className="user">{`${userinfo.user.username} 님`}</MenuPageBox>
-            <MenuPageBox className="logout"><MdOutlineLogout />Log out</MenuPageBox>
+            <MenuPageBox className="logout" onClick={onClickLogout}><MdOutlineLogout />Log out</MenuPageBox>
             </>
             :
             <MenuPageBox className="logout" onClick={onClickLogin}><MdOutlineLogout />Log in</MenuPageBox>
@@ -124,7 +134,7 @@ const NavBar = ({ where }: { where: string }) => {
             userinfo.isUser ? 
             <>
             <MenuPageBox className="user">{`${userinfo.user.username} 님`}</MenuPageBox>
-            <MenuPageBox className="logout"><MdOutlineLogout />Log out</MenuPageBox>
+            <MenuPageBox className="logout" onClick={onClickLogout}><MdOutlineLogout />Log out</MenuPageBox>
             </>
             :
             <MenuPageBox className="logout"><MdOutlineLogout />Log in</MenuPageBox>
