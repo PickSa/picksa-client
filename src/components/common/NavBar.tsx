@@ -4,10 +4,16 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { TABS } from "../../assets/tabs";
 import { useEffect, useState } from "react";
 import { SpaceBetweenFlex } from "../../styles/globalStyle";
+import { useRecoilState } from "recoil";
+import { LoginCodeAtom, UserInfoAtom, accessTokenAtom } from "../../atom";
+import { getLoginLink, getToken, getUserName } from "../../apis/login";
 
 const NavBar = ({ where }: { where: string }) => {
   const { pathname } = useLocation();
 	const [tab, setTab] = useState(TABS.HOME);
+  const [userinfo, setUserinfo] = useRecoilState(UserInfoAtom);
+  const [accessToken, setAccessToken] = useRecoilState(accessTokenAtom);
+  const [code, setCode] = useRecoilState(LoginCodeAtom);
 
 	useEffect(() => {
 		if (pathname.includes('pre-lionlist')) {
@@ -27,6 +33,50 @@ const NavBar = ({ where }: { where: string }) => {
   const onClickhandel = (page:string) => {
     navigate(`/${page}`);
   }
+
+  const onClickLogin = async() => {
+    const result = await getLoginLink();
+    if(result === false) {
+      console.log('로그인 에러 발생');
+    } else {
+      window.open(result);
+      const getCode = new URL(window.location.href).searchParams.get("code");
+      setCode(getCode!);
+    }
+  }
+
+  const getAccessToken = async() => {
+    const result = await getToken(code!);
+    if(result === false){
+      console.log('로그인 에러 발생: access token 취득 불가');
+    } else {
+      setAccessToken(result.accessToken);
+      const nameResult = await getUserName(result.accessToken);
+      if(nameResult === false){
+        console.log('유저 이름을 찾을 수 없음');
+      } else {
+        setUserinfo({
+          isUser : true,
+          user : {
+            username: nameResult,
+          }
+        })
+      }
+    }
+  }
+
+  useEffect(() => {
+    if(code !== undefined){
+      console.log(code);
+      getAccessToken();
+    }
+  }, [code]);
+
+  useEffect(() => {
+    console.log(userinfo.isUser);
+    console.log(userinfo.user.username);
+  }, []);
+
   if (where === 'landing') {
     return (
       <SpaceBetweenFlex className="navbar-landing">
@@ -38,7 +88,15 @@ const NavBar = ({ where }: { where: string }) => {
           <MenuPageBox className='landing' onClick={() => onClickhandel(`timetable`)}>면접 시간</MenuPageBox>
         </MenuWrapper>
         <MenuWrapper>
-          <MenuPageBox className="logout"><MdOutlineLogout />Log Out</MenuPageBox>
+          {
+            userinfo.isUser ? 
+            <>
+            <MenuPageBox className="user">{`${userinfo.user.username} 님`}</MenuPageBox>
+            <MenuPageBox className="logout"><MdOutlineLogout />Log out</MenuPageBox>
+            </>
+            :
+            <MenuPageBox className="logout" onClick={onClickLogin}><MdOutlineLogout />Log in</MenuPageBox>
+          }
         </MenuWrapper>
       </SpaceBetweenFlex>
     )
@@ -53,7 +111,15 @@ const NavBar = ({ where }: { where: string }) => {
           <MenuPageBox className={(tab===TABS.TIMETABLE)?'active':''} onClick={() => onClickhandel(`timetable`)}>면접 시간</MenuPageBox>
         </MenuWrapper>
         <MenuWrapper>
-          <MenuPageBox className="logout"><MdOutlineLogout />Log Out</MenuPageBox>
+          {
+            userinfo.isUser ? 
+            <>
+            <MenuPageBox className="user">{`${userinfo.user.username} 님`}</MenuPageBox>
+            <MenuPageBox className="logout"><MdOutlineLogout />Log out</MenuPageBox>
+            </>
+            :
+            <MenuPageBox className="logout"><MdOutlineLogout />Log in</MenuPageBox>
+          }
         </MenuWrapper>
       </SpaceBetweenFlex>
     );
@@ -87,6 +153,10 @@ const MenuPageBox = styled.div`
   }
   &.landing{
     color: #DDDDDD;
+  }
+  &.user{
+    font-size: 2rem;
+    color: black;
   }
   &:hover{
     cursor: pointer;
