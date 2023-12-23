@@ -164,7 +164,6 @@ const MenuPageBox = styled.div`
     color: #DDDDDD;
   }
   &.user{
-    font-size: 2rem;
     color: black;
   }
   &:hover{
