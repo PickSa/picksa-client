@@ -75,8 +75,10 @@ const NavBar = ({ where }: { where: string }) => {
 
   useEffect(() => {
     const getCode = new URL(window.location.href).searchParams.get("code");
-    setCode(getCode!);
-    navigate("/");
+    if(getCode){
+      setCode(getCode!);
+      navigate("/");
+    }
     console.log(userinfo.isUser);
     console.log(userinfo.user.username);
   }, []);
