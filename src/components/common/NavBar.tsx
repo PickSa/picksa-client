@@ -54,15 +54,15 @@ const NavBar = ({ where }: { where: string }) => {
       console.log(result);
       console.log(result.accessToken);
       setAccessToken(result.accessToken);
-    //   const nameResult = await getUserName(result.accessToken);
-    //   if(nameResult === false){
-    //     console.log('유저 이름을 찾을 수 없음');
-    //   } else {
+      const nameResult = await getUserName(result.accessToken);
+      if(nameResult === false){
+        console.log('유저 이름을 찾을 수 없음');
+      } else {
         setUserinfo({
           isUser : true,
           user : {
-            // username: nameResult.name
-            username: "test",
+            username: nameResult.name
+            // username: "test",
           }
         })
     //   }
