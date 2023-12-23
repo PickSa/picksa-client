@@ -40,9 +40,9 @@ const NavBar = ({ where }: { where: string }) => {
       console.log('로그인 에러 발생');
     } else {
       window.open(result, "_self");
-      const getCode = new URL(window.location.href).searchParams.get("code");
-      setCode(getCode!);
-      navigate("/");
+      // const getCode = new URL(window.location.href).searchParams.get("code");
+      // setCode(getCode!);
+      // navigate("/");
     }
   }
 
@@ -74,6 +74,9 @@ const NavBar = ({ where }: { where: string }) => {
   }, [code]);
 
   useEffect(() => {
+    const getCode = new URL(window.location.href).searchParams.get("code");
+    setCode(getCode!);
+    navigate("/");
     console.log(userinfo.isUser);
     console.log(userinfo.user.username);
   }, []);
