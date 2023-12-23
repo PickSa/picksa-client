@@ -39,9 +39,10 @@ const NavBar = ({ where }: { where: string }) => {
     if(result === false) {
       console.log('로그인 에러 발생');
     } else {
-      window.open(result);
+      window.open(result, "_self");
       const getCode = new URL(window.location.href).searchParams.get("code");
       setCode(getCode!);
+      navigate("/");
     }
   }
 
