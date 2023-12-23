@@ -14,7 +14,7 @@ export const getLoginLink = async() => {
 
 export const getToken = async(code:string) => {
     try{
-        const response = await axios.get(`${baseUrl}/api/v1/auth?code=${code}`);
+        const response = await axios.get(`${baseUrl}/api/v1/auth/signin?code=${code}`);
         // console.log(response.headers.location);
         return response.data;
     } catch {
