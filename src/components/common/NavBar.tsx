@@ -4,14 +4,22 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { TABS } from "../../assets/tabs";
 import { useEffect, useState } from "react";
 import { SpaceBetweenFlex } from "../../styles/globalStyle";
+import { useRecoilState } from "recoil";
+import { LoginCodeAtom, UserInfoAtom, accessTokenAtom } from "../../atom";
+import { getLoginLink, getToken, getUserName } from "../../apis/login";
 
 const NavBar = ({ where }: { where: string }) => {
   const { pathname } = useLocation();
 	const [tab, setTab] = useState(TABS.HOME);
+  const [userinfo, setUserinfo] = useRecoilState(UserInfoAtom);
+  const [accessToken, setAccessToken] = useRecoilState(accessTokenAtom);
+  const [code, setCode] = useRecoilState(LoginCodeAtom);
 
 	useEffect(() => {
 		if (pathname.includes('pre-lionlist')) {
 			setTab(TABS.LIONLIST);
+    } else if (pathname.includes('document-question')) {
+      setTab(TABS.DOCQUEST);
     } else if (pathname.includes('evaluate')){
       setTab(TABS.EVALUATE);
     } else if (pathname.includes('timetable')){
@@ -25,18 +33,89 @@ const NavBar = ({ where }: { where: string }) => {
   const onClickhandel = (page:string) => {
     navigate(`/${page}`);
   }
+
+  const onClickLogout = async() => {
+    setAccessToken("");
+    setUserinfo({
+      isUser: false,
+      user: {
+        username: "",
+      }
+    })
+  }
+
+  const onClickLogin = async() => {
+    const result = await getLoginLink();
+    if(result === false) {
+      console.log('로그인 에러 발생');
+    } else {
+      window.open(result, "_self");
+      // const getCode = new URL(window.location.href).searchParams.get("code");
+      // setCode(getCode!);
+      // navigate("/");
+    }
+  }
+
+  const getAccessToken = async() => {
+    const result = await getToken(code!);
+    if(result === false){
+      console.log('로그인 에러 발생: access token 취득 불가');
+    } else {
+      console.log(result);
+      console.log(result.accessToken);
+      setAccessToken(result.accessToken);
+      const nameResult = await getUserName(result.accessToken);
+      if(nameResult === false){
+        console.log('유저 이름을 찾을 수 없음');
+      } else {
+        setUserinfo({
+          isUser : true,
+          user : {
+            username: nameResult.name
+            // username: "test",
+          }
+        })
+      }
+    }
+  }
+
+  useEffect(() => {
+    if(code !== undefined){
+      console.log(code);
+      getAccessToken();
+    }
+  }, [code]);
+
+  useEffect(() => {
+    const getCode = new URL(window.location.href).searchParams.get("code");
+    if(getCode){
+      setCode(getCode!);
+      navigate("/");
+    }
+    console.log(userinfo.isUser);
+    console.log(userinfo.user.username);
+  }, []);
+
   if (where === 'landing') {
     return (
-      <SpaceBetweenFlex className="navbar">
+      <SpaceBetweenFlex className="navbar-landing">
         <MenuWrapper>
           <img onClick={() => navigate(`/`)} src='/img/logo-main.svg'/>
           <MenuPageBox className='landing' onClick={() => onClickhandel(`pre-lionlist`)}>아기 사자</MenuPageBox>
-          <MenuPageBox className='landing'>서류 질문</MenuPageBox>
+          <MenuPageBox className='landing' onClick={() => onClickhandel(`document-question`)}>서류 질문</MenuPageBox>
           <MenuPageBox className='landing' onClick={() => onClickhandel(`evaluate`)}>지원 평가</MenuPageBox>
           <MenuPageBox className='landing' onClick={() => onClickhandel(`timetable`)}>면접 시간</MenuPageBox>
         </MenuWrapper>
         <MenuWrapper>
-          <MenuPageBox className="logout"><MdOutlineLogout />Log Out</MenuPageBox>
+          {
+            userinfo.isUser ? 
+            <>
+            <MenuPageBox className="user">{`${userinfo.user.username} 님`}</MenuPageBox>
+            <MenuPageBox className="logout" onClick={onClickLogout}><MdOutlineLogout />Log out</MenuPageBox>
+            </>
+            :
+            <MenuPageBox className="logout" onClick={onClickLogin}><MdOutlineLogout />Log in</MenuPageBox>
+          }
         </MenuWrapper>
       </SpaceBetweenFlex>
     )
@@ -46,12 +125,20 @@ const NavBar = ({ where }: { where: string }) => {
         <MenuWrapper>
           <img onClick={() => navigate(`/`)} src='/img/logo.svg'/>
           <MenuPageBox className={(tab===TABS.LIONLIST)?'active':''} onClick={() => onClickhandel(`pre-lionlist`)}>아기 사자</MenuPageBox>
-          <MenuPageBox>서류 질문</MenuPageBox>
+          <MenuPageBox className={(tab===TABS.DOCQUEST)?'active':''} onClick={() => onClickhandel(`document-question`)}>서류 질문</MenuPageBox>
           <MenuPageBox className={(tab===TABS.EVALUATE)?'active':''} onClick={() => onClickhandel(`evaluate`)}>지원 평가</MenuPageBox>
           <MenuPageBox className={(tab===TABS.TIMETABLE)?'active':''} onClick={() => onClickhandel(`timetable`)}>면접 시간</MenuPageBox>
         </MenuWrapper>
         <MenuWrapper>
-          <MenuPageBox className="logout"><MdOutlineLogout />Log Out</MenuPageBox>
+          {
+            userinfo.isUser ? 
+            <>
+            <MenuPageBox className="user">{`${userinfo.user.username} 님`}</MenuPageBox>
+            <MenuPageBox className="logout" onClick={onClickLogout}><MdOutlineLogout />Log out</MenuPageBox>
+            </>
+            :
+            <MenuPageBox className="logout"><MdOutlineLogout />Log in</MenuPageBox>
+          }
         </MenuWrapper>
       </SpaceBetweenFlex>
     );
@@ -63,6 +150,9 @@ export default NavBar
 const MenuWrapper = styled.div`
   display: flex;
   /* border: 1px solid red; */
+  & > img{
+    cursor: pointer;
+  }
 `
 const MenuPageBox = styled.div`
   display: flex;
@@ -83,4 +173,10 @@ const MenuPageBox = styled.div`
   &.landing{
     color: #DDDDDD;
   }
-`
+  &.user{
+    color: black;
+  }
+  &:hover{
+    cursor: pointer;
+  }
+`;

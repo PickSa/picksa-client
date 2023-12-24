@@ -1,11 +1,12 @@
 import NavBar from "../components/common/NavBar"
-import { ArticleFlex, PageFlex } from "../styles/globalStyle"
+import { PageFlex } from "../styles/globalStyle"
 import styled from "styled-components"
 import EvaluateContainerContent from "../components/evaluate/EvaluateContainerContent"
 import SlideButton from '../assets/evaluate/SlideButton.png'
 import { useState } from 'react';
 import SideBar from '../components/evaluate/SideBar';
-import ToggleButton from "../assets/evaluate/ToggleButton"
+
+
 const Evaluate = () => {
   const [isOpen, setIsOpen] = useState(false);
       const toggleSide = () => {
@@ -38,10 +39,10 @@ const ContainerWrapper = styled.div`
 width: 100%;
 display: flex;
 flex-direction: row;
-padding: 40px;
+padding: 60px;
 justify-content: space-evenly;
-gap: 0px;
-align-items: center;
+gap: 10px;
+align-items: flex-start;
 `
 
 const FileContainer = styled.div`
