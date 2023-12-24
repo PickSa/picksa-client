@@ -1,18 +1,16 @@
 import { css, styled } from "styled-components"
 import { memberType } from "./ListTimeTable"
-
 const ListMemberRow = (props:memberType) => {
   return (
     <GridContent2 className="member">
         <PartHighlight part={props.part}>{props.part}</PartHighlight>
         <div>{props.name}</div>
-        {Array.from({ length: 16 }).map((_, i) => <Nocheck key={i} />)}
+        {Array.from({ length: 19 }).map((_, i) => <Nocheck key={i} />)}
+        
     </GridContent2>
   )
 }
-
 export default ListMemberRow
-
 const PartHighlight = styled.div<{part:string}>`
     font-size: 1rem;
     width: fit-content;
@@ -42,10 +40,11 @@ const PartHighlight = styled.div<{part:string}>`
 const GridContent2 = styled.div`
     gap: 5px;
     display: grid;
-    grid-template-columns: repeat(18, 1fr);
+    grid-template-columns: repeat(21, 1fr);
     padding-left: 5px;
     padding-right: 5px;
     font-size: 1.2rem;
+    
     &.listTitle{
         font-weight: bolder;
         background-color: rgba(106, 199, 239, 0.2);
@@ -57,8 +56,6 @@ const GridContent2 = styled.div`
         padding-bottom: 0.8rem;
         border-bottom: 1px solid #DDDDDD;
     }
-    
-
 `
 const Check = styled.div`
 background: #73ABFF;
