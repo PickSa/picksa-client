@@ -1,18 +1,37 @@
 import { css, styled } from "styled-components"
 import { GridContent } from "../../styles/globalStyle"
-import { memberType } from "../../dummy/TestDatasMember"
 import { useNavigate } from "react-router-dom"
 
-const ListMemberRow = (props:memberType) => {
+type ListMemberRowType = {
+    applicantId: number,
+    part: string,
+    name: string,
+    studentId: string,
+    score: number,
+    isEvaluated: boolean|string,
+    result: string,
+    phone: string,
+    userCount: number,
+}
+
+const ListMemberRow = (props:ListMemberRowType) => {
     const router = useNavigate();
   return (
-    <GridContent className="member" onClick={()=>{router(`${props.id}`)}}>
-        <PartHighlight part={props.part}>{props.part}</PartHighlight>
+    <GridContent className="member" onClick={()=>{router(`${props.applicantId}`)}}>
+        <PartHighlight $part={props.part}>
+            {props.part === "PM" ? "기획"
+            : props.part === "DESIGN" ? "디자인"
+            : props.part === "FRONTEND" ? "프론트엔드"
+            : "백엔드"}
+        </PartHighlight>
         <div>{props.name}</div>
-        <div>{props.primeNum}</div>
-        <div>{props.firstScore}</div>
-        <div>{props.firstResult}</div>
-        <div>{props.firstState}</div>
+        <div>{props.studentId}</div>
+        <div>{`${props.score}/${props.userCount}`}</div>
+        <div>{props.result}</div>
+        <div>{typeof(props.isEvaluated) === "string" ?
+        props.isEvaluated
+        :
+        props.isEvaluated === true ? "평가완료" : "평가진행중"}</div>
         <div>{props.phone}</div>
     </GridContent>
   )
@@ -20,20 +39,20 @@ const ListMemberRow = (props:memberType) => {
 
 export default ListMemberRow
 
-const PartHighlight = styled.div<{part:string}>`
+const PartHighlight = styled.div<{$part:string}>`
     width: fit-content;
     padding: 0.2rem 0.7rem 0.2rem 0.7rem;
     border-radius: 10px;
     ${(props) => {
-        if(props.part === '기획'){
+        if(props.$part === 'PM'){
             return css`
                 background-color: #FAEDCC;
             `
-        } else if(props.part === '디자인'){
+        } else if(props.$part === 'DESIGN'){
             return css`
                 background-color: #DEECDC;
             `
-        } else if(props.part === '프론트엔드'){
+        } else if(props.$part === 'FRONTEND'){
             return css`
                 background-color: #D6E4EE;
             `

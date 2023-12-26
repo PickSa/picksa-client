@@ -1,9 +1,9 @@
 import { styled } from "styled-components"
 import { GridContent } from "../../styles/globalStyle"
 import ListMemberRow from "./ListMemberRow"
-import { memberType } from "../../dummy/TestDatasMember"
+import { LionListType } from "../../dummy/datatypes"
 
-const ListTable = (props: {memberDatas:memberType[]}) => {
+const ListTable = (props: {memberDatas:LionListType[], activeFilter:string, userCount:number}) => {
   return (
     <TableWrapper>
         <GridContent className="listTitle">
@@ -16,17 +16,34 @@ const ListTable = (props: {memberDatas:memberType[]}) => {
             <div>전화번호</div>
         </GridContent>
         {
-            props.memberDatas.map((data:memberType, idx:number)=>(
+        props.activeFilter === "ALL" ? 
+            props.memberDatas.map((data:LionListType, idx:number)=>(
                 <ListMemberRow 
                 key={idx}
-                id={data.id}
+                applicantId={data.applicantId}
                 part={data.part}
                 name={data.name}
-                primeNum={data.primeNum}
-                firstScore={data.firstScore}
-                firstResult={data.firstResult}
-                firstState={data.firstState}
+                studentId={data.studentId}
+                score={data.score}
+                isEvaluated={data.isEvaluated}
+                result={data.result}
                 phone={data.phone}
+                userCount={props.userCount}
+                />
+            )) 
+            :
+            props.memberDatas.map((data:LionListType, idx:number)=>(
+                <ListMemberRow 
+                key={idx}
+                applicantId={data.applicantId}
+                part={data.part}
+                name={data.name}
+                studentId={data.studentId}
+                score={data.score}
+                isEvaluated={data.status}
+                result={data.result}
+                phone={data.phone}
+                userCount={props.userCount}
                 />
             ))
         }
