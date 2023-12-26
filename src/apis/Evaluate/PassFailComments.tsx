@@ -14,11 +14,7 @@ export const postEvaluation = async (applicant_id: string,
           headers: {managerId},
         });
         return response.data;
-    }catch(error){
-      if (error.response && error.response.status === 400){
-        throw new Error(error.response.data.message);
-      }else {
-        throw new Error("알수 없는 에러가 발생했습니다.")
-      }
+    }catch{
+      return false;
     }
 }

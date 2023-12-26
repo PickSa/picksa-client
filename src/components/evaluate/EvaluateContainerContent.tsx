@@ -12,7 +12,7 @@ const EvaluateContainerContent: React.FC = () => {
     const [failSelected, setFailSelected] = useState(false);
     const [comments, setComments] = useState<string[]>([]);
     const [texts, setTexts] = useState<string>("텍스트를 입력하세요.");
-    const applicant_id = "applicant_id"; //실제 applicant_id로 변경
+    const applicant_id = "1"; //실제 applicant_id로 변경
     const managerId = "managerId"; //실제 managerId로 변경
 
     const handleTextClick = ()=>{
@@ -26,8 +26,8 @@ const EvaluateContainerContent: React.FC = () => {
             console.log(data);
             setComments([...comments, texts]);
             setTexts("");
-        }catch(error){
-            console.log(error.message);
+        }catch{
+            console.log(false);
         }
     };
     const handlePassClick = async () =>{
