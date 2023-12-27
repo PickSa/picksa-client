@@ -10,12 +10,10 @@ const sortOpt = [
   {value: "FAILURE", label: " 불합격 "},
   {value: "PENDING", label: " 미정 "},
 ]
-
-
 const ListFilter = () => {
   const [selectedSort, setSelectedSort] = useState(sortOpt[0]);
   const accessToken = useRecoilValue(accessTokenAtom);
-  const applicant_id = 1;
+  const applicant_id = "1";
   useEffect(() => {
     if (selectedSort){
       patchLeaderPassFail(applicant_id, accessToken, selectedSort.value);
