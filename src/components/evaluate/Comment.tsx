@@ -1,6 +1,10 @@
 import styled from 'styled-components';
-import React, { useState } from 'react';
-const Comment: React.FC<{content:string}> = ({content}) => {
+import React from 'react';
+interface CommentProps {
+    content: string;
+    name: string;
+}
+const Comment: React.FC<CommentProps> = ({content, name}) => {
     return(
         <CommentContainer>
             
@@ -8,7 +12,7 @@ const Comment: React.FC<{content:string}> = ({content}) => {
             {content}
             </CommentContent>
             <NameContainer>
-                유승빈
+                {name}
             </NameContainer>
 
         </CommentContainer>
