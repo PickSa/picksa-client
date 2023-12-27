@@ -1,39 +1,60 @@
 import { useRef, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import CloseButton from '../../assets/evaluate/CloseButton.png'
-import Checkbox from '../../assets/evaluate/Checkbox.png'
- 
- 
+import {getAllList} from "../../apis/Evaluate/SideBarApi"
+import { useRecoilValue } from 'recoil';
+import { accessTokenAtom } from '../../atom';
 function SideBar({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any }) {
-  const outside = useRef<any>();
- 
+  const outside = useRef<any>(); 
+  const accessToken = useRecoilValue(accessTokenAtom);
+  const [planningApplicants, setPlanningApplicants] = useState<any[]>([]);
+  const [designApplicants, setDesignApplicants] = useState<any[]>([]);
+  const [frontendApplicants, setFrontendApplicants] = useState<any[]>([]);
+  const [backendApplicants, setBackendApplicants] = useState<any[]>([]);
+  const [checked, setChecked] = useState({
+    planning: false,
+    design: false,
+    frontend: false,
+    backend: false,
+  })
   useEffect(() => {
     document.addEventListener('mousedown', handlerOutsie);
     return () => {
       document.removeEventListener('mousedown', handlerOutsie);
     };
-  });
- 
+  }); 
+  useEffect(()=>{
+    const fetchApplicants = async()=>{
+      const planningData = await getAllList("PM", accessToken);
+      const designData = await getAllList("DESIGN", accessToken);
+      const frontendData = await getAllList("FRONTEND", accessToken);
+      const backendData = await getAllList("BACKEND", accessToken);
+      if (planningData && planningData.applicants){
+        setPlanningApplicants(planningData.applicants);
+      }
+      if (designData && designData.applicants){
+        setDesignApplicants(designData.applicants);
+      }
+      if (frontendData && frontendData.applicants){
+        setFrontendApplicants(frontendData.applicants);
+      }
+      if(backendData && backendData.applicants){
+        setBackendApplicants(backendData.applicants);
+      }
+    };
+    fetchApplicants();
+  },[])
   const handlerOutsie = (e: any) => {
     if (!outside.current.contains(e.target)) {
       toggleSide();
     }
-  };
- 
+  }; 
   const toggleSide = () => {
     setIsOpen(false);
+  };  
+  const handleChange = (part) => (event) => {
+    setChecked({ ...checked, [part]: event.target.checked });
   };
-  
-const [checked, setChecked] = useState({
-  planning: false,
-  design: false,
-  frontend: false,
-  backend: false,
-});
-
-const handleChange = (part) => (event) => {
-  setChecked({ ...checked, [part]: event.target.checked });
-};
   return (
     <SideBarWrap id="sidebar" ref={outside} className={isOpen ? 'open' : ''}>
       
@@ -47,32 +68,39 @@ const handleChange = (part) => (event) => {
       </ApplicantList>
       <ApplicantByPart>
         <Part>기획
-          <NameTag>에이드리안
-          <input type="checkbox" checked={checked.planning} onChange={handleChange('planning')} />
+          {planningApplicants.map((applicant)=>(
+            <NameTag key = {applicant.id}>{applicant.name}
+            <input type="checkbox" 
+            checked={checked.planning} onChange={handleChange('planning')} />
           </NameTag>
-          
+          ))}    
         </Part>
         <Part>디자인
-          <NameTag>에이드리안
-          <input type="checkbox" checked={checked.design} onChange={handleChange('design')} />
-          </NameTag>
+          {designApplicants.map((applicant)=>(
+            <NameTag key={applicant.id}>{applicant.name}
+            <input type="checkbox" checked={checked.design} onChange={handleChange('design')} />
+            </NameTag>
+          ))}          
         </Part>
         <Part>프론트엔드
-          <NameTag>에이드리안
-          <input type="checkbox" checked={checked.frontend} onChange={handleChange('frontend')} />
-          </NameTag>
+          {frontendApplicants.map((applicant)=>(
+            <NameTag key={applicant.id}>{applicant.name}
+            <input type="checkbox" checked={checked.frontend} onChange={handleChange('frontend')} />
+            </NameTag>
+          ))}          
         </Part>
         <Part>백엔드
-          <NameTag>에이드리안
-          <input type="checkbox" checked={checked.backend} onChange={handleChange('backend')} />
-          </NameTag>
+          {backendApplicants.map((applicant)=>(
+            <NameTag key={applicant.id}>{applicant.name}
+            <input type="checkbox" checked={checked.backend} onChange={handleChange('backend')} />
+            </NameTag>
+          ))}
+          
         </Part>
-
       </ApplicantByPart>
     </SideBarWrap>
   );
-}
- 
+} 
 export default SideBar;
 const SideBarWrap = styled.div`
 display: flex;

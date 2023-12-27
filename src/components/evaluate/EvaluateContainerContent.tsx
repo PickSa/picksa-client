@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import CurrentEval from '../../assets/evaluate/CurrentEval.png'
+import FinishEval from '../../assets/evaluate/FinishEval.png'
 import styled from 'styled-components'
 import Comment from './Comment'
 import PassFailFilter from "./PassFailFilter";
@@ -15,14 +16,16 @@ const EvaluateContainerContent: React.FC = () => {
     const [failSelected, setFailSelected] = useState(false);
     const [comments, setComments] = useState<string[]>([]);
     const [texts, setTexts] = useState<string>("");
-    const applicant_id = 1; //실제 applicant_id로 변경
+    const [evaluation, setEvaluation] = useState<any>(null);
+    const applicant_id = "1"; //실제 applicant_id로 변경
     useEffect(()=>{
         const fetchComments = async()=>{
             const data  = await getEvalOthers(applicant_id);
             if (data!== undefined) {
                 setComments(data); 
             }
-            
+            const evaluationData = await getPassFail(applicant_id);
+            setEvaluation(evaluationData);            
         };
         fetchComments();
     }, []);
@@ -30,28 +33,19 @@ const EvaluateContainerContent: React.FC = () => {
     };
     const handleButtonClick = async () => {
         const evaluationId = "your-evaluation-id";
-        const memberId = "your-member-id";
-        
+        const memberId = "your-member-id";        
         try{
             let data;
             if (comments.length === 0){
                 data = await postEvaluation(applicant_id, 
                     passSelected, texts, accessToken);                
             } else {
-                data = await patchEvaluation(applicant_id, 
-                    passSelected, texts, accessToken);
-
+                data = await patchEvaluation(evaluationId, 
+                    passSelected, texts, memberId);
             }
             console.log(data);
             setComments([...comments, texts]);           
         }catch{
-            console.log(false);
-        }
-        try {
-            const data = await patchEvaluation(evaluationId, passSelected, texts, memberId);
-            console.log(data);
-            setComments([...comments, texts]);
-        } catch {
             console.log(false);
         }
     };
@@ -67,15 +61,16 @@ const EvaluateContainerContent: React.FC = () => {
         //서버에 "불합격"을 전송하는 코드를 작성
         console.log("불합격");
     }
-    const passCount = comments.filter(comment =>comment.pass).length;
+    const passCount = evaluation ? evaluation.score : 0;
     const totalCount = comments.length;
+    const imgSrc = evaluation && evaluation.isEvaluated ? FinishEval: CurrentEval;
     return(
         <>        
         <VolunteerContainer>
             <VolunteerContainer1>
                 <NameContainer>
                     <Name>김사자</Name>
-                    <img src={CurrentEval} alt="Current Evaluation" />                    
+                    <img src={imgSrc} alt="Current Evaluation" />                    
                 </NameContainer>
                 <Evaluate>
                     <EvaluateNumContainer1>
