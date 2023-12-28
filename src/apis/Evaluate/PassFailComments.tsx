@@ -21,19 +21,18 @@ export const postEvaluation = async (applicant_id: string,
     }
 }
 export const patchEvaluation = async (evaluationId: string, 
-  passSelected:boolean, texts: string, memberId: string) => {
+  passSelected:boolean, texts: string, accessToken: string) => {
     const requestBody = {
       pass: passSelected,
       comment: texts,
     };
-    const config = {
-      headers:{
-        memberId: memberId,
-      }
-    };
     try{
         const response = await axios.post(`${baseUrl}/api/v1/evaluations/${evaluationId}`, 
-        requestBody, config);
+        requestBody, {
+          headers: {
+            "Authorization" : `Bearer ${accessToken}`
+          },
+        });
         return response.data;
     }catch(error){
       console.error(error);

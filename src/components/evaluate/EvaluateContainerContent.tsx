@@ -32,8 +32,7 @@ const EvaluateContainerContent: React.FC = () => {
     const handleTextClick = ()=>{        
     };
     const handleButtonClick = async () => {
-        const evaluationId = "your-evaluation-id";
-        const memberId = "your-member-id";        
+        const evaluationId = "your-evaluation-id";      
         try{
             let data;
             if (comments.length === 0){
@@ -41,7 +40,7 @@ const EvaluateContainerContent: React.FC = () => {
                     passSelected, texts, accessToken);                
             } else {
                 data = await patchEvaluation(evaluationId, 
-                    passSelected, texts, memberId);
+                    passSelected, texts, accessToken);
             }
             console.log(data);
             setComments([...comments, texts]);           
