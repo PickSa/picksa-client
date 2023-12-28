@@ -6,6 +6,8 @@ import Timetable from "./pages/Timetable";
 import DocQuest from "./pages/DocQuest";
 import LionDetail from "./pages/LionDetail";
 import LionListHome from "./pages/LionListHome";
+import EvaluateHome from "./pages/EvaluateHome";
+import EvaluateDefault from "./pages/EvaluateDefault";
 
 const router = createBrowserRouter([
     {
@@ -32,7 +34,17 @@ const router = createBrowserRouter([
     },
     {
         path: "/evaluate",
-        element: <Evaluate />,
+        element: <EvaluateHome />,
+        children: [
+            {
+                path: '',
+                element: <EvaluateDefault />
+            },
+			{
+				path: ':id',
+				element: <Evaluate />,
+			},
+		],
     },
     {
         path: "/timetable",

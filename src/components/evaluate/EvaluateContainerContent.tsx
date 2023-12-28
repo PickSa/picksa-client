@@ -10,14 +10,15 @@ import { accessTokenAtom } from '../../atom';
 interface ButtonProps {
     selected: boolean;
 }
-const EvaluateContainerContent: React.FC = () => {
+const EvaluateContainerContent: React.FC<{params: any}> = ({params}) => {
     const accessToken = useRecoilValue(accessTokenAtom);
     const [passSelected, setPassSelected] = useState(false);
     const [failSelected, setFailSelected] = useState(false);
     const [comments, setComments] = useState<string[]>([]);
     const [texts, setTexts] = useState<string>("");
     const [evaluation, setEvaluation] = useState<any>(null);
-    const applicant_id = "1"; //실제 applicant_id로 변경
+    const applicant_id = params; //실제 applicant_id로 변경
+    console.log("params:", params);
     useEffect(()=>{
         const fetchComments = async()=>{
             const data  = await getEvalOthers(applicant_id);

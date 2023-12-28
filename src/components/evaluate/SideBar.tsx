@@ -4,6 +4,8 @@ import CloseButton from '../../assets/evaluate/CloseButton.png'
 import {getAllList} from "../../apis/Evaluate/SideBarApi"
 import { useRecoilValue } from 'recoil';
 import { accessTokenAtom } from '../../atom';
+import { useNavigate } from 'react-router-dom';
+import { check } from 'prettier';
 function SideBar({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any }) {
   const outside = useRef<any>(); 
   const accessToken = useRecoilValue(accessTokenAtom);
@@ -11,12 +13,8 @@ function SideBar({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any }) {
   const [designApplicants, setDesignApplicants] = useState<any[]>([]);
   const [frontendApplicants, setFrontendApplicants] = useState<any[]>([]);
   const [backendApplicants, setBackendApplicants] = useState<any[]>([]);
-  const [checked, setChecked] = useState({
-    planning: false,
-    design: false,
-    frontend: false,
-    backend: false,
-  })
+  const navigate = useNavigate();
+  const [checked, setChecked] = useState("")
   useEffect(() => {
     document.addEventListener('mousedown', handlerOutsie);
     return () => {
@@ -52,8 +50,12 @@ function SideBar({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any }) {
   const toggleSide = () => {
     setIsOpen(false);
   };  
-  const handleChange = (part) => (event) => {
-    setChecked({ ...checked, [part]: event.target.checked });
+  const handleChange = (applicantId: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    setChecked("");
+    if (event.target.checked){
+      setChecked(applicantId)
+      navigate(`/evaluate/${applicantId}`)
+    }
   };
   return (
     <SideBarWrap id="sidebar" ref={outside} className={isOpen ? 'open' : ''}>
@@ -68,31 +70,37 @@ function SideBar({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any }) {
       </ApplicantList>
       <ApplicantByPart>
         <Part>기획
+          <ScrollBox>{planningApplicants.map((applicant, idx)=>(
+              <div key={idx} onClick={() => navigate(`/evaluate/${applicant.id}`)}>{applicant.name}</div>
+            ))}</ScrollBox>
           {planningApplicants.map((applicant)=>(
             <NameTag key = {applicant.id}>{applicant.name}
-            <input type="checkbox" 
-            checked={checked.planning} onChange={handleChange('planning')} />
+            <input type="checkbox" checked={checked === applicant.id}
+            onChange={handleChange(applicant.id)} />
           </NameTag>
           ))}    
         </Part>
         <Part>디자인
           {designApplicants.map((applicant)=>(
             <NameTag key={applicant.id}>{applicant.name}
-            <input type="checkbox" checked={checked.design} onChange={handleChange('design')} />
+            <input type="checkbox" checked={checked === applicant.id}
+            onChange={handleChange(applicant.id)} />
             </NameTag>
           ))}          
         </Part>
         <Part>프론트엔드
           {frontendApplicants.map((applicant)=>(
             <NameTag key={applicant.id}>{applicant.name}
-            <input type="checkbox" checked={checked.frontend} onChange={handleChange('frontend')} />
+            <input type="checkbox" checked={checked === applicant.id}
+            onChange={handleChange(applicant.id)} />
             </NameTag>
           ))}          
         </Part>
         <Part>백엔드
           {backendApplicants.map((applicant)=>(
             <NameTag key={applicant.id}>{applicant.name}
-            <input type="checkbox" checked={checked.backend} onChange={handleChange('backend')} />
+            <input type="checkbox" checked={checked === applicant.id}
+            onChange={handleChange(applicant.id)} />
             </NameTag>
           ))}
           
@@ -102,6 +110,21 @@ function SideBar({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any }) {
   );
 } 
 export default SideBar;
+const ScrollBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  font-size: 1.6rem;
+  overflow-y: scroll;
+  height: 10rem;
+  /* border: 1px solid blue; */
+  margin-left: 0.5rem;
+  gap: 0.5rem;
+  & > div{
+    &:hover{
+      cursor: pointer;
+    }
+  }
+`
 const SideBarWrap = styled.div`
 display: flex;
 flex-direction: column;
