@@ -1,26 +1,58 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { questionType } from '../../dummy/QuestTestDatas'
+import { GetQuestType } from '../../dummy/datatypes';
+import { FaTrash } from "react-icons/fa6";
 
-const MakeQuestList = (props:questionType) => {
-    const [isChecked, setIsChecked] = useState(props.is_confirm);
-    const onChangeInput = () => {
-        if(isChecked){
-            setIsChecked(() => false);
-        } else {
-            setIsChecked(() => true);
-        }
+const MakeQuestList = (props:{
+    index:number,
+    lists: GetQuestType,
+    changedDetermineList:GetQuestType[],
+    setDeletedId:React.Dispatch<React.SetStateAction<number|undefined>>,
+    setDelModalIsOpen:React.Dispatch<React.SetStateAction<boolean>>,
+    setChangedDetermineList:React.Dispatch<React.SetStateAction<GetQuestType[]>>,
+}) => {
+    const [isChecked, setIsChecked] = useState(props.lists.isDetermined);
+
+    useEffect(() => {
+        // console.log(props.index);
+        handleDeterminedChanged();
+        console.log(props.changedDetermineList);
+    }, [isChecked]);
+
+    const handleDeterminedChanged = () => {
+        const list = props.changedDetermineList;
+        list.splice(props.index, 1);
+        list.splice(props.index, 0, {
+            id:props.lists.id,
+            sequence: props.lists.sequence,
+            isDetermined: isChecked,
+            createdAt: props.lists.createdAt,
+            content: props.lists.content,
+            tagId: props.lists.tagId,
+            tagContent: props.lists.tagContent,
+            writerId: props.lists.writerId,
+            writerName: props.lists.writerName,
+        });
+        props.setChangedDetermineList(() => list);
     }
+
+    const onChangeInput = () => {
+        setIsChecked(() => !isChecked);
+    };
+    const onClickDelete = () => {
+        props.setDeletedId(props.lists.id);
+        props.setDelModalIsOpen(true);
+    };
   return (
     <ContentRow>
         <div className="is_confirm">
             <input type='checkbox' checked={isChecked} onChange={onChangeInput} />
         </div>
-        <div className="tag">{props.tag}</div>
-        <div className="content">{props.content}</div>
-        <div className="writer">{props.writer}</div>
-        <div className="date">{props.date}</div>
-        <div className="delete">{`삭제`}</div>
+        <div className="tag">{props.lists.tagContent}</div>
+        <div className="content">{props.lists.content}</div>
+        <div className="writer">{props.lists.writerName}</div>
+        <div className="date">{(String(props.lists.createdAt)).split('T')[0]}</div>
+        <div className="delete" onClick={() => onClickDelete()}><FaTrash /></div>
     </ContentRow>
   )
 }
@@ -65,5 +97,8 @@ const ContentRow = styled.div`
         display: flex;
         justify-content: center;
         width: 3rem;
+        &:hover{
+            cursor: pointer;
+        }
     }
 `
