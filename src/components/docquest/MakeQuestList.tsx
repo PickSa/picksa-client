@@ -4,46 +4,48 @@ import { GetQuestType } from '../../dummy/datatypes';
 import { FaTrash } from "react-icons/fa6";
 
 const MakeQuestList = (props:{
-    index:number,
     lists: GetQuestType,
-    changedDetermineList:GetQuestType[],
+    changedDetermineData:{id:number, isDetermined:boolean}[],
     setDeletedId:React.Dispatch<React.SetStateAction<number|undefined>>,
     setDelModalIsOpen:React.Dispatch<React.SetStateAction<boolean>>,
-    setChangedDetermineList:React.Dispatch<React.SetStateAction<GetQuestType[]>>,
+    setChangedDetermineData:React.Dispatch<React.SetStateAction<{id:number, isDetermined:boolean}[]>>,
 }) => {
-    const [isChecked, setIsChecked] = useState(props.lists.isDetermined);
+    const [isChecked, setIsChecked] = useState<boolean|undefined>(undefined);
 
     useEffect(() => {
-        // console.log(props.index);
-        handleDeterminedChanged();
-        console.log(props.changedDetermineList);
-    }, [isChecked]);
+        console.log(props.lists);
+        console.log(isChecked);
+        setIsChecked(() => props.lists.isDetermined);
+    }, []);
 
-    const handleDeterminedChanged = () => {
-        const list = props.changedDetermineList;
-        list.splice(props.index, 1);
-        list.splice(props.index, 0, {
-            id:props.lists.id,
-            sequence: props.lists.sequence,
-            isDetermined: isChecked,
-            createdAt: props.lists.createdAt,
-            content: props.lists.content,
-            tagId: props.lists.tagId,
-            tagContent: props.lists.tagContent,
-            writerId: props.lists.writerId,
-            writerName: props.lists.writerName,
-        });
-        props.setChangedDetermineList(() => list);
-    }
+    const findSameId = (element:{id:number, isDetermined:boolean}) => {
+        if(element.id === props.lists.id) return true
+    };
+
+    const handleDeterminedChanged = (state:boolean) => {
+        if(props.changedDetermineData.length === 0){
+            props.setChangedDetermineData((bfData) => bfData.concat({id:props.lists.id, isDetermined:state}));
+        } else {
+            const ridIndex = props.changedDetermineData.findIndex(findSameId);
+            if(ridIndex === -1) {
+                props.setChangedDetermineData((bfData) => bfData.concat({id:props.lists.id, isDetermined:state}));
+            } else {
+                const newList = props.changedDetermineData
+                newList.splice(ridIndex, 1);
+                props.setChangedDetermineData(() => newList);
+            }
+        }
+    };
 
     const onChangeInput = () => {
+        handleDeterminedChanged(!isChecked);
         setIsChecked(() => !isChecked);
     };
     const onClickDelete = () => {
         props.setDeletedId(props.lists.id);
         props.setDelModalIsOpen(true);
     };
-  return (
+  return (isChecked!==undefined && 
     <ContentRow>
         <div className="is_confirm">
             <input type='checkbox' checked={isChecked} onChange={onChangeInput} />

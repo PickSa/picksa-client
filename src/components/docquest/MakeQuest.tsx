@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Select from "react-select";
 import MakeQuestList from "./MakeQuestList";
-import { getAllQuests } from "../../apis/docquest";
+import { getAllQuests, patchfinalQuest } from "../../apis/docquest";
 import { useRecoilValue } from "recoil";
 import { accessTokenAtom } from "../../atom";
 import { GetQuestType } from "../../dummy/datatypes";
@@ -22,43 +22,62 @@ const MakeQuest = (props:{
     const [selectedSortTag, setSelectedSortTag] = useState<{value:string, label:string}>(sortTag[0]);
     const [questionData, setQuestionData] = useState<GetQuestType[]>();
     const [newInputData, setNewInputData] = useState(false);
-    const [changedDetermineList, setChangedDetermineList] = useState<GetQuestType[]>([]);
+    // const [changedDetermineList, setChangedDetermineList] = useState<GetQuestType[]>([]);
+    const [changedIsDetermined, setChangedIsDetermined] = useState(false);
+
+    const [changedDetermineData, setChangedDetermineData] = useState<{id:number, isDetermined:boolean}[]>([]);
 
     const accessToken = useRecoilValue(accessTokenAtom);
 
     // 기본값으로(공통질문, 최신순) 질문 리스트 불러오기
     useEffect(() => {
-        requestGetAllQuest("ALL", "LASTEST");
-    }, [props.delModalIsOpen === false]);
+        requestGetAllQuestApi("ALL", "LASTEST");
+    }, []);
 
     // 필터 적용 값으로 불러오기
     useEffect(() => {
-        requestGetAllQuest(activeFilter, selectedSortTag?.value);
+        requestGetAllQuestApi(activeFilter, selectedSortTag?.value);
         if(newInputData === true){
             setNewInputData(false);
         }
-    }, [selectedSortTag, activeFilter, newInputData === true]);
+    }, [selectedSortTag, activeFilter, newInputData === true, changedIsDetermined === true, props.delModalIsOpen === false]);
 
-    // useEffect(() => {
-    //     requestGetAllQuest(activeFilter, selectedSortTag?.value);
-    //     setNewInputData(false);
-    // }, [newInputData === true]);
+    useEffect(() => {
+        if(changedIsDetermined === true){
+            setChangedIsDetermined(false);
+            window.location.reload();
+        }
+    }, [changedIsDetermined === true]);
 
-    const requestGetAllQuest = async(part:string, order:string) => {
+    const requestGetAllQuestApi = async(part:string, order:string) => {
         const result = await getAllQuests(part, order, accessToken);
         if(result === false) {
             console.log('질문 목록 불러오기 오류 발생');
         } else {
             console.log(result);
             setQuestionData(() => result);
-            setChangedDetermineList(() => result);
+            // setChangedDetermineList(() => result);
+        }
+    }
+
+    const requestDeterminQuestApi = async(data:{id:number, isDetermined:boolean}[]) => {
+        const result = await patchfinalQuest(data, accessToken);
+        if(result === false) {
+            console.log("error");
+        } else {
+            setChangedIsDetermined(() => true);
         }
     }
 
     const handleFilterClick = (part:string) => {
         //해당 부분 useEffect 충분한 테스트 필요
+        setQuestionData(() => undefined);
         setSelectedSortTag(() => sortTag[0]);
         setActiveFilter(part);
+    }
+
+    const handleDeterminedBtn = () => {
+        requestDeterminQuestApi(changedDetermineData);
     }
 
   return (
@@ -97,13 +116,15 @@ const MakeQuest = (props:{
                 </FilterSelection>
             </FilterWrapper>
         </SetFlexStart>
-        <MakeQuestInput setNewInputData={setNewInputData} />
+        <MakeQuestInput 
+            activeFilter={activeFilter}
+            setNewInputData={setNewInputData} />
         <ContentWrapper>
             <ContentUtilBar>
                 <SelectWrapper>
                     <Select className="select-box" options={(sortTag)} value={selectedSortTag} onChange={(opt)=>{opt && setSelectedSortTag(opt)}} />
                 </SelectWrapper>
-                <div className="btn">확정 여부 등록</div>
+                <div className="btn" onClick={() => handleDeterminedBtn()}>확정 여부 등록</div>
             </ContentUtilBar>
             <ContentInfoBar>
                 <div className="is_confirm">확정 여부</div>
@@ -116,14 +137,13 @@ const MakeQuest = (props:{
             <ContentBox>{
                 questionData && questionData.map((row, idx)=>{
                     return (
-                    <MakeQuestList 
-                        key={idx}
-                        index={idx}
+                    <MakeQuestList
+                        key={`${activeFilter}-${idx}`}
                         lists={row}
-                        changedDetermineList={changedDetermineList}
+                        changedDetermineData={changedDetermineData}
                         setDeletedId={props.setDeletedId}
                         setDelModalIsOpen={props.setDelModalIsOpen}
-                        setChangedDetermineList={setChangedDetermineList}
+                        setChangedDetermineData={setChangedDetermineData}
                          />)
                 })
             }</ContentBox>
@@ -167,7 +187,7 @@ const SetFlexStart = styled.div`
 const FilterWrapper = styled.div`
   display: flex;
   width : fit-content;
-  margin: 2rem 1rem 0.5rem 1rem;
+  margin: 2rem 0rem 0.5rem 0rem;
   padding-right: 1rem;
   padding-left: 1rem;
   gap: 1rem;

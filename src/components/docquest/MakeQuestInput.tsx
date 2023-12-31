@@ -1,25 +1,44 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import Select from "react-select";
-import { makeQuests } from '../../apis/docquest';
+import { getPartsTags, makeQuests } from '../../apis/docquest';
 import { useRecoilValue } from 'recoil';
 import { accessTokenAtom } from '../../atom';
-
-const tagList = [
-    {value: 1, label: "소통"},
-    {value: 2, label: "열정"},
-    {value: 3, label: "성장"},
-];
+import { DocQuestTagType } from '../../dummy/datatypes';
 
 const MakeQuestInput = (props:{
+    activeFilter: string,
     setNewInputData: React.Dispatch<React.SetStateAction<boolean>>,
 }) => {
     const [inputData, setInputData] = useState('');
-    const [selectedSortTag, setSelectedSortTag] = useState<{value: number, label: string}>();
+    const [tagList, setTagList] = useState<DocQuestTagType[]>();
+    const [selectedSortTag, setSelectedSortTag] = useState<DocQuestTagType>();
     const accessToken = useRecoilValue(accessTokenAtom);
+
+    const getTagsApi = async() => {
+        const result = await getPartsTags(props.activeFilter, accessToken);
+        if(result === false){
+            console.log("error");
+        } else {
+            console.log(`현재 파트 ${props.activeFilter}`);
+            console.log(result);
+            const toTags:DocQuestTagType[] = [];
+            for(let i=0;i<result.length;i++){
+                toTags.push({label: result[i].content, value: result[i].id});
+            }
+            setTagList(() => toTags);
+        }
+    }
+
+    //필터 바뀔 때마다 tag 받아오기
+    useEffect(() => {
+        getTagsApi();
+    }, [props.activeFilter]);
+
     const onChangeInput = (e:React.ChangeEvent<HTMLInputElement>) => {
         setInputData(e.target.value);
     }
+
     const questPostApi = async(tagId:number, content:string) => {
         const result = await makeQuests(tagId, content, accessToken);
         if(result === false){
@@ -30,12 +49,14 @@ const MakeQuestInput = (props:{
             props.setNewInputData(true);
         }
     }
+
     const handleInputClick = () => {
         if(selectedSortTag?.value){
             questPostApi(selectedSortTag.value, inputData);
         }
     }
-  return (
+
+  return (tagList!=undefined &&
     <InputWrapper>
         <SetFlexStart>
             <SelectWrapper>

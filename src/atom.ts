@@ -19,7 +19,7 @@ export const UserInfoAtom = atom({
 export const accessTokenAtom = atom<string>({
     key: "access_token",
     // default: "",
-    default: "eyJhbGciOiJIUzUxMiJ9.eyJpZCI6IjIiLCJwb3NpdGlvbiI6IlBSRVNJREVOVCIsInBhcnQiOiJGUk9OVEVORCIsImlhdCI6MTcwMzg1OTY1OCwiZXhwIjoxNzAzOTQ2MDU4fQ.7RoVxOQ_bCY4WiYoj9uFrjDCBf0P-m8-fIVZGom7PYTZ94BW9M29QEm4D62vbEKesFhdAjoLuQxqZFVkp9XtpQ",
+    default: "eyJhbGciOiJIUzUxMiJ9.eyJpZCI6IjIiLCJwb3NpdGlvbiI6IlBSRVNJREVOVCIsInBhcnQiOiJGUk9OVEVORCIsImlhdCI6MTcwNDAxOTA5MywiZXhwIjoxNzA0MTA1NDkzfQ.JfzxRpYZNJ6BcHFU9gbb-gY8TmsWX8bMo2PBe7qMQLrWowCJONl8OYDPkSMfJGULRc38-k6uTGwaAHLvktvvqw",
     effects_UNSTABLE: [persistAtom],
 })
 

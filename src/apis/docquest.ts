@@ -48,3 +48,36 @@ export const makeQuests = async(tagId:number, content:string, token:string) => {
         return false;
     }
 }
+
+export const patchfinalQuest = async(data:{id:number, isDetermined:boolean}[], token:string) => {
+    try{
+        const response = await axios.patch(`${baseUrl}/api/v1/questions/final`, data, {
+            headers: { Authorization: `Bearer ${token}` }
+        });
+        return response.data;
+    } catch {
+        return false;
+    }
+}
+
+export const getQuestForSort = async(part:string, token:string) => {
+    try{
+        const response = await axios.get(`${baseUrl}/api/v1/questions/final?part=${part}`, {
+            headers: { Authorization: `Bearer ${token}` }
+        });
+        return response.data;
+    } catch {
+        return false;
+    }
+}
+
+export const patchReorder = async(data:{id:number, sequence:number}[], part:string, token:string) => {
+    try{
+        const response = await axios.patch(`${baseUrl}api/v1/questions/reorder&part=${part}`, data, {
+            headers: { Authorization: `Bearer ${token}` }
+        });
+        return response.data;
+    } catch {
+        return false;
+    }
+}
