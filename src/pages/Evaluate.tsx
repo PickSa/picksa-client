@@ -9,7 +9,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 
 
 const Evaluate = () => {
-  const params = useParams();
+  const params = useParams<{id: string}>();
   const [isOpen, setIsOpen] = useState(false);
       const toggleSide = () => {
           setIsOpen(true);
@@ -32,7 +32,6 @@ const Evaluate = () => {
         {isOpen && <Overlay onClick={toggleSide} />}      
     </PageFlex>     
     </>
-
   )
 }
 export default Evaluate
