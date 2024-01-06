@@ -4,13 +4,15 @@ import NavBar from '../components/common/NavBar'
 import styled from 'styled-components'
 import MakeQuest from '../components/docquest/MakeQuest'
 import SortQuest from '../components/docquest/SortQuest'
+import DeleteModal from '../components/modals/DeleteModal'
 
 const DocQuest = () => {
-    const totalHeight = document.documentElement.scrollHeight;
-    const contentHeight = totalHeight * 0.85;
     const [currentTab, setCurrentTab] = useState('list');
     const [listActive, setListActive] = useState('active');
     const [sortActive, setSortActive] = useState('');
+
+    const [delModalIsOpen, setDelModalIsOpen] = useState(false);
+    const [deletedId, setDeletedId] = useState<number>();
 
     useEffect(() => {
       if(currentTab === 'list'){
@@ -24,19 +26,29 @@ const DocQuest = () => {
 
   return (
     <PageFlex className='docquest-background'>
+      {
+        delModalIsOpen === true && <DeleteModal deletedId={deletedId!} setDelModalIsOpen={setDelModalIsOpen} />
+      }
       <NavBar where="lionlist" />
       <ArticleFlex>
         <TabWrapper>
             <TabBtn className={listActive} onClick={() => setCurrentTab('list')}>질문 목록</TabBtn>
             <TabBtn className={sortActive} onClick={() => setCurrentTab('sort')}>질문 순서</TabBtn>
         </TabWrapper>
-        <ContentBackground height={contentHeight}>
+        <ContentBackground>
           {
-            currentTab === 'list' ? <MakeQuest /> : <SortQuest />
+            currentTab === 'list' ? 
+            <MakeQuest 
+            delModalIsOpen={delModalIsOpen}
+            setDeletedId={setDeletedId}
+            setDelModalIsOpen={setDelModalIsOpen} /> 
+            : 
+            <SortQuest />
           }
         </ContentBackground>
       </ArticleFlex>
     </PageFlex>
+    
   )
 }
 
@@ -65,8 +77,7 @@ const TabBtn = styled.div`
   }
 `
 
-const ContentBackground = styled.div<{height:number}>`
+const ContentBackground = styled.div`
     display: flex;
     background-color: #FFF;
-    height: ${props => `${props.height}px`};
 `

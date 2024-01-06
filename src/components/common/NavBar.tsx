@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { TABS } from "../../assets/tabs";
 import { useEffect, useState } from "react";
 import { SpaceBetweenFlex } from "../../styles/globalStyle";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { LoginCodeAtom, UserInfoAtom, accessTokenAtom } from "../../atom";
 import { getLoginLink, getToken, getUserName } from "../../apis/login";
 
@@ -12,7 +12,7 @@ const NavBar = ({ where }: { where: string }) => {
   const { pathname } = useLocation();
 	const [tab, setTab] = useState(TABS.HOME);
   const [userinfo, setUserinfo] = useRecoilState(UserInfoAtom);
-  const [accessToken, setAccessToken] = useRecoilState(accessTokenAtom);
+  const setAccessToken = useSetRecoilState(accessTokenAtom);
   const [code, setCode] = useRecoilState(LoginCodeAtom);
 
 	useEffect(() => {
@@ -31,7 +31,11 @@ const NavBar = ({ where }: { where: string }) => {
 
   const navigate = useNavigate();
   const onClickhandel = (page:string) => {
-    navigate(`/${page}`);
+    if(userinfo.isUser){
+      navigate(`/${page}`);
+    } else {
+      alert("로그인해주세요!");
+    }
   }
 
   const onClickLogout = async() => {
@@ -57,31 +61,32 @@ const NavBar = ({ where }: { where: string }) => {
   }
 
   const getAccessToken = async() => {
-    const result = await getToken(code!);
-    if(result === false){
-      console.log('로그인 에러 발생: access token 취득 불가');
-    } else {
-      console.log(result);
-      console.log(result.accessToken);
-      setAccessToken(result.accessToken);
-      const nameResult = await getUserName(result.accessToken);
-      if(nameResult === false){
-        console.log('유저 이름을 찾을 수 없음');
+    if(userinfo.isUser === false){
+      const result = await getToken(code!);
+      if(result === false){
+        console.log('로그인 에러 발생: access token 취득 불가');
       } else {
-        setUserinfo({
-          isUser : true,
-          user : {
-            username: nameResult.name
-            // username: "test",
-          }
-        })
+        console.log(result);
+        console.log(result.accessToken);
+        setAccessToken(result.accessToken);
+        const nameResult = await getUserName(result.accessToken);
+        if(nameResult === false){
+          console.log('유저 이름을 찾을 수 없음');
+        } else {
+          setUserinfo({
+            isUser : true,
+            user : {
+              username: nameResult.name
+              // username: "test",
+            }
+          })
+        }
       }
     }
   }
 
   useEffect(() => {
     if(code !== undefined){
-      console.log(code);
       getAccessToken();
     }
   }, [code]);
@@ -92,9 +97,7 @@ const NavBar = ({ where }: { where: string }) => {
       setCode(getCode!);
       navigate("/");
     }
-    console.log(userinfo.isUser);
-    console.log(userinfo.user.username);
-  }, []);
+  }, [where === 'landing']);
 
   if (where === 'landing') {
     return (
@@ -149,9 +152,10 @@ export default NavBar
 
 const MenuWrapper = styled.div`
   display: flex;
-  /* border: 1px solid red; */
   & > img{
-    cursor: pointer;
+    &:hover{
+      cursor: pointer;
+    }
   }
 `
 const MenuPageBox = styled.div`
@@ -163,6 +167,9 @@ const MenuPageBox = styled.div`
   padding: 1rem 0 1rem 0;
   margin : 0 2rem 0 2rem;
   font-weight: bolder;
+  &:hover{
+    cursor: pointer;
+  }
   &.logout{
     gap: 1rem;
   }

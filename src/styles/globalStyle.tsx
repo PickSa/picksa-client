@@ -12,6 +12,9 @@ export const PageFlex = styled.div`
     &.docquest-background{
         background-color: rgba(221, 221, 221, 1);
     }
+    &.liondetail-bg-active{
+        background-color: rgba(247, 248, 250, 1);
+    }
 `
 
 export const ArticleFlex = styled.div`

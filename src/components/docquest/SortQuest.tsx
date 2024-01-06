@@ -1,73 +1,102 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import {
-  questionForAllData,
-  questionForBEData,
-  questionForDesignData,
-  questionForFEData,
-  questionForPMData,
-  questionType,
-} from "../../dummy/QuestTestDatas";
 import SortQuestList from "./SortQuestList";
+import { GetQuestType } from "../../dummy/datatypes";
+import { getQuestForSort, patchReorder } from "../../apis/docquest";
+import { useRecoilValue } from "recoil";
+import { accessTokenAtom } from "../../atom";
+import SortQuestDraggableList from "./SortQuestDraggableList";
 
 const SortQuest = () => {
-  const [activeFilter, setActiveFilter] = useState("all");
-  const [questionData, setQuestionData] =
-    useState<questionType[]>(questionForAllData);
-  const handleFilterClick = (part: string) => {
-    setActiveFilter(part);
+  const [activeFilter, setActiveFilter] = useState("PM");
+  const [questionData, setQuestionData] = useState<GetQuestType[]|undefined>();
+  const [btnClicked, setBtnClicked] = useState(false);
+  const accessToken = useRecoilValue(accessTokenAtom);
 
-    //아래 필터 부분 추후 route로는 백틱 이용한 형식으로 수정. 현재는 테스트용
-    if (part === "all") {
-      setQuestionData(questionForAllData);
-    } else if (part === "pm") {
-      setQuestionData(questionForPMData);
-    } else if (part === "design") {
-      setQuestionData(questionForDesignData);
-    } else if (part === "fe") {
-      setQuestionData(questionForFEData);
-    } else {
-      setQuestionData(questionForBEData);
+  useEffect(() => {
+    getQuestsApi();
+  }, []);
+
+  useEffect(() => {
+    getQuestsApi();
+  }, [activeFilter])
+  
+  const handleFilterClick = (part: string) => {
+    if(btnClicked){
+      setBtnClicked(() => false);
     }
+    setActiveFilter(part);
   };
+
+  const handleConfirmBtnClick = () => {
+    setBtnClicked(() => false);
+    const data = [];
+    for(let i=0;i<questionData!.length; i++){
+      data.push({"id" : questionData![i].id, "sequence": i+1});
+    }
+    patchReorderApi(data);
+  }
+
+  const getQuestsApi = async() => {
+    const result = await getQuestForSort(activeFilter, accessToken);
+    if(result === false){
+      console.log("error");
+    } else {
+      setQuestionData(result);
+    }
+  }
+
+  const patchReorderApi = async(data:{id:number, sequence:number}[]) => {
+    const result = await patchReorder(data, activeFilter, accessToken);
+    if(result === false){
+      console.log("error occur");
+    }
+  }
 
   return (
     <Wrapper>
       <SetFlexStart>
         <FilterWrapper>
           <FilterSelection
-            className={activeFilter === "all" ? "active" : ""}
-            onClick={() => handleFilterClick("all")}
-          >
-            ALL
-          </FilterSelection>
-          <FilterSelection
-            className={activeFilter === "pm" ? "active" : ""}
-            onClick={() => handleFilterClick("pm")}
+            className={activeFilter === "PM" ? "active" : ""}
+            onClick={() => handleFilterClick("PM")}
           >
             기획
           </FilterSelection>
           <FilterSelection
-            className={activeFilter === "design" ? "active" : ""}
-            onClick={() => handleFilterClick("design")}
+            className={activeFilter === "DESIGN" ? "active" : ""}
+            onClick={() => handleFilterClick("DESIGN")}
           >
             디자인
           </FilterSelection>
           <FilterSelection
-            className={activeFilter === "fe" ? "active" : ""}
-            onClick={() => handleFilterClick("fe")}
+            className={activeFilter === "FRONTEND" ? "active" : ""}
+            onClick={() => handleFilterClick("FRONTEND")}
           >
             프론트엔드
           </FilterSelection>
           <FilterSelection
-            className={activeFilter === "be" ? "active" : ""}
-            onClick={() => handleFilterClick("be")}
+            className={activeFilter === "BACKEND" ? "active" : ""}
+            onClick={() => handleFilterClick("BACKEND")}
           >
             백엔드
           </FilterSelection>
         </FilterWrapper>
+        {
+          btnClicked === true ? 
+          <EditBtn onClick={() => handleConfirmBtnClick()}>확정</EditBtn>
+          :
+          <EditBtn onClick={() => setBtnClicked(() => true)}>수정</EditBtn>
+        }
         <ContentBox>
-          <SortQuestList questionData={questionData} setQuestionData={setQuestionData} />
+        {(btnClicked === true) ? 
+          questionData && 
+          <SortQuestDraggableList 
+          questionData={questionData}
+          setQuestionData={setQuestionData} />
+          :
+          questionData && <SortQuestList questionData={questionData} setQuestionData={setQuestionData} />
+        }
         </ContentBox>
       </SetFlexStart>
     </Wrapper>
@@ -111,7 +140,7 @@ const SetFlexStart = styled.div`
 const FilterWrapper = styled.div`
   display: flex;
   width: fit-content;
-  margin: 0.5rem 1rem 0.5rem 1rem;
+  margin: 2rem 0rem 0.5rem 0rem;
   padding-right: 1rem;
   padding-left: 1rem;
   gap: 1rem;
@@ -131,6 +160,18 @@ const FilterSelection = styled.div`
     background-color: blue;
   }
 `;
+
+const EditBtn = styled.div`
+  display: flex;
+  font-size: 1.2rem;
+  font-weight: 500;
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  background-color: rgba(234, 241, 249, 1);
+  border-radius: 30px;
+  &:hover{
+    cursor: pointer;
+  }
+`
 
 const ContentBox = styled.div`
     display: flex;
