@@ -1,24 +1,53 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import CurrentEval from '../../assets/evaluate/CurrentEval.png'
+import FinishEval from '../../assets/evaluate/FinishEval.png'
 import styled from 'styled-components'
-import Comment from '../../assets/evaluate/Comment'
+import Comment from './Comment'
 import PassFailFilter from "./PassFailFilter";
+import {postEvaluation, getEvalOthers, getPassFail, patchEvaluation} from "../../apis/Evaluate/PassFailComments";
+import { useRecoilValue } from 'recoil';
+import { accessTokenAtom } from '../../atom';
 interface ButtonProps {
     selected: boolean;
 }
 const EvaluateContainerContent: React.FC = () => {
+    const accessToken = useRecoilValue(accessTokenAtom);
     const [passSelected, setPassSelected] = useState(false);
     const [failSelected, setFailSelected] = useState(false);
     const [comments, setComments] = useState<string[]>([]);
-    const [texts, setTexts] = useState<string>("텍스트를 입력하세요.");
-    const handleTextClick = ()=>{
-        setTexts("");
+    const [texts, setTexts] = useState<string>("");
+    const [evaluation, setEvaluation] = useState<any>(null);
+    const applicant_id = "1"; //실제 applicant_id로 변경
+    useEffect(()=>{
+        const fetchComments = async()=>{
+            const data  = await getEvalOthers(applicant_id);
+            if (data!== undefined) {
+                setComments(data); 
+            }
+            const evaluationData = await getPassFail(applicant_id);
+            setEvaluation(evaluationData);            
+        };
+        fetchComments();
+    }, []);
+    const handleTextClick = ()=>{        
     };
     const handleButtonClick = async () => {
-        //서버에 전송할 코드
-        console.log(texts);
-        setComments([...comments, texts]);
-        setTexts("");
+        const evaluationId = "your-evaluation-id";
+        const memberId = "your-member-id";        
+        try{
+            let data;
+            if (comments.length === 0){
+                data = await postEvaluation(applicant_id, 
+                    passSelected, texts, accessToken);                
+            } else {
+                data = await patchEvaluation(evaluationId, 
+                    passSelected, texts, memberId);
+            }
+            console.log(data);
+            setComments([...comments, texts]);           
+        }catch{
+            console.log(false);
+        }
     };
     const handlePassClick = async () =>{
         setPassSelected(true);
@@ -32,18 +61,21 @@ const EvaluateContainerContent: React.FC = () => {
         //서버에 "불합격"을 전송하는 코드를 작성
         console.log("불합격");
     }
+    const passCount = evaluation ? evaluation.score : 0;
+    const totalCount = comments.length;
+    const imgSrc = evaluation && evaluation.isEvaluated ? FinishEval: CurrentEval;
     return(
         <>        
         <VolunteerContainer>
             <VolunteerContainer1>
                 <NameContainer>
                     <Name>김사자</Name>
-                    <img src={CurrentEval} alt="Current Evaluation" />                    
+                    <img src={imgSrc} alt="Current Evaluation" />                    
                 </NameContainer>
                 <Evaluate>
                     <EvaluateNumContainer1>
                         <Text1>전체평가</Text1>
-                        <Text2>9/10</Text2>
+                        <Text2>{`${passCount}/${totalCount}`}</Text2>
                     </EvaluateNumContainer1>
                     <EvaluateNumContainer1>
                         <Text1>최종평가</Text1>
@@ -70,8 +102,8 @@ const EvaluateContainerContent: React.FC = () => {
                 </VolunteerContainer3>
                 <VolunteerContainer4>
                     <Name>개인 코멘트</Name>
-                    {comments.map((comment, index)=>(
-                        <Comment key={index} content = {comment}></Comment>
+                    {comments && comments.length > 0 && comments.map((comment, index)=>(
+                        <Comment key={index} content = {comment.comment} name={comment.name}></Comment>
                     ))}
                 </VolunteerContainer4>       
             </VolunteerContainer1>

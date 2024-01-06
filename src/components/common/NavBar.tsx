@@ -34,6 +34,16 @@ const NavBar = ({ where }: { where: string }) => {
     navigate(`/${page}`);
   }
 
+  const onClickLogout = async() => {
+    setAccessToken("");
+    setUserinfo({
+      isUser: false,
+      user: {
+        username: "",
+      }
+    })
+  }
+
   const onClickLogin = async() => {
     const result = await getLoginLink();
     if(result === false) {
@@ -54,18 +64,18 @@ const NavBar = ({ where }: { where: string }) => {
       console.log(result);
       console.log(result.accessToken);
       setAccessToken(result.accessToken);
-    //   const nameResult = await getUserName(result.accessToken);
-    //   if(nameResult === false){
-    //     console.log('유저 이름을 찾을 수 없음');
-    //   } else {
+      const nameResult = await getUserName(result.accessToken);
+      if(nameResult === false){
+        console.log('유저 이름을 찾을 수 없음');
+      } else {
         setUserinfo({
           isUser : true,
           user : {
-            // username: nameResult.name
-            username: "test",
+            username: nameResult.name
+            // username: "test",
           }
         })
-    //   }
+      }
     }
   }
 
@@ -101,7 +111,7 @@ const NavBar = ({ where }: { where: string }) => {
             userinfo.isUser ? 
             <>
             <MenuPageBox className="user">{`${userinfo.user.username} 님`}</MenuPageBox>
-            <MenuPageBox className="logout"><MdOutlineLogout />Log out</MenuPageBox>
+            <MenuPageBox className="logout" onClick={onClickLogout}><MdOutlineLogout />Log out</MenuPageBox>
             </>
             :
             <MenuPageBox className="logout" onClick={onClickLogin}><MdOutlineLogout />Log in</MenuPageBox>
@@ -124,7 +134,7 @@ const NavBar = ({ where }: { where: string }) => {
             userinfo.isUser ? 
             <>
             <MenuPageBox className="user">{`${userinfo.user.username} 님`}</MenuPageBox>
-            <MenuPageBox className="logout"><MdOutlineLogout />Log out</MenuPageBox>
+            <MenuPageBox className="logout" onClick={onClickLogout}><MdOutlineLogout />Log out</MenuPageBox>
             </>
             :
             <MenuPageBox className="logout"><MdOutlineLogout />Log in</MenuPageBox>
