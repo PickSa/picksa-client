@@ -31,7 +31,11 @@ const NavBar = ({ where }: { where: string }) => {
 
   const navigate = useNavigate();
   const onClickhandel = (page:string) => {
-    navigate(`/${page}`);
+    if(userinfo.isUser){
+      navigate(`/${page}`);
+    } else {
+      alert("로그인해주세요!");
+    }
   }
 
   const onClickLogout = async() => {
