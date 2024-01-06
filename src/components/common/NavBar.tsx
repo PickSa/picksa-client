@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { TABS } from "../../assets/tabs";
 import { useEffect, useState } from "react";
 import { SpaceBetweenFlex } from "../../styles/globalStyle";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { LoginCodeAtom, UserInfoAtom, accessTokenAtom } from "../../atom";
 import { getLoginLink, getToken, getUserName } from "../../apis/login";
 
@@ -12,7 +12,7 @@ const NavBar = ({ where }: { where: string }) => {
   const { pathname } = useLocation();
 	const [tab, setTab] = useState(TABS.HOME);
   const [userinfo, setUserinfo] = useRecoilState(UserInfoAtom);
-  const [accessToken, setAccessToken] = useRecoilState(accessTokenAtom);
+  const setAccessToken = useSetRecoilState(accessTokenAtom);
   const [code, setCode] = useRecoilState(LoginCodeAtom);
 
 	useEffect(() => {
