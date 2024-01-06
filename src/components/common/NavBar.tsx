@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { TABS } from "../../assets/tabs";
 import { useEffect, useState } from "react";
 import { SpaceBetweenFlex } from "../../styles/globalStyle";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { LoginCodeAtom, UserInfoAtom, accessTokenAtom } from "../../atom";
 import { getLoginLink, getToken, getUserName } from "../../apis/login";
 
@@ -12,7 +12,7 @@ const NavBar = ({ where }: { where: string }) => {
   const { pathname } = useLocation();
 	const [tab, setTab] = useState(TABS.HOME);
   const [userinfo, setUserinfo] = useRecoilState(UserInfoAtom);
-  const [accessToken, setAccessToken] = useRecoilState(accessTokenAtom);
+  const setAccessToken = useSetRecoilState(accessTokenAtom);
   const [code, setCode] = useRecoilState(LoginCodeAtom);
 
 	useEffect(() => {
@@ -81,7 +81,6 @@ const NavBar = ({ where }: { where: string }) => {
 
   useEffect(() => {
     if(code !== undefined){
-      console.log(code);
       getAccessToken();
     }
   }, [code]);
@@ -92,8 +91,6 @@ const NavBar = ({ where }: { where: string }) => {
       setCode(getCode!);
       navigate("/");
     }
-    console.log(userinfo.isUser);
-    console.log(userinfo.user.username);
   }, []);
 
   if (where === 'landing') {
@@ -149,9 +146,10 @@ export default NavBar
 
 const MenuWrapper = styled.div`
   display: flex;
-  /* border: 1px solid red; */
   & > img{
-    cursor: pointer;
+    &:hover{
+      cursor: pointer;
+    }
   }
 `
 const MenuPageBox = styled.div`
@@ -163,6 +161,9 @@ const MenuPageBox = styled.div`
   padding: 1rem 0 1rem 0;
   margin : 0 2rem 0 2rem;
   font-weight: bolder;
+  &:hover{
+    cursor: pointer;
+  }
   &.logout{
     gap: 1rem;
   }
