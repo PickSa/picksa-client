@@ -57,24 +57,26 @@ const NavBar = ({ where }: { where: string }) => {
   }
 
   const getAccessToken = async() => {
-    const result = await getToken(code!);
-    if(result === false){
-      console.log('로그인 에러 발생: access token 취득 불가');
-    } else {
-      console.log(result);
-      console.log(result.accessToken);
-      setAccessToken(result.accessToken);
-      const nameResult = await getUserName(result.accessToken);
-      if(nameResult === false){
-        console.log('유저 이름을 찾을 수 없음');
+    if(userinfo.isUser === false){
+      const result = await getToken(code!);
+      if(result === false){
+        console.log('로그인 에러 발생: access token 취득 불가');
       } else {
-        setUserinfo({
-          isUser : true,
-          user : {
-            username: nameResult.name
-            // username: "test",
-          }
-        })
+        console.log(result);
+        console.log(result.accessToken);
+        setAccessToken(result.accessToken);
+        const nameResult = await getUserName(result.accessToken);
+        if(nameResult === false){
+          console.log('유저 이름을 찾을 수 없음');
+        } else {
+          setUserinfo({
+            isUser : true,
+            user : {
+              username: nameResult.name
+              // username: "test",
+            }
+          })
+        }
       }
     }
   }
@@ -91,7 +93,7 @@ const NavBar = ({ where }: { where: string }) => {
       setCode(getCode!);
       navigate("/");
     }
-  }, []);
+  }, [where === 'landing']);
 
   if (where === 'landing') {
     return (
