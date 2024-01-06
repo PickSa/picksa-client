@@ -59,9 +59,9 @@ const ListFilter = (props:FilterProps) => {
 
   // part 필터 선택 관련 logic
   const handlePartFilterClick = (part:string) => {
-    props.setActiveFilter(() => part);
     //파트 바뀔 때마다 기본값으로
     setSelectedSort(() => sortAllOpt[0]);
+    props.setActiveFilter(() => part);
   }
 
 

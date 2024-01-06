@@ -37,3 +37,20 @@ export type LionDetailType = {
     portfolio: string,
     answers: LionDetailAnsType[],
 }
+
+export type GetQuestType = {
+    id: number,
+    sequence: number,
+    isDetermined: boolean,
+    createdAt: string,
+    content: string,
+    tagId: number,
+    tagContent: string,
+    writerId: number,
+    writerName: string,
+}
+
+export type DocQuestTagType = {
+    label: string,
+    value: number,
+}
