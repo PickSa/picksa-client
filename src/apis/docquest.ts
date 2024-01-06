@@ -73,7 +73,7 @@ export const getQuestForSort = async(part:string, token:string) => {
 
 export const patchReorder = async(data:{id:number, sequence:number}[], part:string, token:string) => {
     try{
-        const response = await axios.patch(`${baseUrl}api/v1/questions/reorder&part=${part}`, data, {
+        const response = await axios.patch(`${baseUrl}/api/v1/questions/reorder&part=${part}`, data, {
             headers: { Authorization: `Bearer ${token}` }
         });
         return response.data;

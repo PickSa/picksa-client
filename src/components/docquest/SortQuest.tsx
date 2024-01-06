@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import SortQuestList from "./SortQuestList";
 import { GetQuestType } from "../../dummy/datatypes";
-import { getQuestForSort } from "../../apis/docquest";
+import { getQuestForSort, patchReorder } from "../../apis/docquest";
 import { useRecoilValue } from "recoil";
 import { accessTokenAtom } from "../../atom";
 import SortQuestDraggableList from "./SortQuestDraggableList";
@@ -22,8 +22,20 @@ const SortQuest = () => {
   }, [activeFilter])
   
   const handleFilterClick = (part: string) => {
+    if(btnClicked){
+      setBtnClicked(() => false);
+    }
     setActiveFilter(part);
   };
+
+  const handleConfirmBtnClick = () => {
+    setBtnClicked(() => false);
+    const data = [];
+    for(let i=0;i<questionData!.length; i++){
+      data.push({"id" : questionData![i].id, "sequence": i+1});
+    }
+    patchReorderApi(data);
+  }
 
   const getQuestsApi = async() => {
     const result = await getQuestForSort(activeFilter, accessToken);
@@ -31,6 +43,16 @@ const SortQuest = () => {
       console.log("error");
     } else {
       setQuestionData(result);
+      console.log(result);
+    }
+  }
+
+  const patchReorderApi = async(data:{id:number, sequence:number}[]) => {
+    const result = await patchReorder(data, activeFilter, accessToken);
+    if(result === false){
+      console.log("error occur");
+    }
+    else {
       console.log(result);
     }
   }
@@ -66,7 +88,7 @@ const SortQuest = () => {
         </FilterWrapper>
         {
           btnClicked === true ? 
-          <EditBtn onClick={() => setBtnClicked(() => false)}>확정</EditBtn>
+          <EditBtn onClick={() => handleConfirmBtnClick()}>확정</EditBtn>
           :
           <EditBtn onClick={() => setBtnClicked(() => true)}>수정</EditBtn>
         }
