@@ -13,22 +13,16 @@ const SortQuestDraggableList = (props:{
     const dragStart = (e:React.DragEvent<HTMLDivElement>, position:number) => {
         dragItem.current = position;
         const eventTarget = e.target as HTMLElement;
-        // console.log(e.target.innerHTML);
-        console.log(eventTarget.innerHTML);
     }
     const dragEnter = (e:React.DragEvent<HTMLDivElement>, position:number) => {
         dragOverItem.current = position;
         const eventTarget = e.target as HTMLElement;
-        // console.log(e.target.innerHTML);
-        console.log(eventTarget.innerHTML);
     }
     const drop = () => {
-        console.log(`drag대상1(dragItem): ${dragItem.current}, drag대상2(dragOverItem): ${dragOverItem.current}`);
         const newList = [...props.questionData];
         const dragItemValue = newList[dragItem.current!];
         newList.splice(dragItem.current!, 1);
         newList.splice(dragOverItem.current!, 0, dragItemValue);
-        console.log(newList);
         props.setQuestionData(newList);
         dragItem.current = undefined;
         dragOverItem.current = undefined;

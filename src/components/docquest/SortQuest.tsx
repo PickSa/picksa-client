@@ -43,7 +43,6 @@ const SortQuest = () => {
       console.log("error");
     } else {
       setQuestionData(result);
-      console.log(result);
     }
   }
 
@@ -51,9 +50,6 @@ const SortQuest = () => {
     const result = await patchReorder(data, activeFilter, accessToken);
     if(result === false){
       console.log("error occur");
-    }
-    else {
-      console.log(result);
     }
   }
 

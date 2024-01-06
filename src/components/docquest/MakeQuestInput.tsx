@@ -20,8 +20,6 @@ const MakeQuestInput = (props:{
         if(result === false){
             console.log("error");
         } else {
-            console.log(`현재 파트 ${props.activeFilter}`);
-            console.log(result);
             const toTags:DocQuestTagType[] = [];
             for(let i=0;i<result.length;i++){
                 toTags.push({label: result[i].content, value: result[i].id});

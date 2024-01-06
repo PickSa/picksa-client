@@ -5,7 +5,6 @@ export const baseUrl = 'https://picksa-server.o-r.kr';
 export const getLoginLink = async() => {
     try{
         const response = await axios.get(`${baseUrl}/api/v1/auth`);
-        // console.log(response.headers.location);
         return response.headers.location;
     } catch {
         return false;

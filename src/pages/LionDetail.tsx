@@ -30,7 +30,6 @@ const LionDetail = () => {
     const result = await getPartLists(part, "", accessToken);
     if(result){
       if(part === "PM") {
-        console.log(result);
         setPmList(result.applicants)
       }
       else if(part === "DESIGN") {setDesignList(result.applicants)}
@@ -48,7 +47,6 @@ const LionDetail = () => {
   }, []);
 
   useEffect(() => {
-    console.log(params.id);
     if(params.id){
       getDetailById(params.id);
     }

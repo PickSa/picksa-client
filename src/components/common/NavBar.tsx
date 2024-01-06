@@ -81,7 +81,6 @@ const NavBar = ({ where }: { where: string }) => {
 
   useEffect(() => {
     if(code !== undefined){
-      console.log(code);
       getAccessToken();
     }
   }, [code]);
@@ -92,8 +91,6 @@ const NavBar = ({ where }: { where: string }) => {
       setCode(getCode!);
       navigate("/");
     }
-    console.log(userinfo.isUser);
-    console.log(userinfo.user.username);
   }, []);
 
   if (where === 'landing') {

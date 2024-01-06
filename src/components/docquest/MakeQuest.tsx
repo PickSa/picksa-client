@@ -54,7 +54,6 @@ const MakeQuest = (props:{
         if(result === false) {
             console.log('질문 목록 불러오기 오류 발생');
         } else {
-            console.log(result);
             setQuestionData(() => result);
             // setChangedDetermineList(() => result);
         }

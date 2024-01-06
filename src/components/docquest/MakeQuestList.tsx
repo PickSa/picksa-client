@@ -13,8 +13,6 @@ const MakeQuestList = (props:{
     const [isChecked, setIsChecked] = useState<boolean|undefined>(undefined);
 
     useEffect(() => {
-        console.log(props.lists);
-        console.log(isChecked);
         setIsChecked(() => props.lists.isDetermined);
     }, []);
 
