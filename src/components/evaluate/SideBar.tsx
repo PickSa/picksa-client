@@ -4,7 +4,6 @@ import CloseButton from '../../assets/evaluate/CloseButton.png'
 import {getAllList} from "../../apis/Evaluate/SideBarApi"
 import { useRecoilValue } from 'recoil';
 import { accessTokenAtom } from '../../atom';
-import { useNavigate, Link } from 'react-router-dom';
 function SideBar({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any }) {
   const outside = useRef<any>(); 
   const accessToken = useRecoilValue(accessTokenAtom);
@@ -12,8 +11,12 @@ function SideBar({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any }) {
   const [designApplicants, setDesignApplicants] = useState<any[]>([]);
   const [frontendApplicants, setFrontendApplicants] = useState<any[]>([]);
   const [backendApplicants, setBackendApplicants] = useState<any[]>([]);
-  const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>({});
-  const navigate = useNavigate();
+  const [checked, setChecked] = useState({
+    planning: false,
+    design: false,
+    frontend: false,
+    backend: false,
+  })
   useEffect(() => {
     document.addEventListener('mousedown', handlerOutsie);
     return () => {
@@ -21,8 +24,8 @@ function SideBar({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any }) {
     };
   }); 
   useEffect(()=>{
-    const fetchApplicants = async()=>{
-      const planningData = await getAllList("PM", accessToken);
+    const getListById = async(id:string)=>{
+      const result= await getLionDetail("PM", accessToken);
       const designData = await getAllList("DESIGN", accessToken);
       const frontendData = await getAllList("FRONTEND", accessToken);
       const backendData = await getAllList("BACKEND", accessToken);
@@ -96,21 +99,12 @@ function SideBar({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any }) {
             ))}</ScrollBox>     
         </Part>
         <Part>백엔드
-        <ScrollBox>{backendApplicants.map((applicant, idx) => (
-  <>
-    <Link to={`/evaluate/${applicant.id}`}>
-      <label htmlFor={`checkbox${idx}`} onClick={() => navigate(`/evaluate/${applicant.id}`)}>{applicant.name}
-        <input 
-          type="checkbox" 
-          key={idx} 
-          id={`checkbox${idx}`} 
-          checked={checkedItems === applicant.id}
-          onChange={(e) => setCheckedItems(applicant.id)}
-        />
-      </label>  
-    </Link>     
-  </>
-))}</ScrollBox>
+          {backendApplicants.map((applicant)=>(
+            <NameTag key={applicant.id}>{applicant.name}
+            <input type="checkbox" checked={checked.backend} onChange={handleChange('backend')} />
+            </NameTag>
+          ))}
+          
         </Part>
       </ApplicantByPart>
     </SideBarWrap>

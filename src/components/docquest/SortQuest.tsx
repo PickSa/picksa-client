@@ -47,7 +47,7 @@ const SortQuest = () => {
   }
 
   const patchReorderApi = async(data:{id:number, sequence:number}[]) => {
-    const result = await patchReorder(data, activeFilter, accessToken);
+    const result = await patchReorder(data, accessToken);
     if(result === false){
       console.log("error occur");
     }
