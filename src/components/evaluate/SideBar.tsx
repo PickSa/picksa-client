@@ -4,6 +4,7 @@ import CloseButton from '../../assets/evaluate/CloseButton.png'
 import {getAllList} from "../../apis/Evaluate/SideBarApi"
 import { useRecoilValue } from 'recoil';
 import { accessTokenAtom } from '../../atom';
+<<<<<<< Updated upstream
 function SideBar({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any }) {
   const outside = useRef<any>(); 
   const accessToken = useRecoilValue(accessTokenAtom);
@@ -17,6 +18,20 @@ function SideBar({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any }) {
     frontend: false,
     backend: false,
   })
+=======
+import { useNavigate, Link } from 'react-router-dom';
+import { LionDetailType, LionListType } from '../../dummy/datatypes'
+import { getLionDetail } from '../../apis/lionlist';
+function SideBar({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any }) {
+  const outside = useRef<any>(); 
+  const accessToken = useRecoilValue(accessTokenAtom);
+  const [pmList, setPmList] = useState<LionListType[]>();
+  const [designList, setDesignList] = useState<LionListType[]>();
+  const [feList, setFeList] = useState<LionListType[]>();
+  const [beList, setBeList] = useState<LionListType[]>();
+  const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>({});
+  const navigate = useNavigate();
+>>>>>>> Stashed changes
   useEffect(() => {
     document.addEventListener('mousedown', handlerOutsie);
     return () => {
@@ -24,8 +39,8 @@ function SideBar({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any }) {
     };
   }); 
   useEffect(()=>{
-    const fetchApplicants = async()=>{
-      const planningData = await getAllList("PM", accessToken);
+    const getListById = async(id:string)=>{
+      const result= await getLionDetail("PM", accessToken);
       const designData = await getAllList("DESIGN", accessToken);
       const frontendData = await getAllList("FRONTEND", accessToken);
       const backendData = await getAllList("BACKEND", accessToken);
@@ -90,12 +105,29 @@ function SideBar({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any }) {
           ))}          
         </Part>
         <Part>백엔드
+<<<<<<< Updated upstream
           {backendApplicants.map((applicant)=>(
             <NameTag key={applicant.id}>{applicant.name}
             <input type="checkbox" checked={checked.backend} onChange={handleChange('backend')} />
             </NameTag>
           ))}
           
+=======
+        <ScrollBox>{backendApplicants.map((applicant, idx) => (
+
+
+      <div key={idx}>
+    <label htmlFor={`checkbox${idx}`}>{applicant.name}
+      <input 
+        type="checkbox" 
+        id={`checkbox${idx}`} 
+        onClick={() => navigate(`/evaluate/${applicant.id}`)}
+      />
+    </label>  
+  </div>
+
+))}</ScrollBox>
+>>>>>>> Stashed changes
         </Part>
       </ApplicantByPart>
     </SideBarWrap>
