@@ -1,5 +1,6 @@
 import axios from "axios";
-export const baseUrl = 'https://picksa-server.o-r.kr';
+import { baseUrl } from "../login";
+
 export const getAllList = async(part:string, token:string) => {
     try{
         const response = await axios.get(`${baseUrl}/api/v1/applicants/list?part=${part}`, {

@@ -1,15 +1,14 @@
 import axios from "axios";
-export const baseUrl = 'https://picksa-server.o-r.kr';
+import { baseUrl } from "../login";
 
 //리뷰 전체 정보 받기
-export const postEvaluation = async (applicant_id: string, 
-  passSelected:boolean, texts: string, accessToken: string) => {
+export const postEvaluation = async (id: string, passSelected:boolean, texts: string, accessToken: string) => {
     const requestBody = {
       pass: passSelected,
       comment: texts,
     };
     try{
-        const response = await axios.post(`${baseUrl}/api/v1/evaluations/${applicant_id}`, 
+        const response = await axios.post(`${baseUrl}/api/v1/evaluations/${id}`, 
         requestBody, {
           headers: {
             "Authorization" : `Bearer ${accessToken}`
@@ -21,14 +20,13 @@ export const postEvaluation = async (applicant_id: string,
       console.log("false")
     }
 }
-export const patchEvaluation = async (evaluationId: string, 
-  passSelected:boolean, texts: string, accessToken: string) => {
+export const patchEvaluation = async(id: number, passSelected:boolean, texts: string, accessToken: string) => {
     const requestBody = {
       pass: passSelected,
       comment: texts,
     };
     try{
-        const response = await axios.post(`${baseUrl}/api/v1/evaluations/${evaluationId}`, 
+        const response = await axios.patch(`${baseUrl}/api/v1/evaluations/${id}`, 
         requestBody, {
           headers: {
             "Authorization" : `Bearer ${accessToken}`

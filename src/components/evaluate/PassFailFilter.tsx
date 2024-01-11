@@ -2,25 +2,28 @@ import { styled } from "styled-components"
 import { SpaceBetweenFlex } from "../../styles/globalStyle"
 import Select from "react-select"
 import { useEffect, useState } from "react";
-import { useRecoilValue } from "recoil";
-import { accessTokenAtom, paramsState } from "../../atom";
-import {patchLeaderPassFail} from "../../apis/Evaluate/PassFailComments"
+
 const sortOpt = [
   {value: "PASS", label: " 합격 "},
   {value: "FAILURE", label: " 불합격 "},
   {value: "PENDING", label: " 미정 "},
 ]
-const ListFilter = () => {
-  const applicant_id = useRecoilValue(paramsState);
-  const [selectedSort, setSelectedSort] = useState(sortOpt[0]);
-  const accessToken = useRecoilValue(accessTokenAtom);
+
+const PassFailFilter = (props:{selectedOpt:string}) => {
+  const [selectedSort, setSelectedSort] = useState(
+    props.selectedOpt === "PASS" ? sortOpt[0] :
+    props.selectedOpt === "FAILURE" ? sortOpt[1] :
+    sortOpt[2]
+  );
+
   useEffect(() => {
-    if (selectedSort){
-      const res = patchLeaderPassFail(applicant_id, accessToken, selectedSort.value);
-      console.log(res);
-    }
-    console.log(selectedSort);
-  }, [selectedSort])
+    setSelectedSort(() => 
+      props.selectedOpt === "PASS" ? sortOpt[0] :
+      props.selectedOpt === "FAILURE" ? sortOpt[1] :
+      sortOpt[2]
+    );
+  }, [props.selectedOpt])
+
   return (
     <SpaceBetweenFlex>
       <SelectWrapper>
@@ -33,7 +36,7 @@ const ListFilter = () => {
     </SpaceBetweenFlex>
   )
 }
-export default ListFilter;
+export default PassFailFilter;
 const SelectWrapper = styled.div`
   display: flex;
   width : 120px;

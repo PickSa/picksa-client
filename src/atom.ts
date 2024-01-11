@@ -6,9 +6,9 @@ const { persistAtom } = recoilPersist()
 export const UserInfoAtom = atom({
     key: "userInfo",
     default: {
-        isUser: false,
+        isUser: true,
         user: {
-            username: "",
+            username: "박경빈",
         },
     },
     effects_UNSTABLE: [persistAtom],
@@ -16,8 +16,7 @@ export const UserInfoAtom = atom({
 
 export const accessTokenAtom = atom<string>({
     key: "access_token",
-    default: 
-    "eyJhbGciOiJIUzUxMiJ9.eyJpZCI6IjQiLCJwb3NpdGlvbiI6IlBBUlRfTEVBREVSIiwicGFydCI6IkZST05URU5EIiwiaWF0IjoxNzA0OTc3MjI1LCJleHAiOjE3MDUwNjM2MjV9.KuPkA00-8DHkMp5sRIMWaI5Hg_68bqZQs4pC4FOTrCTQ15dU9UA7A_HkUkIAqJXAaMmo4Ulz5_ydbCoMKt4YKA",
+    default: "eyJhbGciOiJIUzUxMiJ9.eyJpZCI6IjIiLCJwb3NpdGlvbiI6IlBSRVNJREVOVCIsInBhcnQiOiJGUk9OVEVORCIsImlhdCI6MTcwNDk4NjgwNCwiZXhwIjoxNzA1MDczMjA0fQ.ZMpPNlTLKm025YZjzf9V7YG8XZ6CA38JzoGj47SowJy-fGY-WIJTGQklXagiYKevBu6hTjZm1_YNn32uVmaPhw",
     effects_UNSTABLE: [persistAtom],
 })
 

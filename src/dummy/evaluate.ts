@@ -5,3 +5,10 @@ export type OthersEvaluation = {
     pass: boolean,  // 질문
     comment: string,
 }
+
+export type EvaluateResult = {
+    applicantId: number,
+    score: number,
+    isEvaluated: boolean,
+    result: string,
+}

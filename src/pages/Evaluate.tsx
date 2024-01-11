@@ -3,33 +3,77 @@ import { PageFlex } from "../styles/globalStyle"
 import styled from "styled-components"
 import EvaluateContainerContent from "../components/evaluate/EvaluateContainerContent"
 import SlideButton from '../assets/evaluate/SlideButton.png'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import SideBar from '../components/evaluate/SideBar';
+import { useParams } from "react-router-dom"
+import Application from "../components/common/Application"
+import { getLionDetail } from "../apis/lionlist"
+import { useRecoilValue } from "recoil"
+import { accessTokenAtom } from "../atom"
+import { LionDetailType } from "../dummy/datatypes"
 
 
 
 const Evaluate = () => {
   const [isOpen, setIsOpen] = useState(false);
-      const toggleSide = () => {
-          setIsOpen(true);
-      };
+  const [currentId, setCurrentId] = useState<string|undefined>();
+  const [member, setMember] = useState<LionDetailType>();
+  const params = useParams();
+  const accessToken = useRecoilValue(accessTokenAtom);
+
+  const toggleSide = () => {
+      setIsOpen(true);
+  };
+
+  useEffect(() => {
+    if(params.id){
+      setCurrentId(params.id);
+      getDetailById(params.id);
+    }
+  }, [params]);
+
+  const getDetailById = async(id:string) => {
+    const result = await getLionDetail(id, accessToken);
+    if(result === false) {console.log("error occur")}
+    else {
+      setMember(result);
+    }
+  }
   return (
-    <>      
-      <PageFlex>      
+    <>
+    <PageFlex>      
       <NavBar where="evaluate" />
       <ContainerWrapper>
         <FileContainer>
         <SlideBtn role="button" onClick={toggleSide}>
-          <img src={SlideButton}/>
-        </SlideBtn>
-        <SideBar isOpen={isOpen} setIsOpen={setIsOpen} />
+      <img src={SlideButton}/>
+    </SlideBtn>
+        {member && 
+        <Application 
+          id={member.id}
+          name={member.name}
+          major={member.major}
+          multimajor={member.multimajor}
+          studentId={member.studentId}
+          gender={member.gender}
+          semester={member.semester}
+          part={member.part}
+          email={member.email}
+          phone={member.phone}
+          portfolio={member.portfolio}
+          answers={member.answers} />}
+        <SideBar isOpen={isOpen} currentId={currentId} setIsOpen={setIsOpen} />
         </FileContainer>        
         <EvaluateContainer>
-          <EvaluateContainerContent></EvaluateContainerContent>
+          {member && 
+          <EvaluateContainerContent 
+            currentId={currentId}
+            memberName={member.name} />
+          }
         </EvaluateContainer>
-        </ContainerWrapper>  
-        {isOpen && <Overlay onClick={toggleSide} />}      
-    </PageFlex>     
+      </ContainerWrapper>  
+      {isOpen && <Overlay onClick={toggleSide} />}      
+    </PageFlex>
     </>
   )
 }
@@ -56,12 +100,15 @@ font-weight: 400;
 font-size: 35px;
 line-height: 42px;
 display: flex;
+flex-direction: column;
 align-items: start;
-text-align: center;
 color: #000000;
 `
 const SlideBtn = styled.div`
-
+z-index: 50;
+position: sticky;
+top:10;
+left: 0;
 `
 const EvaluateContainer = styled.div`
 display: flex;

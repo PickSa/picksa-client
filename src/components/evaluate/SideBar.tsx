@@ -1,19 +1,21 @@
 import { useRef, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import CloseButton from '../../assets/evaluate/CloseButton.png'
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { accessTokenAtom, paramsState, applicantNameState } from '../../atom';
+import { useRecoilValue } from 'recoil';
+import { accessTokenAtom } from '../../atom';
 import { LionListType } from '../../dummy/datatypes';
 import { getPartLists } from '../../apis/lionlist';
-import { useNavigate, useParams } from 'react-router-dom';
-const SideBar= ({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any })=> {
+import { useNavigate } from 'react-router-dom';
+const SideBar= (
+  { isOpen, currentId, setIsOpen }: 
+  { isOpen: boolean;
+    currentId: string|undefined;
+    setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  })=> {
   const navigate = useNavigate();
-  const params = useParams();
   const outside = useRef<any>(); 
   const accessToken = useRecoilValue(accessTokenAtom);
   const [checkedId, setCheckedId] = useState<number|null>(null);
-  const [idParams, setIdParams] = useRecoilState(paramsState);
-  const [applicantName, setApplicantName] = useRecoilState(applicantNameState);
   const [pmList, setPmList] = useState<LionListType[]>();
   const [designList, setDesignList] = useState<LionListType[]>();
   const [feList, setFeList] = useState<LionListType[]>();
@@ -23,7 +25,6 @@ const SideBar= ({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any })=> {
       if(result){
         if(part === "PM"){
           setPmList(result.applicants)
-          
         }
         else if(part === "DESIGN"){setDesignList(result.applicants)}
         else if(part === "FRONTEND"){setFeList(result.applicants)}
@@ -37,33 +38,34 @@ const SideBar= ({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any })=> {
     getPartListApi("FRONTEND");
     getPartListApi("BACKEND");
   },[])
+
   const toggleSide = () => {
     setIsOpen(false);
   };  
-  const handlerOutsie = (e: any) => {
+
+  const handlerOutside = (e: MouseEvent) => {
     if (!outside.current.contains(e.target)) {
       toggleSide();
     }
   }; 
+
   useEffect(() => {
-    document.addEventListener('mousedown', handlerOutsie);
+    document.addEventListener('mousedown', handlerOutside);
     return () => {
-      document.removeEventListener('mousedown', handlerOutsie);
+      document.removeEventListener('mousedown', handlerOutside);
     };
   }); 
-  const handleCheckboxChange = (personId:number, personName:string)=> {
+  
+  useEffect(() => {
+    setCheckedId(Number(currentId));
+  }, [currentId]);
+
+  const handleCheckboxChange = (personId:number)=> {
     setIsOpen(false); 
-    
-    
     navigate(`/evaluate/${personId}`)
     setCheckedId(personId);   
-    if(params.id){
-      setIdParams(params.id);
-      setApplicantName(personName);
-      // console.log(idParams);
-      // console.log(applicantName);
-    }
   }
+
   return (
     <SideBarWrap id="sidebar" ref={outside} className={isOpen ? 'open' : ''}>      
       <ApplicantList>지원자 목록
@@ -82,7 +84,7 @@ const SideBar= ({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any })=> {
               type="checkbox" 
               id={`checkbox${idx}`}
               checked={person.applicantId === checkedId}
-              onChange={()=>handleCheckboxChange(person.applicantId, person.name)}/>
+              onChange={()=>handleCheckboxChange(person.applicantId)}/>
               </label>            
             ))}</ScrollBox>
         </Part>
@@ -93,7 +95,7 @@ const SideBar= ({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any })=> {
               type="checkbox" 
               id={`checkbox${idx}`}
               checked={person.applicantId === checkedId}
-              onChange={()=>handleCheckboxChange(person.applicantId, person.name)}/>
+              onChange={()=>handleCheckboxChange(person.applicantId)}/>
               </label>            
             ))}</ScrollBox>
         </Part>
@@ -104,7 +106,7 @@ const SideBar= ({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any })=> {
               type="checkbox" 
               id={`checkbox${idx}`}
               checked={person.applicantId === checkedId}
-              onChange={()=>handleCheckboxChange(person.applicantId, person.name)}
+              onChange={()=>handleCheckboxChange(person.applicantId)}
               />
               </label>            
             ))}</ScrollBox> 
@@ -116,7 +118,7 @@ const SideBar= ({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any })=> {
               type="checkbox" 
               id={`checkbox${idx}`}
               checked={person.applicantId === checkedId}
-              onChange={()=>handleCheckboxChange(person.applicantId, person.name)}/>
+              onChange={()=>handleCheckboxChange(person.applicantId)}/>
               </label>            
             ))}</ScrollBox>          
         </Part>
@@ -154,7 +156,7 @@ align-items: center;
 width: 300px;
 top: 80px;
 background: #FFFFFF;
-  z-index: 5;
+  z-index: 100;
   padding: 12px;
   border-radius: 0px 15px 15px 0px;
   left: -55%;
