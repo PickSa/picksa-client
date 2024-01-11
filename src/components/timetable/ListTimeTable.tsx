@@ -14,7 +14,8 @@ const ListTable = () => {
     const [applicantLists, setApplicantLists] = useState();
     const accessToken = useRecoilValue(accessTokenAtom);
     const result = getInterviewSchedules(accessToken);
-    console.log(result.applicants);
+    console.log(result);
+    console.log(result.schedules)
     const TestData = [
         {"id" : 0, "part": "기획", "name": "박재윤", "primeNum": "2023XXXX", "firstScore": "4/10", "firstResult": "합격", "firstState": "평가완료", "phone": "010-XXXX-XXXX"},
         {"id" : 1, "part": "기획", "name": "유승빈", "primeNum": "2023XXXX", "firstScore": "4/10", "firstResult": "합격", "firstState": "평가완료", "phone": "010-XXXX-XXXX"},
