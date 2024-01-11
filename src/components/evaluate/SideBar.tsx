@@ -1,119 +1,134 @@
 import { useRef, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import CloseButton from '../../assets/evaluate/CloseButton.png'
-import {getAllList} from "../../apis/Evaluate/SideBarApi"
-import { useRecoilValue } from 'recoil';
-import { accessTokenAtom } from '../../atom';
-function SideBar({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any }) {
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { accessTokenAtom, paramsState, applicantNameState } from '../../atom';
+import { LionListType } from '../../dummy/datatypes';
+import { getPartLists } from '../../apis/lionlist';
+import { useNavigate, useParams } from 'react-router-dom';
+const SideBar= ({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any })=> {
+  const navigate = useNavigate();
+  const params = useParams();
   const outside = useRef<any>(); 
   const accessToken = useRecoilValue(accessTokenAtom);
-  const [planningApplicants, setPlanningApplicants] = useState<any[]>([]);
-  const [designApplicants, setDesignApplicants] = useState<any[]>([]);
-  const [frontendApplicants, setFrontendApplicants] = useState<any[]>([]);
-  const [backendApplicants, setBackendApplicants] = useState<any[]>([]);
-  const [checked, setChecked] = useState({
-    planning: false,
-    design: false,
-    frontend: false,
-    backend: false,
-  })
+  const [checkedId, setCheckedId] = useState<number|null>(null);
+  const [idParams, setIdParams] = useRecoilState(paramsState);
+  const [applicantName, setApplicantName] = useRecoilState(applicantNameState);
+  const [pmList, setPmList] = useState<LionListType[]>();
+  const [designList, setDesignList] = useState<LionListType[]>();
+  const [feList, setFeList] = useState<LionListType[]>();
+  const [beList, setBeList] = useState<LionListType[]>();
+  const getPartListApi = async(part:string)=>{
+    const result = await getPartLists(part, "", accessToken)
+      if(result){
+        if(part === "PM"){
+          setPmList(result.applicants)
+          
+        }
+        else if(part === "DESIGN"){setDesignList(result.applicants)}
+        else if(part === "FRONTEND"){setFeList(result.applicants)}
+        else {setBeList(result.applicants)}
+      }
+      // console.log(pmList);
+  }
+  useEffect(()=>{
+    getPartListApi("PM");
+    getPartListApi("DESIGN");
+    getPartListApi("FRONTEND");
+    getPartListApi("BACKEND");
+  },[])
+  const toggleSide = () => {
+    setIsOpen(false);
+  };  
+  const handlerOutsie = (e: any) => {
+    if (!outside.current.contains(e.target)) {
+      toggleSide();
+    }
+  }; 
   useEffect(() => {
     document.addEventListener('mousedown', handlerOutsie);
     return () => {
       document.removeEventListener('mousedown', handlerOutsie);
     };
   }); 
-  useEffect(()=>{
-    const getListById = async(id:string)=>{
-      const result= await getLionDetail("PM", accessToken);
-      const designData = await getAllList("DESIGN", accessToken);
-      const frontendData = await getAllList("FRONTEND", accessToken);
-      const backendData = await getAllList("BACKEND", accessToken);
-      console.log(planningData);
-      if (planningData && planningData.applicants){
-        setPlanningApplicants(planningData.applicants);
-      }
-      if (designData && designData.applicants){
-        setDesignApplicants(designData.applicants);
-      }
-      if (frontendData && frontendData.applicants){
-        setFrontendApplicants(frontendData.applicants);
-      }
-      if(backendData && backendData.applicants){
-        setBackendApplicants(backendData.applicants);
-      }
-    };
-    fetchApplicants();
-  },[])
-  const handlerOutsie = (e: any) => {
-    if (!outside.current.contains(e.target)) {
-      toggleSide();
+  const handleCheckboxChange = (personId:number, personName:string)=> {
+    setIsOpen(false); 
+    
+    
+    navigate(`/evaluate/${personId}`)
+    setCheckedId(personId);   
+    if(params.id){
+      setIdParams(params.id);
+      setApplicantName(personName);
+      // console.log(idParams);
+      // console.log(applicantName);
     }
-  }; 
-  const toggleSide = () => {
-    setIsOpen(false);
-  };  
+  }
   return (
-    <SideBarWrap id="sidebar" ref={outside} className={isOpen ? 'open' : ''}>
-      
+    <SideBarWrap id="sidebar" ref={outside} className={isOpen ? 'open' : ''}>      
       <ApplicantList>지원자 목록
       <img
         src={CloseButton}
         alt="close"
         onClick={toggleSide}
-        onKeyDown={toggleSide}
-      />
+        onKeyDown={toggleSide}/>
       </ApplicantList>
+      {pmList && designList && feList && beList &&
       <ApplicantByPart>
         <Part>기획
-        <ScrollBox>{planningApplicants.map((applicant, idx)=>(
-          <>
-          <Link to={`/evaluate/${applicant.id}`}>
-          <label htmlFor={`checkbox${idx}`}>{applicant.name}
-              <input type="checkbox" key={idx} id={`checkbox${idx}`}/>
-              </label>
-              </Link>              
-              </>
+        <ScrollBox>{pmList.map((person, idx)=>(
+          <label htmlFor={`checkbox${idx}`}>{person.name}{person.id}
+              <input 
+              type="checkbox" 
+              id={`checkbox${idx}`}
+              checked={person.applicantId === checkedId}
+              onChange={()=>handleCheckboxChange(person.applicantId, person.name)}/>
+              </label>            
             ))}</ScrollBox>
         </Part>
         <Part>디자인
-        <ScrollBox>{designApplicants.map((applicant, idx)=>(
-          <>
-          <Link to={`/evaluate/${applicant.id}`}>
-          <label htmlFor={`checkbox${idx}`}>{applicant.name}
-              <input type="checkbox" key={idx} id={`checkbox${idx}`} />
-              </label>    
-              </Link>   
-              </>
+        <ScrollBox>{designList.map((person, idx)=>(
+          <label htmlFor={`checkbox${idx}`}>{person.name}
+              <input 
+              type="checkbox" 
+              id={`checkbox${idx}`}
+              checked={person.applicantId === checkedId}
+              onChange={()=>handleCheckboxChange(person.applicantId, person.name)}/>
+              </label>            
             ))}</ScrollBox>
         </Part>
         <Part>프론트엔드
-        <ScrollBox>{frontendApplicants.map((applicant, idx)=>(
-          <>
-          <Link to={`/evaluate/${applicant.id}`}>
-          <label htmlFor={`checkbox${idx}`} onClick={() => navigate(`/evaluate/${applicant.id}`)}>{applicant.name}
-              <input type="checkbox" key={idx} id={`checkbox${idx}`} />
-              </label>    
-              </Link>   
-              </>              
-            ))}</ScrollBox>     
+        <ScrollBox>{feList.map((person, idx)=>(
+          <label htmlFor={`checkbox${idx}`}>{person.name}
+              <input 
+              type="checkbox" 
+              id={`checkbox${idx}`}
+              checked={person.applicantId === checkedId}
+              onChange={()=>handleCheckboxChange(person.applicantId, person.name)}
+              />
+              </label>            
+            ))}</ScrollBox> 
         </Part>
         <Part>백엔드
-          {backendApplicants.map((applicant)=>(
-            <NameTag key={applicant.id}>{applicant.name}
-            <input type="checkbox" checked={checked.backend} onChange={handleChange('backend')} />
-            </NameTag>
-          ))}
-          
+        <ScrollBox>{beList.map((person, idx)=>(
+          <label htmlFor={`checkbox${idx}`}>{person.name}
+              <input 
+              type="checkbox" 
+              id={`checkbox${idx}`}
+              checked={person.applicantId === checkedId}
+              onChange={()=>handleCheckboxChange(person.applicantId, person.name)}/>
+              </label>            
+            ))}</ScrollBox>          
         </Part>
       </ApplicantByPart>
+      }
     </SideBarWrap>
   );
 } 
 export default SideBar;
+
 const ScrollBox = styled.div`
 font-family: 'Pretendard Variable';
-font-style: normal;
 font-weight: 500;
 font-size: 13px;
 line-height: 150%;
@@ -122,8 +137,8 @@ color: #000000;
   flex-direction: column;
   font-size: 1.6rem;
   overflow-y: scroll;
-  height: 30rem;
-  width: 250px;
+  height: 20rem;
+  width: 20rem;
   /* border: 1px solid blue; */
   gap: 0.6rem;
   & > div{
@@ -196,6 +211,3 @@ text-align: center;
 color: #000000;
 
 `;
-
-
-

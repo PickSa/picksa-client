@@ -5,11 +5,10 @@ import EvaluateContainerContent from "../components/evaluate/EvaluateContainerCo
 import SlideButton from '../assets/evaluate/SlideButton.png'
 import { useState } from 'react';
 import SideBar from '../components/evaluate/SideBar';
-import { useNavigate, useParams } from 'react-router-dom'
+
 
 
 const Evaluate = () => {
-  const params = useParams<{id: string}>();
   const [isOpen, setIsOpen] = useState(false);
       const toggleSide = () => {
           setIsOpen(true);
@@ -26,7 +25,7 @@ const Evaluate = () => {
         <SideBar isOpen={isOpen} setIsOpen={setIsOpen} />
         </FileContainer>        
         <EvaluateContainer>
-          <EvaluateContainerContent params = {params}></EvaluateContainerContent>
+          <EvaluateContainerContent></EvaluateContainerContent>
         </EvaluateContainer>
         </ContainerWrapper>  
         {isOpen && <Overlay onClick={toggleSide} />}      

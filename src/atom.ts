@@ -17,7 +17,7 @@ export const UserInfoAtom = atom({
 export const accessTokenAtom = atom<string>({
     key: "access_token",
     default: 
-    "eyJhbGciOiJIUzUxMiJ9.eyJpZCI6IjQiLCJwb3NpdGlvbiI6IkdFTkVSQUwiLCJwYXJ0IjoiRlJPTlRFTkQiLCJpYXQiOjE3MDQ1NDUwODIsImV4cCI6MTcwNDYzMTQ4Mn0.VH4-4yxA4N3Zf40KVht-KUONAXtFyXf7ioEAxnbYbstwaab_H5JtbsiGddcCoQ3qMvytYGg9hPj0IYDeZKZ8WQ",
+    "eyJhbGciOiJIUzUxMiJ9.eyJpZCI6IjQiLCJwb3NpdGlvbiI6IlBBUlRfTEVBREVSIiwicGFydCI6IkZST05URU5EIiwiaWF0IjoxNzA0OTc3MjI1LCJleHAiOjE3MDUwNjM2MjV9.KuPkA00-8DHkMp5sRIMWaI5Hg_68bqZQs4pC4FOTrCTQ15dU9UA7A_HkUkIAqJXAaMmo4Ulz5_ydbCoMKt4YKA",
     effects_UNSTABLE: [persistAtom],
 })
 
@@ -26,3 +26,20 @@ export const LoginCodeAtom = atom<string|undefined>({
     key: "googlelogin",
     default: undefined,
 });
+
+export const paramsState = atom({
+    key: "paramsState",
+    default: "",
+})
+export const applicantNameState = atom({
+    key: "applicantNameState",
+    default: "",
+})
+export const myEvalIdState = atom({
+    key: "myEvalIdState",
+    default: "",
+})
+export const myEvalNameState = atom({
+    key: "myEvalNameState",
+    default: "",
+})

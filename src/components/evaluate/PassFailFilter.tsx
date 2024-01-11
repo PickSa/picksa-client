@@ -3,7 +3,7 @@ import { SpaceBetweenFlex } from "../../styles/globalStyle"
 import Select from "react-select"
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
-import { accessTokenAtom } from "../../atom";
+import { accessTokenAtom, paramsState } from "../../atom";
 import {patchLeaderPassFail} from "../../apis/Evaluate/PassFailComments"
 const sortOpt = [
   {value: "PASS", label: " 합격 "},
@@ -11,16 +11,16 @@ const sortOpt = [
   {value: "PENDING", label: " 미정 "},
 ]
 const ListFilter = () => {
+  const applicant_id = useRecoilValue(paramsState);
   const [selectedSort, setSelectedSort] = useState(sortOpt[0]);
   const accessToken = useRecoilValue(accessTokenAtom);
-  const applicant_id = "1";
   useEffect(() => {
     if (selectedSort){
-      patchLeaderPassFail(applicant_id, accessToken, selectedSort.value);
+      const res = patchLeaderPassFail(applicant_id, accessToken, selectedSort.value);
+      console.log(res);
     }
     console.log(selectedSort);
   }, [selectedSort])
-  
   return (
     <SpaceBetweenFlex>
       <SelectWrapper>
@@ -33,6 +33,7 @@ const ListFilter = () => {
     </SpaceBetweenFlex>
   )
 }
+export default ListFilter;
 const SelectWrapper = styled.div`
   display: flex;
   width : 120px;
@@ -42,4 +43,3 @@ const SelectWrapper = styled.div`
    }
 
 `
-export default ListFilter

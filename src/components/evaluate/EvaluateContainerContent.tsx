@@ -2,74 +2,91 @@ import React, { useEffect, useState } from 'react';
 import CurrentEval from '../../assets/evaluate/CurrentEval.png'
 import FinishEval from '../../assets/evaluate/FinishEval.png'
 import styled from 'styled-components'
+import { useNavigate, useParams } from 'react-router-dom';
 import Comment from './Comment'
-import PassFailFilter from "./PassFailFilter";
+import ListFilter from "./PassFailFilter";
 import {postEvaluation, getEvalOthers, getPassFail, patchEvaluation} from "../../apis/Evaluate/PassFailComments";
-import { useRecoilValue } from 'recoil';
-import { accessTokenAtom } from '../../atom';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { accessTokenAtom, paramsState, applicantNameState, myEvalIdState } from '../../atom';
+import { OthersEvaluation } from "../../dummy/evaluate";
 interface ButtonProps {
     selected: boolean;
 }
-const EvaluateContainerContent: React.FC<{params: {id: string}}> = ({params}) => {
+const EvaluateContainerContent=() => {
+    const applicant_id = useRecoilValue(paramsState);
     const accessToken = useRecoilValue(accessTokenAtom);
-    const [passSelected, setPassSelected] = useState(false);
-    const [failSelected, setFailSelected] = useState(false);
+    const applicantName = useRecoilValue(applicantNameState);
+    const [myEvalId, setMyEvalId] = useRecoilState(myEvalIdState);
+    const [passSelected, setPassSelected] = useState<boolean>();
     const [comments, setComments] = useState<string[]>([]);
     const [texts, setTexts] = useState<string>("");
-    const [evaluation, setEvaluation] = useState<any>(null);
-    const applicant_id = params.id; //실제 applicant_id로 변경
-    console.log("params:", params);
+    const [evaluation, setEvaluation] = useState<OthersEvaluation[]>();
+    const [score, setScore] = useState();
+    const [isEval, setIsEval] = useState(false);
+    const [managers, setManager] = useState([]);
     useEffect(()=>{
         const fetchComments = async()=>{
-            const data  = await getEvalOthers(applicant_id);
-            if (data!== undefined) {
-                setComments(data); 
+            const res  = await getEvalOthers(applicant_id, accessToken);
+            if (res!== undefined) {
+                setEvaluation(res);
+                
             }
-            const evaluationData = await getPassFail(applicant_id);
-            setEvaluation(evaluationData);            
+            const PassFail = await getPassFail(applicant_id, accessToken);     
+            if (PassFail!== undefined) {
+                // console.log(PassFail.isEvaluated);
+                setScore(PassFail.score);
+                setIsEval(PassFail.isEvaluated);
+                
+                
+            }                
         };
         fetchComments();
-    }, []);
+    }, [applicant_id]);
     const handleTextClick = ()=>{        
     };
-    const handleButtonClick = async () => {
-        const evaluationId = "your-evaluation-id";      
+    const handleButtonClick = async () => {    
         try{
+            console.log(texts);
+            console.log(passSelected);
             let data;
-            if (comments.length === 0){
-                data = await postEvaluation(applicant_id, 
-                    passSelected, texts, accessToken);                
-            } else {
-                data = await patchEvaluation(evaluationId, 
-                    passSelected, texts, accessToken);
-            }
-            console.log(data);
-            setComments([...comments, texts]);           
+            if(passSelected != undefined){                 
+                if (myEvalId === ""){
+                    data = await postEvaluation(applicant_id, 
+                        passSelected, texts, accessToken);  
+                    setMyEvalId(data.evaluationId); 
+                    console.log(myEvalId);
+                     
+                } else {
+                    data = await patchEvaluation(myEvalId, 
+                        passSelected, texts, accessToken); 
+                        // console.log(data);
+                        // console.log(data.evaluationId);
+                        setMyEvalId(data.evaluationId);  
+                        // console.log(myEvalId);                        
+                }
+            }                   
         }catch{
             console.log(false);
         }
     };
     const handlePassClick = async () =>{
         setPassSelected(true);
-        setFailSelected(false);
         //서버에 "합격"을 전송하는 코드를 작성
-        console.log("합격");
+
     };
     const handleFailClick = async () =>{
         setPassSelected(false);
-        setFailSelected(true);
         //서버에 "불합격"을 전송하는 코드를 작성
-        console.log("불합격");
     }
-    const passCount = evaluation ? evaluation.score : 0;
-    const totalCount = comments.length;
-    const imgSrc = evaluation && evaluation.isEvaluated ? FinishEval: CurrentEval;
+    const passCount = score ? score : 0;
+    const totalCount = evaluation ? evaluation.length : 0;
+    const imgSrc = isEval  ? FinishEval: CurrentEval;
     return(
         <>        
         <VolunteerContainer>
             <VolunteerContainer1>
                 <NameContainer>
-                    <Name>김사자</Name>
+                    <Name>{applicantName}</Name>
                     <img src={imgSrc} alt="Current Evaluation" />                    
                 </NameContainer>
                 <Evaluate>
@@ -79,7 +96,7 @@ const EvaluateContainerContent: React.FC<{params: {id: string}}> = ({params}) =>
                     </EvaluateNumContainer1>
                     <EvaluateNumContainer1>
                         <Text1>최종평가</Text1>
-                        <PassFailFilter></PassFailFilter>
+                        <ListFilter></ListFilter>
                     </EvaluateNumContainer1>
                 </Evaluate>
             </VolunteerContainer1>
@@ -91,7 +108,7 @@ const EvaluateContainerContent: React.FC<{params: {id: string}}> = ({params}) =>
                 </NameContainer2>
                 <NameContainer3>
                     <EvaluateButtonPass selected={passSelected} onClick={handlePassClick}>합격</EvaluateButtonPass>
-                    <EvaluateButtonFail selected={failSelected} onClick={handleFailClick}>불합격</EvaluateButtonFail>
+                    <EvaluateButtonFail selected={!passSelected} onClick={handleFailClick}>불합격</EvaluateButtonFail>
                 </NameContainer3>
                 <NameContainer2>
                     <TextBox value={texts} onClick={handleTextClick} onChange={e=>setTexts(e.target.value)}></TextBox>
@@ -102,14 +119,12 @@ const EvaluateContainerContent: React.FC<{params: {id: string}}> = ({params}) =>
                 </VolunteerContainer3>
                 <VolunteerContainer4>
                     <Name>개인 코멘트</Name>
-                    {comments && comments.length > 0 && comments.map((comment, index)=>(
-                        <Comment key={index} content = {comment.comment} name={comment.name}></Comment>
+                    {evaluation && evaluation.map((evaluationItem, idx)=>(
+                        <Comment key={idx} content = {evaluationItem.comment} name={evaluationItem.name}></Comment>
                     ))}
                 </VolunteerContainer4>       
-            </VolunteerContainer1>
-            
+            </VolunteerContainer1>            
         </VolunteerContainer>
-
         </>
     )
 }

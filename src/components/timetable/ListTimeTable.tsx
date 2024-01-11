@@ -1,11 +1,20 @@
 import { styled } from "styled-components"
 import ListMemberRow from "./ListMemberTime"
+import { getInterviewSchedules } from "../../apis/Timetable/time"
+import { useState } from "react"
+import { accessTokenAtom } from "../../atom"
+import { useRecoilValue, useRecoilState } from "recoil"
 export type memberType = {
     id:number,
     part:string,
     name:string,
 }
 const ListTable = () => {
+    const [timeData, setTimeData] = useState();
+    const [applicantLists, setApplicantLists] = useState();
+    const accessToken = useRecoilValue(accessTokenAtom);
+    const result = getInterviewSchedules(accessToken);
+    console.log(result.applicants);
     const TestData = [
         {"id" : 0, "part": "기획", "name": "박재윤", "primeNum": "2023XXXX", "firstScore": "4/10", "firstResult": "합격", "firstState": "평가완료", "phone": "010-XXXX-XXXX"},
         {"id" : 1, "part": "기획", "name": "유승빈", "primeNum": "2023XXXX", "firstScore": "4/10", "firstResult": "합격", "firstState": "평가완료", "phone": "010-XXXX-XXXX"},
