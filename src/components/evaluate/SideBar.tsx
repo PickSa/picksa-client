@@ -22,8 +22,7 @@ const SideBar= ({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: any })=> {
     const result = await getPartLists(part, "", accessToken)
       if(result){
         if(part === "PM"){
-          setPmList(result.applicants)
-          
+          setPmList(result.applicants)          
         }
         else if(part === "DESIGN"){setDesignList(result.applicants)}
         else if(part === "FRONTEND"){setFeList(result.applicants)}
