@@ -54,9 +54,6 @@ const NavBar = ({ where }: { where: string }) => {
       console.log('로그인 에러 발생');
     } else {
       window.open(result, "_self");
-      // const getCode = new URL(window.location.href).searchParams.get("code");
-      // setCode(getCode!);
-      // navigate("/");
     }
   }
 
@@ -66,8 +63,8 @@ const NavBar = ({ where }: { where: string }) => {
       if(result === false){
         console.log('로그인 에러 발생: access token 취득 불가');
       } else {
-        // console.log(result);
-        // console.log(result.accessToken);
+        console.log(result);
+        console.log(result.accessToken);
         setAccessToken(result.accessToken);
         const nameResult = await getUserName(result.accessToken);
         if(nameResult === false){
