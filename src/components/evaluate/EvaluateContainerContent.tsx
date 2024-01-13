@@ -44,7 +44,6 @@ const EvaluateContainerContent=(props:{
                     });
                     res.splice(0,1);
                     setComments(res);
-                    console.log("commments",comments);
                 } else {
                     setIsEval(false);
                     setTexts("");

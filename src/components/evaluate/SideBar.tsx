@@ -30,7 +30,6 @@ const SideBar= (
         else if(part === "FRONTEND"){setFeList(result.applicants)}
         else {setBeList(result.applicants)}
       }
-      // console.log(pmList);
   }
   useEffect(()=>{
     getPartListApi("PM");
