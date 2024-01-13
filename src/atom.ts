@@ -9,6 +9,7 @@ export const UserInfoAtom = atom({
         isUser: false,
         user: {
             username: "",
+            userrole: "",
         },
     },
     effects_UNSTABLE: [persistAtom],

@@ -46,7 +46,6 @@ const ListFilter = (props:FilterProps) => {
       const result = await getPartLists(part, order, accessToken);
       if(result === false){console.log("error")}
       else {
-        console.log(result.applicants);
         props.setMemberDatas(result.applicants);
       }
     }

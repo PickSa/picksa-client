@@ -3,74 +3,121 @@ import { PageFlex } from "../styles/globalStyle"
 import styled from "styled-components"
 import EvaluateContainerContent from "../components/evaluate/EvaluateContainerContent"
 import SlideButton from '../assets/evaluate/SlideButton.png'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import SideBar from '../components/evaluate/SideBar';
+import { useParams } from "react-router-dom"
+import Application from "../components/common/Application"
+import { getLionDetail } from "../apis/lionlist"
+import { useRecoilValue } from "recoil"
+import { accessTokenAtom } from "../atom"
+import { LionDetailType } from "../dummy/datatypes"
+
 
 
 const Evaluate = () => {
   const [isOpen, setIsOpen] = useState(false);
-      const toggleSide = () => {
-          setIsOpen(true);
-      };
+  const [currentId, setCurrentId] = useState<string|undefined>();
+  const [member, setMember] = useState<LionDetailType>();
+  const params = useParams();
+  const accessToken = useRecoilValue(accessTokenAtom);
+
+  const toggleSide = () => {
+      setIsOpen(true);
+  };
+
+  useEffect(() => {
+    if(params.id){
+      setCurrentId(params.id);
+      getDetailById(params.id);
+    }
+  }, [params]);
+
+  const getDetailById = async(id:string) => {
+    const result = await getLionDetail(id, accessToken);
+    if(result === false) {console.log("error occur")}
+    else {
+      setMember(result);
+    }
+  }
   return (
-    <>      
-      <PageFlex>      
+    <>
+    <PageFlex>      
       <NavBar where="evaluate" />
       <ContainerWrapper>
         <FileContainer>
         <SlideBtn role="button" onClick={toggleSide}>
-          <img src={SlideButton}/>
-        </SlideBtn>
-        <SideBar isOpen={isOpen} setIsOpen={setIsOpen} />
+      <img src={SlideButton}/>
+    </SlideBtn>
+        {member && 
+        <Application 
+          id={member.id}
+          name={member.name}
+          major={member.major}
+          multimajor={member.multimajor}
+          studentId={member.studentId}
+          gender={member.gender}
+          semester={member.semester}
+          part={member.part}
+          email={member.email}
+          phone={member.phone}
+          portfolio={member.portfolio}
+          answers={member.answers} />}
+        <SideBar isOpen={isOpen} currentId={currentId} setIsOpen={setIsOpen} />
         </FileContainer>        
         <EvaluateContainer>
-          <EvaluateContainerContent></EvaluateContainerContent>
+          {member && 
+          <EvaluateContainerContent 
+            currentId={currentId}
+            memberName={member.name} />
+          }
         </EvaluateContainer>
-        </ContainerWrapper>  
-        {isOpen && <Overlay onClick={toggleSide} />}      
-    </PageFlex>     
+      </ContainerWrapper>  
+      {isOpen && <Overlay onClick={toggleSide} />}      
+    </PageFlex>
     </>
-
   )
 }
 export default Evaluate
 
 const ContainerWrapper = styled.div`
-width: 100%;
-display: flex;
-flex-direction: row;
-padding: 60px;
-justify-content: space-evenly;
-gap: 10px;
-align-items: flex-start;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  padding-top: 3.75rem;
+  justify-content: space-evenly;
+  align-items: flex-start;
 `
 
 const FileContainer = styled.div`
-width: 48%;
-height: 1000px;
-padding: 20px;
-background: #D9D9D9;
+width: 50%;
+height: 80rem;
+padding: 3rem;
+/* background: #D9D9D9; */
 font-family: 'Pretendard';
 font-style: normal;
 font-weight: 400;
-font-size: 35px;
-line-height: 42px;
+font-size: 2.1875rem;
+line-height: 2.625rem;
 display: flex;
+flex-direction: column;
+gap: 1.5rem;
 align-items: start;
-text-align: center;
 color: #000000;
 `
 const SlideBtn = styled.div`
-
+z-index: 50;
+position: sticky;
+top:0.625rem;
+left: 0;
 `
 const EvaluateContainer = styled.div`
 display: flex;
 flex-direction: column;
 align-items: flex-start;
 padding: 0px;
-gap: 24px;
+gap: 1.5rem;
 width: 40%;
-height: 1000px;
+height: 62.5rem;
 
 `
 const Overlay = styled.div`
@@ -82,6 +129,7 @@ const Overlay = styled.div`
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 4;
 `;
+
 
 
 
