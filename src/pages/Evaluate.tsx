@@ -80,19 +80,19 @@ const Evaluate = () => {
 export default Evaluate
 
 const ContainerWrapper = styled.div`
-width: 100%;
-display: flex;
-flex-direction: row;
-padding: 3.75rem;
-justify-content: space-evenly;
-align-items: flex-start;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  padding-top: 3.75rem;
+  justify-content: space-evenly;
+  align-items: flex-start;
 `
 
 const FileContainer = styled.div`
 width: 50%;
 height: 80rem;
 padding: 3rem;
-background: #D9D9D9;
+/* background: #D9D9D9; */
 font-family: 'Pretendard';
 font-style: normal;
 font-weight: 400;

@@ -1,7 +1,6 @@
 import NavBar from "../components/common/NavBar"
 import { PageFlex } from "../styles/globalStyle"
 import styled from "styled-components"
-import EvaluateContainerContent from "../components/evaluate/EvaluateContainerContent"
 import SlideButton from '../assets/evaluate/SlideButton.png'
 import { useState } from 'react';
 import SideBar from '../components/evaluate/SideBar';
@@ -21,7 +20,7 @@ const Evaluate = () => {
         <SlideBtn role="button" onClick={toggleSide}>
           <img src={SlideButton}/>
         </SlideBtn>
-        <SideBar isOpen={isOpen} setIsOpen={setIsOpen} />
+        <SideBar isOpen={isOpen} currentId={undefined} setIsOpen={setIsOpen} />
         </FileContainer>        
         </ContainerWrapper>  
         {isOpen && <Overlay onClick={toggleSide} />}      
@@ -60,16 +59,15 @@ color: #000000;
 const SlideBtn = styled.div`
 
 `
-const EvaluateContainer = styled.div`
-display: flex;
-flex-direction: column;
-align-items: flex-start;
-padding: 0px;
-gap: 24px;
-width: 40%;
-height: 1000px;
-
-`
+// const EvaluateContainer = styled.div`
+// display: flex;
+// flex-direction: column;
+// align-items: flex-start;
+// padding: 0px;
+// gap: 24px;
+// width: 40%;
+// height: 1000px;
+// `
 const Overlay = styled.div`
   position: fixed;
   top: 0;
