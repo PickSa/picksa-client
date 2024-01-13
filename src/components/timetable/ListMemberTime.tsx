@@ -18,15 +18,15 @@ const PartHighlight = styled.div<{part:string}>`
     border-radius: 10px;
     height: 15px;
     ${(props) => {
-        if(props.part === '기획'){
+        if(props.part === "PM"){
             return css`
                 background-color: #FAEDCC;
             `
-        } else if(props.part === '디자인'){
+        } else if(props.part === "DESIGN"){
             return css`
                 background-color: #DEECDC;
             `
-        } else if(props.part === '프론트엔드'){
+        } else if(props.part === "FRONTEND"){
             return css`
                 background-color: #D6E4EE;
             `
