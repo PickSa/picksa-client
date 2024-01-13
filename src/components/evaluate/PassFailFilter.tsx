@@ -43,6 +43,8 @@ const SelectWrapper = styled.div`
   justify-content: flex-end;
    & > .select-box {
      width: 100%;
+     font-size: 1rem;
+     font-weight: 600;
    }
 
 `

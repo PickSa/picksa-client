@@ -44,6 +44,7 @@ const EvaluateContainerContent=(props:{
                     });
                     res.splice(0,1);
                     setComments(res);
+                    console.log("commments",comments);
                 } else {
                     setIsEval(false);
                     setTexts("");
@@ -167,7 +168,7 @@ const EvaluateContainerContent=(props:{
                 <VolunteerContainer4>
                     <Name>개인 코멘트</Name>
                     {comments && comments.map((evaluationItem, idx)=>(
-                        <Comment key={idx} content = {evaluationItem.comment} name={evaluationItem.name}></Comment>
+                        <Comment key={idx} content = {evaluationItem.comment} name={evaluationItem.name} pass={evaluationItem.pass}></Comment>
                     ))}
                 </VolunteerContainer4>       
             </VolunteerContainer1>            
@@ -178,14 +179,14 @@ const EvaluateContainerContent=(props:{
 export default EvaluateContainerContent
 
 const VolunteerContainer = styled.div`
-    width: 550px;
+    width: 40rem;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    padding: 25px;
-    gap: 10px;
+    padding: 2rem;
+    gap: 1rem;
     background: #F7F8FA;
-    border-radius: 10px;
+    border-radius: 0.625rem;
 `
 const VolunteerContainer1 = styled.div`
     width: 100%;
@@ -193,30 +194,29 @@ const VolunteerContainer1 = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    padding-left: 16px;
-    gap: 20px;
+    padding-left: 2rem;
+    gap: 1.5rem;
 `
 const NameContainer = styled.div`
-    width: 90%;
+    width: 95%;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    align-items: center;
-    padding: 0px;
-    gap: 20px;
+    align-items: flex-start;
+    padding-bottom: 1rem;
+    gap: 1.5rem;
     border-bottom: 1px solid #000000;
 `
 const NameContainer2 = styled.div`
-    width: 90%;
+    width: 95%;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    padding: 0px;
-    gap: 18px;
+    gap: 1.5rem;
 `
 const NameContainer3 = styled.div`
-    width: 90%;
+    width: 95%;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -228,17 +228,17 @@ const Name = styled.div`
     font-family: 'Pretendard Variable';
     font-style: normal;
     font-weight: 700;
-    font-size: 18px;
-    line-height: 50px;
+    font-size: 1.5rem;
+    line-height: 3.125rem;
     color: #000000;
 `
 const Evaluate = styled.div`
-    width: 90%;
+    width: 95%;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    padding-bottom: 20px;
-    gap: 20px;
+    padding-bottom: 1.25rem;
+    gap: 1.5rem;
     border-bottom: 1px solid #000000;
 `
 const EvaluateNumContainer1 = styled.div`
@@ -246,13 +246,13 @@ const EvaluateNumContainer1 = styled.div`
     flex-direction: row;
     align-items: flex-start;
     padding: 0px;
-    gap: 16px;
+    gap: 1rem;
 `
 const Text1 = styled.div`
     font-family: 'Pretendard';
     font-style: normal;
     font-weight: 500;
-    font-size: 14px;
+    font-size: 1.4rem;
     line-height: 150%;
     color: #000000;
 `
@@ -260,32 +260,31 @@ const Text2 = styled.div`
     font-family: 'Pretendard';
     font-style: normal;
     font-weight: 700;
-    font-size: 14px;
+    font-size: 1.4rem;
     line-height: 150%;
     color: #000000;
 `
-
 const VolunteerContainer3 = styled.div`
     width: 95%;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 12px;
+    gap: 0.75rem;
 `
 const RegisterButton = styled.button<{$registerActive:boolean}>`
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    padding: 8px 10px;
-    height: 32px;
+    padding: 1rem 1rem;
+    height: 3rem;
     background: ${props => props.$registerActive ? 'rgba(106, 199, 239, 0.2)':'#DDDDDD'};
-    border-radius: 30px;
+    border-radius: 1.875rem;
     font-family: 'Pretendard Variable';
     font-style: normal;
-    font-weight: 500;
-    font-size: 13px;
-    line-height: 16px;
+    font-weight: 600;
+    font-size: 1.3rem;
+    line-height: 1rem;
     color: #000000;
     border: none;
     &:hover{
@@ -293,31 +292,30 @@ const RegisterButton = styled.button<{$registerActive:boolean}>`
     }
 `
 const EvaluateNumContainer3 = styled.div`
-    width: 90%;
+    width: 95%;
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
     padding: 0px;
-    gap: 8px;
+    gap: 0.5rem;
 `
-
 const EvaluateButtonPass = styled.button<{$passed:boolean|undefined}>`
     box-sizing: border-box;
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    padding: 4px 8px;
-    gap: 8px;
-    width: 186px;
-    height: 29px;
+    padding: 0.25rem 0.5rem;
+    gap: 0.5rem;
+    width: 16rem;
+    height: 2.7rem;
     background: #FFFFFF;
     border: 1px solid #A0A0A0;
-    border-radius: 2px;
+    border-radius: 0.125rem;
     font-family: 'Pretendard';
     font-style: normal;
     font-weight: 500;
-    font-size: 14px;
+    font-size: 1.3rem;
     line-height: 150%;
     color: #A0A0A0;
     &.passed{
@@ -345,7 +343,6 @@ const EvaluateButtonPass = styled.button<{$passed:boolean|undefined}>`
         };
     }
 `
-
 const TextBox = styled.input`
     box-sizing: border-box;
     /* Auto layout */
@@ -353,17 +350,17 @@ const TextBox = styled.input`
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    padding: 12px;
-    gap: 8px;
-    height: 129px;
+    padding: 1rem;
+    gap: 0.5rem;
+    height: 13rem;
     width: 100%;
     background: #FFFFFF;
     border: 1px solid #000000;
-    border-radius: 2px;
+    border-radius: 0.125rem;
     font-family: 'Pretendard';
     font-style: normal;
     font-weight: 400;
-    font-size: 14px;
+    font-size: 1.5rem;
     line-height: 150%;
     /* or 21px */
     color: #000000;
@@ -372,7 +369,7 @@ const VolunteerContainer4 = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    padding: 16px;
-    gap: 8px;
+    gap: 1.5rem;
     width: 100%;
 `
+

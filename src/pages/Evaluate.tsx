@@ -83,31 +83,31 @@ const ContainerWrapper = styled.div`
 width: 100%;
 display: flex;
 flex-direction: row;
-padding: 60px;
+padding: 3.75rem;
 justify-content: space-evenly;
-gap: 10px;
 align-items: flex-start;
 `
 
 const FileContainer = styled.div`
-width: 48%;
-height: 1000px;
-padding: 20px;
+width: 50%;
+height: 80rem;
+padding: 3rem;
 background: #D9D9D9;
 font-family: 'Pretendard';
 font-style: normal;
 font-weight: 400;
-font-size: 35px;
-line-height: 42px;
+font-size: 2.1875rem;
+line-height: 2.625rem;
 display: flex;
 flex-direction: column;
+gap: 1.5rem;
 align-items: start;
 color: #000000;
 `
 const SlideBtn = styled.div`
 z-index: 50;
 position: sticky;
-top:10;
+top:0.625rem;
 left: 0;
 `
 const EvaluateContainer = styled.div`
@@ -115,9 +115,9 @@ display: flex;
 flex-direction: column;
 align-items: flex-start;
 padding: 0px;
-gap: 24px;
+gap: 1.5rem;
 width: 40%;
-height: 1000px;
+height: 62.5rem;
 
 `
 const Overlay = styled.div`
@@ -129,6 +129,7 @@ const Overlay = styled.div`
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 4;
 `;
+
 
 
 

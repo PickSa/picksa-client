@@ -8,7 +8,7 @@ export const UserInfoAtom = atom({
     default: {
         isUser: true,
         user: {
-            username: "박경빈",
+            username: "윤예원",
         },
     },
     effects_UNSTABLE: [persistAtom],
@@ -16,7 +16,7 @@ export const UserInfoAtom = atom({
 
 export const accessTokenAtom = atom<string>({
     key: "access_token",
-    default: "eyJhbGciOiJIUzUxMiJ9.eyJpZCI6IjIiLCJwb3NpdGlvbiI6IlBSRVNJREVOVCIsInBhcnQiOiJGUk9OVEVORCIsImlhdCI6MTcwNDk4NjgwNCwiZXhwIjoxNzA1MDczMjA0fQ.ZMpPNlTLKm025YZjzf9V7YG8XZ6CA38JzoGj47SowJy-fGY-WIJTGQklXagiYKevBu6hTjZm1_YNn32uVmaPhw",
+    default: "eyJhbGciOiJIUzUxMiJ9.eyJpZCI6IjQiLCJwb3NpdGlvbiI6IlBBUlRfTEVBREVSIiwicGFydCI6IkZST05URU5EIiwiaWF0IjoxNzA1MTA2ODk2LCJleHAiOjE3MDUxOTMyOTZ9.ac5ui6S26Tj6twORouYxhtE7XVMS6ViaSENWv-rT0pmRyabJ-EeGi5pHQJYpjURhoyYi05raGI_y5Hm6eUUP9g",
     effects_UNSTABLE: [persistAtom],
 })
 
