@@ -24,9 +24,7 @@ const ListTable = () => {
         async function fetchIntervieweeData() {
           const result = await getInterviewee(accessToken);
           setApplicantLists(result.applicants);
-          console.log(result.applicants[0].available);
           setScheduleDay1(result.schedules[0]);
-          console.log(scheduleDay1);
         }    
         fetchIntervieweeData();
       }, []);

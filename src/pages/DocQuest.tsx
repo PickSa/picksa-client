@@ -5,6 +5,9 @@ import styled from 'styled-components'
 import MakeQuest from '../components/docquest/MakeQuest'
 import SortQuest from '../components/docquest/SortQuest'
 import DeleteModal from '../components/modals/DeleteModal'
+import { useNavigate } from 'react-router-dom'
+import { useRecoilValue } from 'recoil'
+import { accessTokenAtom } from '../atom'
 
 const DocQuest = () => {
     const [currentTab, setCurrentTab] = useState('list');
@@ -13,6 +16,14 @@ const DocQuest = () => {
 
     const [delModalIsOpen, setDelModalIsOpen] = useState(false);
     const [deletedId, setDeletedId] = useState<number>();
+    const accessToken = useRecoilValue(accessTokenAtom);
+    const navigate = useNavigate();
+    useEffect(() => {
+      if(accessToken === ""){
+        alert("로그인해주세요!");
+        navigate("/");
+      }
+    }, []);
 
     useEffect(() => {
       if(currentTab === 'list'){

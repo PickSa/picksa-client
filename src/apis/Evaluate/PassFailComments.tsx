@@ -14,10 +14,9 @@ export const postEvaluation = async (id: string, passSelected:boolean, texts: st
             "Authorization" : `Bearer ${accessToken}`
           },
         });
-        console.log(response.data);
         return response.data;
     }catch{
-      console.log("false")
+      console.log("error occur")
     }
 }
 export const patchEvaluation = async(id: number, passSelected:boolean, texts: string, accessToken: string) => {
@@ -45,10 +44,9 @@ export const getEvalOthers = async (applicant_id: string, accessToken: string) =
       `${baseUrl}/api/v1/evaluations/applicant/${applicant_id}`, 
       { headers: { Authorization: `Bearer ${accessToken}` } }
     );
-    console.log(response.data);
     return response.data;
   } catch {
-    console.log("false")
+    console.log("error occur")
   }
 }
 
@@ -59,10 +57,9 @@ export const getPassFail = async (applicant_id: string, accessToken: string) => 
       `${baseUrl}/api/v1/evaluations/final/${applicant_id}`, 
       { headers: { 'Authorization': `Bearer ${accessToken}` } }
     );
-    console.log(response.data);
     return response.data;
   } catch {
-    console.log("false")
+    console.log("error occur")
   }
 }
 //파트장이 결정하는 합불 결과
@@ -76,12 +73,8 @@ export const patchLeaderPassFail = async (applicant_id: string,
       },
       { headers: { Authorization: `Bearer ${accessToken}` } }
     );
-    console.log(response);
     return response;
   } catch (error) {
-    console.log(accessToken);
-    console.log(result);
-    console.log(applicant_id);
     console.log(error);
     return false;
   }

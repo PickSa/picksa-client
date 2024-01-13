@@ -18,7 +18,6 @@ export const getInterviewee = async (accessToken: string) => {
         `${baseUrl}/api/v1/applicants/interview/schedules`, 
         { headers: { 'Authorization': `Bearer ${accessToken}` } }
       );
-      console.log(response.data.applicants);
       return response.data;
     } catch {
       console.log("false")

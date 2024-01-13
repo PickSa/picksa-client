@@ -1,11 +1,21 @@
 import React, { useEffect, useState } from 'react'
-import { Outlet, useParams } from 'react-router-dom'
+import { Outlet, useNavigate, useParams } from 'react-router-dom'
 import { PageFlex } from '../styles/globalStyle'
 import NavBar from '../components/common/NavBar'
+import { accessTokenAtom } from '../atom'
+import { useRecoilValue } from 'recoil'
 
 const LionListHome = () => {
   const params = useParams();
   const [bgActive, setBgActive] = useState("");
+  const accessToken = useRecoilValue(accessTokenAtom);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if(accessToken === ""){
+      alert("로그인해주세요!");
+      navigate("/");
+    }
+  }, []);
   useEffect(() => {
     if(params.id){
       //id가 있을 경우, detail bg color active

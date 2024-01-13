@@ -1,15 +1,20 @@
 import NavBar from "../components/common/NavBar"
-import { ArticleFlex, PageFlex } from "../styles/globalStyle"
+import { PageFlex } from "../styles/globalStyle"
 import styled from "styled-components"
-import { useState } from 'react';
+import { useEffect } from 'react';
 import ListTimeTable from "../components/timetable/ListTimeTable"
-import SideBar from '../components/evaluate/SideBar';
-import ToggleButton from "../assets/evaluate/ToggleButton"
+import { useRecoilValue } from "recoil";
+import { useNavigate } from "react-router-dom";
+import { accessTokenAtom } from "../atom";
 const Evaluate = () => {
-  const [isOpen, setIsOpen] = useState(false);
-      const toggleSide = () => {
-          setIsOpen(true);
-      };
+  const accessToken = useRecoilValue(accessTokenAtom);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if(accessToken === ""){
+      alert("로그인해주세요!");
+      navigate("/");
+    }
+  }, []);
   return (
     <>      
       <PageFlex>      
