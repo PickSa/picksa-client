@@ -189,8 +189,8 @@ const PartHighlight = styled.div<{part:string}>`
 const Check = styled.div`
 background: #73ABFF;
 border-radius: 10px;
-    width: 100%; /* adjust as needed */
-    height: 30px; /* adjust as needed */
+width: 10rem; /* adjust as needed */
+    height: 3rem; /* adjust as needed */
 `;
 const Nocheck = styled.div`
 background: #EAF1F9;
