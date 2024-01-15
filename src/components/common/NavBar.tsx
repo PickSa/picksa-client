@@ -111,7 +111,7 @@ const NavBar = ({ where }: { where: string }) => {
           {
             userinfo.isUser ? 
             <>
-            <MenuPageBox className="user">{`${userinfo.user.username} 님`}</MenuPageBox>
+            <MenuPageBox className="user-landing">{`${userinfo.user.username} 님`}</MenuPageBox>
             <MenuPageBox className="logout" onClick={onClickLogout}><MdOutlineLogout />Log out</MenuPageBox>
             </>
             :
@@ -180,6 +180,9 @@ const MenuPageBox = styled.div`
   }
   &.user{
     color: black;
+  }
+  &.user-landing{
+    color: white;
   }
   &:hover{
     cursor: pointer;
