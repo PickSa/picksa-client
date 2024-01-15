@@ -27,7 +27,7 @@ const ListMemberRow = (props:ListMemberRowType) => {
         <div>{props.name}</div>
         <div>{props.studentId}</div>
         <div>{`${props.score}/${props.userCount}`}</div>
-        <div>{props.result}</div>
+        <div>{props.result === "PASS" ? "합격" : props.result === "PENDING" ? "미정" : "불합격"}</div>
         <div>{typeof(props.isEvaluated) === "string" ?
         props.isEvaluated
         :
