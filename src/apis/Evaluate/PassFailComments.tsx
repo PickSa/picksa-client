@@ -73,9 +73,12 @@ export const patchLeaderPassFail = async (applicant_id: string,
       },
       { headers: { Authorization: `Bearer ${accessToken}` } }
     );
-    return response;
+    return response.data;
   } catch (error) {
-    console.log(error);
+    // console.log(error);
+    if(axios.isAxiosError(error)){
+      return error.response?.data.message;
+    }
     return false;
   }
 };

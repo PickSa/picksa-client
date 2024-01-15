@@ -135,7 +135,7 @@ const EvaluateContainerContent=(props:{
                     </EvaluateNumContainer1>
                     <EvaluateNumContainer1>
                         <Text1>최종평가</Text1>
-                        <PassFailFilter selectedOpt={evaluationRes.result} />
+                        <PassFailFilter selectedOpt={evaluationRes.result} currentId={props.currentId!} />
                     </EvaluateNumContainer1>
                 </Evaluate>
             </VolunteerContainer1>
