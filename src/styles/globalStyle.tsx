@@ -8,6 +8,7 @@ export const PageFlex = styled.div`
     &.landing{
         background-image: linear-gradient(rgba(0, 0, 0, 0.527), rgba(0, 0, 0, 0.5)), url(/img/HomeBG.png);
         background-size: cover;
+        background-position: center center;
     }
     &.docquest-background{
         background-color: rgba(221, 221, 221, 1);
