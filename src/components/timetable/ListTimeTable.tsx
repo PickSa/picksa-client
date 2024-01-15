@@ -187,14 +187,14 @@ const PartHighlight = styled.div<{part:string}>`
 const Check = styled.div`
 background: #73ABFF;
 border-radius: 10px;
-width: 10rem; /* adjust as needed */
-    height: 3rem; /* adjust as needed */
+width: 6rem; /* adjust as needed */
+height: 2.5rem; /* adjust as needed */
 `;
 const Nocheck = styled.div`
 background: #EAF1F9;
 border-radius: 10px;
-    width: 10rem; /* adjust as needed */
-    height: 3rem; /* adjust as needed */
+    width: 6rem; /* adjust as needed */
+    height: 2.5rem; /* adjust as needed */
 `;
 const Sticky = styled.td`
     position: sticky;
