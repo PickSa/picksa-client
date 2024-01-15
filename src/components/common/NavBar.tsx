@@ -70,6 +70,7 @@ const NavBar = ({ where }: { where: string }) => {
         if(nameResult === false){
           console.log('유저 이름을 찾을 수 없음');
         } else {
+          console.log(nameResult);
           setUserinfo({
             isUser : true,
             user : {
