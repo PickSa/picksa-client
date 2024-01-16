@@ -2,7 +2,7 @@ import NavBar from "../components/common/NavBar"
 import { PageFlex } from "../styles/globalStyle"
 import styled from "styled-components"
 import EvaluateContainerContent from "../components/evaluate/EvaluateContainerContent"
-import SlideButton from '../assets/evaluate/SlideButton.png'
+import { MdChevronRight } from "react-icons/md";
 import { useEffect, useState } from 'react';
 import SideBar from '../components/evaluate/SideBar';
 import { useParams } from "react-router-dom"
@@ -46,8 +46,8 @@ const Evaluate = () => {
       <ContainerWrapper>
         <FileContainer>
         <SlideBtn role="button" onClick={toggleSide}>
-      <img src={SlideButton}/>
-    </SlideBtn>
+          <div><MdChevronRight /></div>
+        </SlideBtn>
         {member && 
         <Application 
           id={member.id}
@@ -89,36 +89,41 @@ const ContainerWrapper = styled.div`
 `
 
 const FileContainer = styled.div`
-width: 50%;
-height: 80rem;
-padding: 3rem;
-/* background: #D9D9D9; */
-font-family: 'Pretendard';
-font-style: normal;
-font-weight: 400;
-font-size: 2.1875rem;
-line-height: 2.625rem;
-display: flex;
-flex-direction: column;
-gap: 1.5rem;
-align-items: start;
-color: #000000;
+  width: 55%;
+  height: 68rem;
+  /* background: #D9D9D9; */
+  font-family: 'Pretendard';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 2.1875rem;
+  line-height: 2.625rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: start;
+  color: #000000;
+  overflow-y: scroll;
 `
 const SlideBtn = styled.div`
-z-index: 50;
-position: sticky;
-top:0.625rem;
-left: 0;
+  z-index: 50;
+  position: sticky;
+  top:0;
+  left: 0;
+  display: flex;
+  padding: 1rem 1rem 0rem 1rem;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10rem;
+  background-color: white;
 `
 const EvaluateContainer = styled.div`
-display: flex;
-flex-direction: column;
-align-items: flex-start;
-padding: 0px;
-gap: 1.5rem;
-width: 40%;
-height: 62.5rem;
-
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0px;
+  gap: 1.5rem;
+  width: 35%;
+  height: 68rem;
 `
 const Overlay = styled.div`
   position: fixed;
