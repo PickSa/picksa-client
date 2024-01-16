@@ -38,21 +38,23 @@ export const GridContent = styled.div`
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     padding-left: 10rem;
-    padding-right: 10rem;
     font-size: 1.2rem;
     &.listTitle{
         font-weight: bolder;
-        background-color: rgba(106, 199, 239, 0.2);
+        background-color: #ddf1fb;
         padding-top: 1rem;
         padding-bottom: 1rem;
+        position: sticky;
+        top: 0;
+        z-index: 30;
     }
     &.member{
         padding-top: 0.8rem;
         padding-bottom: 0.8rem;
         border-bottom: 1px solid #DDDDDD;
-    }
-    &:hover{
-        cursor: pointer;
+        &:hover{
+            cursor: pointer;
+        }
     }
 `
 

@@ -56,4 +56,6 @@ export default ListTable
 const TableWrapper = styled.div`
     display: flex;
     flex-direction: column;
+    height: 63rem;
+    overflow-y: scroll;
 `
