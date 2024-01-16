@@ -24,10 +24,11 @@ const CommentContainer = styled.div`
 display: flex;
 flex-direction: column;
 align-items: flex-end;
-padding: 2rem; /* 18px */
 gap: 1rem; /* 10px */
-width: 32rem; /* 420px */
+width: 90%;
 /* Blue/Blue2 */
+padding-top: 2rem;
+padding-bottom: 2rem;
 background: #EAF1F9;
 border-radius: 0.5rem; /* 8px */
 `
@@ -43,6 +44,7 @@ font-weight: 700;
 font-size: 1.1rem; /* 12px */
 line-height: 0.875rem; /* 14px */
 color: #B0B0B0;
+margin-right: 2rem;
 `
 const CommentContent = styled.div`
 width: 90%;
@@ -54,6 +56,7 @@ line-height: 150%;
 /* or 21px */
 padding: 1.25rem; /* 20px */
 color: #000000;
+margin-left: 2rem;
 `
 const PassText = styled.span<{pass:boolean}>`
 color: ${props => props.pass ? "blue" : "red"}`

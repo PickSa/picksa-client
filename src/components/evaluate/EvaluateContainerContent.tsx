@@ -166,9 +166,11 @@ const EvaluateContainerContent=(props:{
                 </VolunteerContainer3>
                 <VolunteerContainer4>
                     <Name>개인 코멘트</Name>
+                    <div className='comment-box'>
                     {comments && comments.map((evaluationItem, idx)=>(
                         <Comment key={idx} content = {evaluationItem.comment} name={evaluationItem.name} pass={evaluationItem.pass}></Comment>
                     ))}
+                    </div>
                 </VolunteerContainer4>       
             </VolunteerContainer1>            
         </VolunteerContainer>}
@@ -178,7 +180,7 @@ const EvaluateContainerContent=(props:{
 export default EvaluateContainerContent
 
 const VolunteerContainer = styled.div`
-    width: 40rem;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -342,7 +344,7 @@ const EvaluateButtonPass = styled.button<{$passed:boolean|undefined}>`
         };
     }
 `
-const TextBox = styled.input`
+const TextBox = styled.textarea`
     box-sizing: border-box;
     /* Auto layout */
     display: flex;
@@ -351,7 +353,7 @@ const TextBox = styled.input`
     align-items: center;
     padding: 1rem;
     gap: 0.5rem;
-    height: 13rem;
+    height: 8rem;
     width: 100%;
     background: #FFFFFF;
     border: 1px solid #000000;
@@ -361,6 +363,7 @@ const TextBox = styled.input`
     font-weight: 400;
     font-size: 1.5rem;
     line-height: 150%;
+    overflow-y: scroll;
     /* or 21px */
     color: #000000;
 `
@@ -370,5 +373,13 @@ const VolunteerContainer4 = styled.div`
     align-items: flex-start;
     gap: 1.5rem;
     width: 100%;
+    & > .comment-box{
+        display: flex;
+        gap: 1.5rem;
+        flex-direction: column;
+        width: 100%;
+        height: 25rem;
+        overflow-y: scroll;
+    }
 `
 
