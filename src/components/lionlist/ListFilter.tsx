@@ -115,6 +115,7 @@ const FilterSelection = styled.div`
 const SelectWrapper = styled.div`
   display: flex;
   width : 10%;
+  z-index: 51;
   justify-content: flex-end;
   & > .select-box {
     width: 100%;

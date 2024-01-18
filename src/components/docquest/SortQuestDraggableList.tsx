@@ -15,8 +15,15 @@ const SortQuestDraggableList = (props:{
         const eventTarget = e.target as HTMLElement;
     }
     const dragEnter = (e:React.DragEvent<HTMLDivElement>, position:number) => {
+        e.preventDefault();
         dragOverItem.current = position;
         const eventTarget = e.target as HTMLElement;
+        eventTarget.style.marginTop = "20px";
+    }
+    const dragLeave = (e:React.DragEvent<HTMLDivElement>) => {
+        e.preventDefault();
+        const eventTarget = e.target as HTMLElement;
+        eventTarget.style.marginTop = "0px";
     }
     const drop = () => {
         const newList = [...props.questionData];
@@ -35,6 +42,7 @@ const SortQuestDraggableList = (props:{
             draggable
             onDragStart={(e)=>dragStart(e, idx)}
             onDragEnter={(e)=>dragEnter(e, idx)}
+            onDragLeave={(e)=>dragLeave(e)}
             onDragEnd={drop}
             onDragOver={(e) => e.preventDefault}>
                 <div className='drag-icon'><MdDragIndicator /></div>

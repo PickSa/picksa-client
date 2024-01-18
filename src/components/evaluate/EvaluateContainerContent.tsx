@@ -378,8 +378,11 @@ const VolunteerContainer4 = styled.div`
         gap: 1.5rem;
         flex-direction: column;
         width: 100%;
-        height: 25rem;
+        height: 33vh;
         overflow-y: scroll;
+        &::-webkit-scrollbar {
+            display: none;
+        }
     }
 `
 

@@ -177,7 +177,7 @@ const ContentBox = styled.div`
     display: flex;
     flex-direction: column;
     width: 100%;
-    height: 59rem;
+    height: 72vh;
     /* border: 1px solid red; */
     border-top: 1px solid rgba(106, 199, 239, 1);
     overflow-y: scroll;
