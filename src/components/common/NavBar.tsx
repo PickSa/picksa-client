@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { TABS } from "../../assets/tabs";
 import { useEffect, useState } from "react";
 import { SpaceBetweenFlex } from "../../styles/globalStyle";
-import { useRecoilState, useSetRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { LoginCodeAtom, UserInfoAtom, accessTokenAtom } from "../../atom";
 import { getLoginLink, getToken, getUserName } from "../../apis/login";
 
@@ -12,11 +12,9 @@ const NavBar = ({ where }: { where: string }) => {
   const { pathname } = useLocation();
 	const [tab, setTab] = useState(TABS.HOME);
   const [userinfo, setUserinfo] = useRecoilState(UserInfoAtom);
-  const userinfo2 = useRecoilValue(UserInfoAtom);
   const setAccessToken = useSetRecoilState(accessTokenAtom);
-  const accessToken = useRecoilValue(accessTokenAtom);
   const [code, setCode] = useRecoilState(LoginCodeAtom);
-  const code2 = useRecoilValue(LoginCodeAtom);
+
 	useEffect(() => {
 		if (pathname.includes('pre-lionlist')) {
 			setTab(TABS.LIONLIST);
@@ -30,21 +28,18 @@ const NavBar = ({ where }: { where: string }) => {
       setTab(TABS.HOME);
     }
 	}, [pathname]);
+
   const navigate = useNavigate();
   const onClickhandel = (page:string) => {
-    console.log("isUser", userinfo.isUser);
-    /*if(userinfo.isUser){
-      
+    if(userinfo.isUser){
       navigate(`/${page}`);
     } else {
       alert("로그인해주세요!");
-    }*/
-    if(userinfo2){
-      navigate(`/${page}`);
     }
   }
+
   const onClickLogout = async() => {
-    //setAccessToken("");
+    setAccessToken("");
     setUserinfo({
       isUser: false,
       user: {
@@ -52,6 +47,7 @@ const NavBar = ({ where }: { where: string }) => {
       }
     })
   }
+
   const onClickLogin = async() => {
     const result = await getLoginLink();
     if(result === false) {
@@ -60,20 +56,16 @@ const NavBar = ({ where }: { where: string }) => {
       window.open(result, "_self");
     }
   }
-  useEffect(() => {
-    console.log("accessToken", accessToken);
-}, [accessToken]);
+
   const getAccessToken = async() => {
     if(userinfo.isUser === false){
-      console.log(1);
       const result = await getToken(code!);
       if(result === false){
-        console.log("accessToken", accessToken)
         console.log('로그인 에러 발생: access token 취득 불가');
       } else {
         console.log(result);
         console.log(result.accessToken);
-        //setAccessToken(result.accessToken);
+        setAccessToken(result.accessToken);
         const nameResult = await getUserName(result.accessToken);
         if(nameResult === false){
           console.log('유저 이름을 찾을 수 없음');
@@ -90,13 +82,13 @@ const NavBar = ({ where }: { where: string }) => {
       }
     }
   }
+
   useEffect(() => {
-    console.log(accessToken);
-    setAccessToken(accessToken);
     if(code !== undefined){
       getAccessToken();
     }
   }, [code]);
+
   useEffect(() => {
     const getCode = new URL(window.location.href).searchParams.get("code");
     if(getCode){
@@ -104,6 +96,7 @@ const NavBar = ({ where }: { where: string }) => {
       navigate("/");
     }
   }, [where === 'landing']);
+
   if (where === 'landing') {
     return (
       <SpaceBetweenFlex className="navbar-landing">
@@ -152,6 +145,7 @@ const NavBar = ({ where }: { where: string }) => {
     );
   }
 }
+
 export default NavBar
 
 const MenuWrapper = styled.div`
