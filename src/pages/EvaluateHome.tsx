@@ -8,10 +8,11 @@ const EvaluateHome = () => {
   const accessToken = useRecoilValue(accessTokenAtom);
   const navigate = useNavigate();
   useEffect(() => {
-    if(accessToken === ""){
+    console.log("accessToken", accessToken)
+    /*if(accessToken === ""){
       alert("로그인해주세요!");
       navigate("/");
-    }
+    }*/
   }, []);
   return (
     <PageFlex className="liondetail-bg-active">
