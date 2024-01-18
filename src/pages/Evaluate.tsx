@@ -90,7 +90,7 @@ const ContainerWrapper = styled.div`
 
 const FileContainer = styled.div`
   width: 55%;
-  height: 68rem;
+  height: 88vh;
   /* background: #D9D9D9; */
   font-family: 'Pretendard';
   font-style: normal;
@@ -103,6 +103,9 @@ const FileContainer = styled.div`
   align-items: start;
   color: #000000;
   overflow-y: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `
 const SlideBtn = styled.div`
   z-index: 50;

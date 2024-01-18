@@ -120,7 +120,7 @@ width: 100%
 
 `;
 const Table2 = styled.table`
-width: 50rem;
+width: 25rem;
 `;
 const ListTitle2 = styled.tr`
 justify-content: center;
@@ -156,12 +156,12 @@ overflow-x: scroll; // 가로 스크롤 추가
 width: 100%;
 `;
 const Text = styled.td`
-width: 7rem;
+width: 5rem;
 `;
 const PartHighlight = styled.div<{part:string}>`
     font-size: 1rem;
     width: 5rem;
-    padding: 0.4rem 0.9rem 0.4rem 0.9rem;
+    padding: 0.5rem 0.9rem 0.5rem 0.9rem;
     border-radius: 10px;
     height: 15px;
     ${(props) => {
@@ -187,14 +187,14 @@ const PartHighlight = styled.div<{part:string}>`
 const Check = styled.div`
 background: #73ABFF;
 border-radius: 10px;
-width: 6rem; /* adjust as needed */
-height: 2.5rem; /* adjust as needed */
+width: 5rem; /* adjust as needed */
+height: 2.4rem; /* adjust as needed */
 `;
 const Nocheck = styled.div`
 background: #EAF1F9;
 border-radius: 10px;
-    width: 6rem; /* adjust as needed */
-    height: 2.5rem; /* adjust as needed */
+width: 5rem; /* adjust as needed */
+height: 2.4rem; /* adjust as needed */
 `;
 const Sticky = styled.td`
     position: sticky;

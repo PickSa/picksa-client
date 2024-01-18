@@ -294,7 +294,7 @@ const ContentBox = styled.div`
     display: flex;
     flex-direction: column;
     width: 100%;
-    height: 30rem;
+    height: 40vh;
     /* border: 1px solid red; */
     overflow-y: scroll;
     &::-webkit-scrollbar {

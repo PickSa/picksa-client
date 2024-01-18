@@ -54,3 +54,9 @@ export type DocQuestTagType = {
     label: string,
     value: number,
 }
+
+export type SettedTimeType = {
+    date: string,
+    startAt: string,
+    finishAt: string,
+}
