@@ -46,6 +46,7 @@ const NavBar = ({ where }: { where: string }) => {
         username: "",
       }
     })
+    navigate(`/`);
   }
 
   const onClickLogin = async() => {

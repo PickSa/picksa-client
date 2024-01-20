@@ -7,13 +7,15 @@ import { accessTokenAtom } from '../atom';
 const EvaluateHome = () => {
   const accessToken = useRecoilValue(accessTokenAtom);
   const navigate = useNavigate();
+
   useEffect(() => {
     console.log("accessToken", accessToken)
-    /*if(accessToken === ""){
+    if(accessToken === ""){
       alert("로그인해주세요!");
       navigate("/");
-    }*/
+    }
   }, []);
+  
   return (
     <PageFlex className="liondetail-bg-active">
       <Outlet />
