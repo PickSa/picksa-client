@@ -7,6 +7,7 @@ import { useRecoilValue } from "recoil";
 import { accessTokenAtom } from "../../atom";
 import { GetQuestType } from "../../dummy/datatypes";
 import MakeQuestInput from "./MakeQuestInput";
+import StatusNoticeModal from "../modals/StatusNoticeModal";
 
 const sortTag = [
     {value: "LASTEST", label: "---기본---"},
@@ -22,10 +23,9 @@ const MakeQuest = (props:{
     const [selectedSortTag, setSelectedSortTag] = useState<{value:string, label:string}>(sortTag[0]);
     const [questionData, setQuestionData] = useState<GetQuestType[]>();
     const [newInputData, setNewInputData] = useState(false);
-    // const [changedDetermineList, setChangedDetermineList] = useState<GetQuestType[]>([]);
     const [changedIsDetermined, setChangedIsDetermined] = useState(false);
-
     const [changedDetermineData, setChangedDetermineData] = useState<{id:number, isDetermined:boolean}[]>([]);
+    const [statusNotiModalOpen, setStatusNotiModalOpen] = useState(false);
 
     const accessToken = useRecoilValue(accessTokenAtom);
 
@@ -45,7 +45,6 @@ const MakeQuest = (props:{
     useEffect(() => {
         if(changedIsDetermined === true){
             setChangedIsDetermined(false);
-            window.location.reload();
         }
     }, [changedIsDetermined === true]);
 
@@ -55,7 +54,6 @@ const MakeQuest = (props:{
             console.log('질문 목록 불러오기 오류 발생');
         } else {
             setQuestionData(() => result);
-            // setChangedDetermineList(() => result);
         }
     }
 
@@ -65,6 +63,10 @@ const MakeQuest = (props:{
             console.log("error");
         } else {
             setChangedIsDetermined(() => true);
+            setStatusNotiModalOpen(true);
+            setTimeout(() => {
+                setStatusNotiModalOpen(false);
+            }, 1000);
         }
     }
 
@@ -81,6 +83,7 @@ const MakeQuest = (props:{
 
   return (
     <Wrapper>
+        {statusNotiModalOpen === true && <StatusNoticeModal content="선택한 질문이 확정되었습니다." />}
         <SetFlexStart>
             <FilterWrapper>
                 <FilterSelection
