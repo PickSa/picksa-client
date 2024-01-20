@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { GetQuestType } from '../../dummy/datatypes';
 import { FaTrash } from "react-icons/fa6";
+import { useRecoilValue } from 'recoil';
+import { UserInfoAtom } from '../../atom';
 
 const MakeQuestList = (props:{
     lists: GetQuestType,
@@ -11,6 +13,7 @@ const MakeQuestList = (props:{
     setChangedDetermineData:React.Dispatch<React.SetStateAction<{id:number, isDetermined:boolean}[]>>,
 }) => {
     const [isChecked, setIsChecked] = useState<boolean|undefined>(undefined);
+    const userinfo = useRecoilValue(UserInfoAtom);
 
     useEffect(() => {
         setIsChecked(() => props.lists.isDetermined);
@@ -52,7 +55,11 @@ const MakeQuestList = (props:{
         <div className="content">{props.lists.content}</div>
         <div className="writer">{props.lists.writerName}</div>
         <div className="date">{(String(props.lists.createdAt)).split('T')[0]}</div>
-        <div className="delete" onClick={() => onClickDelete()}><FaTrash /></div>
+        {userinfo.user.username === props.lists.writerName ? 
+            <div className="delete" onClick={() => onClickDelete()}><FaTrash /></div>
+            : 
+            <div className="delete"></div>
+        }
     </ContentRow>
   )
 }

@@ -1,7 +1,6 @@
 import NavBar from "../components/common/NavBar"
 import { PageFlex } from "../styles/globalStyle"
 import styled from "styled-components"
-import { MdChevronRight } from "react-icons/md";
 import { useState } from 'react';
 import SideBar from '../components/evaluate/SideBar';
 
@@ -17,12 +16,13 @@ const Evaluate = () => {
       <NavBar where="evaluate" />
       <ContainerWrapper>
         <FileContainer>
-        <SlideBtn role="button" onClick={toggleSide}>
-          <div><MdChevronRight /></div>
-        </SlideBtn>
-        <SideBar isOpen={isOpen} currentId={undefined} setIsOpen={setIsOpen} />
+          <SlideBtn role="button" onClick={toggleSide}>
+            <div><img width="30rem" src="/img/MdChevronRight.png" /></div>
+          </SlideBtn>
+          <InfoBallon>선택된 지원자가 없습니다. 버튼을 클릭하여 지원자를 선택해주세요.</InfoBallon>
+          <SideBar isOpen={isOpen} currentId={undefined} setIsOpen={setIsOpen} />
         </FileContainer>
-        <EvaluateContainer />       
+        <EvaluateContainer />
       </ContainerWrapper>  
         {isOpen && <Overlay onClick={toggleSide} />}      
     </PageFlex>     
@@ -44,7 +44,7 @@ const ContainerWrapper = styled.div`
 const FileContainer = styled.div`
   width: 55%;
   height: 68rem;
-  background: #D9D9D9;
+  /* background: #D9D9D9; */
   font-family: 'Pretendard';
   font-style: normal;
   font-weight: 400;
@@ -60,18 +60,45 @@ const FileContainer = styled.div`
 const SlideBtn = styled.div`
   z-index: 50;
   position: sticky;
+  width: 4rem;
+  height: 3rem;
   top:0;
   left: 0;
   display: flex;
-  padding: 1rem 1rem 0rem 1rem;
+  padding: 1rem 0rem 0rem 0rem;
   justify-content: center;
   align-items: center;
-  border-radius: 10rem;
+  border-radius: 20rem;
   background-color: white;
+  &:hover{
+    cursor: pointer;
+  }
 `
+
+const InfoBallon = styled.div`
+  display: flex;
+  padding: 0.5rem 1.5rem 0.5rem 1.5rem;
+  border-radius: 1rem;
+  background-color: #73ABFF;
+  color: white;
+  font-size: 1.6rem;
+  position: absolute;
+  top: 15rem;
+  &:before{
+    border-top: 0px solid transparent;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid #73ABFF;
+    position: absolute;
+    top: -0.8rem;
+    left: 1rem;
+    content: "";
+  }
+`
+
 const EvaluateContainer = styled.div`
   display: flex;
-  background: #D9D9D9;
+  /* background: #D9D9D9; */
   flex-direction: column;
   align-items: flex-start;
   padding: 0px;
