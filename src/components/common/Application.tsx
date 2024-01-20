@@ -43,10 +43,6 @@ const Application = (props:applicationProps) => {
             <div>{props.semester}</div>
         </TableFrame>
         <TableFrame>
-            <div className='title'>휴학 여부</div>
-            <div>{"없음"}</div>
-        </TableFrame>
-        <TableFrame>
             <div className='title'>이메일</div>
             <div>{props.email}</div>
         </TableFrame>
@@ -91,8 +87,12 @@ const NameSpace = styled.div`
 const InfoGrid = styled.div`
     display: grid;
     width: 100%;
+    justify-content: center;
+    align-items: center;
     margin-top: 1.2rem;
     margin-bottom: 2rem;
+    row-gap: 1px;
+    background-color: #D9D9D9;
     @media (max-width: 1920px) {
         grid-template-columns: repeat(3, 1fr);
         grid-auto-flow: row;
