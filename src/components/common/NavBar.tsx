@@ -39,14 +39,14 @@ const NavBar = ({ where }: { where: string }) => {
   }
 
   const onClickLogout = async() => {
-    setAccessToken("");
-    setUserinfo({
-      isUser: false,
-      user: {
-        username: "",
-      }
-    })
-    navigate(`/`);
+    // setAccessToken("");
+    // setUserinfo({
+    //   isUser: false,
+    //   user: {
+    //     username: "",
+    //   }
+    // })
+    // navigate(`/`);
   }
 
   const onClickLogin = async() => {

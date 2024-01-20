@@ -28,6 +28,7 @@ const EvaluateContainerContent=(props:{
     const [isEval, setIsEval] = useState<boolean>(false);
     const [myPassResult, setMyPassResult] = useState<boolean|undefined>();
     const [editActive, setEditActive] = useState(false);
+    const [clickEdit, setClickEdit] = useState(false);
 
     useEffect(()=>{
         const fetchComments = async()=>{
@@ -95,6 +96,7 @@ const EvaluateContainerContent=(props:{
                     const response = await patchEvaluation(manageBefore!.id, myPassResult!, texts ,accessToken);
                     if(response !== undefined){
                         setEditActive(() => false);
+                        setClickEdit(() => false);
                     } else {
                         alert("오류 발생, 다시 시도해주세요.");
                         //이 부분 error code 분리하기
@@ -116,8 +118,18 @@ const EvaluateContainerContent=(props:{
         }
     };
 
+    const onClickEditBtn = () => {
+        setClickEdit(() => true);
+    }
+
     const onClickHandlePass = (isPassed:boolean) => {
-        setMyPassResult(() => isPassed);
+        if(isEval){
+            if(clickEdit){
+                setMyPassResult(() => isPassed);
+            }
+        } else {
+            setMyPassResult(() => isPassed);
+        }
     }
 
     return(
@@ -145,23 +157,58 @@ const EvaluateContainerContent=(props:{
                         <Name>내 평가</Name>
                         <Text1>{userInfo.user.username}</Text1>
                 </NameContainer2>
-                <NameContainer3>
-                    <EvaluateButtonPass 
-                    className='passed'
-                    $passed={myPassResult}
-                    onClick={() => onClickHandlePass(true)}>합격</EvaluateButtonPass>
-                    <EvaluateButtonPass
-                    className='fail'
-                    $passed={myPassResult}
-                    onClick={() => onClickHandlePass(false)}>불합격</EvaluateButtonPass>
-                </NameContainer3>
+                {isEval ? 
+                    <NameContainer3>
+                        <EvaluateButtonPass 
+                        className='passed'
+                        $passed={myPassResult}
+                        $canclick={clickEdit}
+                        onClick={() => onClickHandlePass(true)}>합격</EvaluateButtonPass>
+                        <EvaluateButtonPass
+                        className='fail'
+                        $passed={myPassResult}
+                        $canclick={clickEdit}
+                        onClick={() => onClickHandlePass(false)}>불합격</EvaluateButtonPass>
+                    </NameContainer3>
+                    :
+                    <NameContainer3>
+                        <EvaluateButtonPass 
+                        className='passed'
+                        $passed={myPassResult}
+                        $canclick={true}
+                        onClick={() => onClickHandlePass(true)}>합격</EvaluateButtonPass>
+                        <EvaluateButtonPass
+                        className='fail'
+                        $passed={myPassResult}
+                        $canclick={true}
+                        onClick={() => onClickHandlePass(false)}>불합격</EvaluateButtonPass>
+                    </NameContainer3>
+                }
                 <NameContainer2>
-                    <TextBox value={texts} onChange={e=>setTexts(e.target.value)}></TextBox>
+                    {
+                        isEval === false ? 
+                        <TextBox value={texts} onChange={e=>setTexts(e.target.value)}></TextBox>
+                        :
+                        clickEdit === true ?
+                        <TextBox value={texts} onChange={e=>setTexts(e.target.value)}></TextBox>
+                        :
+                        <TextBoxCannotEdit>{texts}</TextBoxCannotEdit>
+                    }
                 </NameContainer2>
                 <EvaluateNumContainer3>
-                    <RegisterButton 
-                    $registerActive={editActive}
-                    onClick={() => handleCanPatch()}>{isEval ? "수정" : "등록"}</RegisterButton>
+                    {isEval === false ? 
+                        <RegisterButton 
+                        $registerActive={editActive}
+                        onClick={() => handleCanPatch()}>등록</RegisterButton> 
+                        :
+                        clickEdit === true ? 
+                        <RegisterButton 
+                        $registerActive={editActive}
+                        onClick={() => handleCanPatch()}>등록</RegisterButton>
+                        :
+                        <EditButton 
+                        onClick={() => onClickEditBtn()}>수정</EditButton>
+                    }
                 </EvaluateNumContainer3>
                 </VolunteerContainer3>
                 <VolunteerContainer4>
@@ -292,6 +339,27 @@ const RegisterButton = styled.button<{$registerActive:boolean}>`
         ${props => props.$registerActive ? {cursor:'pointer'} : {}}
     }
 `
+
+const EditButton = styled.button`
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem 1rem;
+    height: 3rem;
+    background: #DDDDDD;
+    border-radius: 1.875rem;
+    font-family: 'Pretendard Variable';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 1.3rem;
+    line-height: 1rem;
+    color: #000000;
+    border: none;
+    &:hover{
+        cursor: pointer;
+    }
+`
 const EvaluateNumContainer3 = styled.div`
     width: 95%;
     display: flex;
@@ -300,7 +368,7 @@ const EvaluateNumContainer3 = styled.div`
     padding: 0px;
     gap: 0.5rem;
 `
-const EvaluateButtonPass = styled.button<{$passed:boolean|undefined}>`
+const EvaluateButtonPass = styled.button<{$passed:boolean|undefined, $canclick:boolean}>`
     box-sizing: border-box;
     display: flex;
     flex-direction: row;
@@ -343,6 +411,9 @@ const EvaluateButtonPass = styled.button<{$passed:boolean|undefined}>`
             : '#A0A0A0'
         };
     }
+    &:hover{
+        ${props => props.$canclick ? {cursor:'pointer'} : {cursor:'not-allowed'}}
+    }
 `
 const TextBox = styled.textarea`
     box-sizing: border-box;
@@ -363,6 +434,27 @@ const TextBox = styled.textarea`
     font-weight: 400;
     font-size: 1.5rem;
     line-height: 150%;
+    overflow-y: scroll;
+    /* or 21px */
+    color: #000000;
+`
+
+const TextBoxCannotEdit = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 1rem;
+    gap: 0.5rem;
+    height: 8rem;
+    width: 100%;
+    background: #EAF1F9;
+    border-radius: 0.125rem;
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 1.5rem;
+    /* line-height: 150%; */
     overflow-y: scroll;
     /* or 21px */
     color: #000000;
