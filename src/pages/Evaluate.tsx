@@ -2,7 +2,6 @@ import NavBar from "../components/common/NavBar"
 import { PageFlex } from "../styles/globalStyle"
 import styled from "styled-components"
 import EvaluateContainerContent from "../components/evaluate/EvaluateContainerContent"
-import { MdChevronRight } from "react-icons/md";
 import { useEffect, useState } from 'react';
 import SideBar from '../components/evaluate/SideBar';
 import { useParams } from "react-router-dom"
@@ -46,7 +45,7 @@ const Evaluate = () => {
       <ContainerWrapper>
         <FileContainer>
         <SlideBtn role="button" onClick={toggleSide}>
-          <div><MdChevronRight /></div>
+          <div><img width="30rem" src="/img/MdChevronRight.png" /></div>
         </SlideBtn>
         {member && 
         <Application 
@@ -110,14 +109,19 @@ const FileContainer = styled.div`
 const SlideBtn = styled.div`
   z-index: 50;
   position: sticky;
+  width: 4rem;
+  height: 3rem;
   top:0;
   left: 0;
   display: flex;
-  padding: 1rem 1rem 0rem 1rem;
+  padding: 1rem 0rem 0rem 0rem;
   justify-content: center;
   align-items: center;
-  border-radius: 10rem;
+  border-radius: 20rem;
   background-color: white;
+  &:hover{
+    cursor: pointer;
+  }
 `
 const EvaluateContainer = styled.div`
   display: flex;

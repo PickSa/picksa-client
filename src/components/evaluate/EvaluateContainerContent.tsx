@@ -130,11 +130,11 @@ const EvaluateContainerContent=(props:{
                 </NameContainer>
                 <Evaluate>
                     <EvaluateNumContainer1>
-                        <Text1>전체평가</Text1>
+                        <Text1>서류점수</Text1>
                         {totalCounts && <Text2>{`${evaluationRes.score}/${totalCounts}`}</Text2>}
                     </EvaluateNumContainer1>
                     <EvaluateNumContainer1>
-                        <Text1>최종평가</Text1>
+                        <Text1>서류결과</Text1>
                         <PassFailFilter selectedOpt={evaluationRes.result} currentId={props.currentId!} />
                     </EvaluateNumContainer1>
                 </Evaluate>
@@ -142,7 +142,7 @@ const EvaluateContainerContent=(props:{
             <VolunteerContainer1>
                 <VolunteerContainer3>
                 <NameContainer2>
-                        <Name>개인평가</Name>
+                        <Name>내 평가</Name>
                         <Text1>{userInfo.user.username}</Text1>
                 </NameContainer2>
                 <NameContainer3>
@@ -165,7 +165,7 @@ const EvaluateContainerContent=(props:{
                 </EvaluateNumContainer3>
                 </VolunteerContainer3>
                 <VolunteerContainer4>
-                    <Name>개인 코멘트</Name>
+                    <Name>운영진 평가</Name>
                     <div className='comment-box'>
                     {comments && comments.map((evaluationItem, idx)=>(
                         <Comment key={idx} content = {evaluationItem.comment} name={evaluationItem.name} pass={evaluationItem.pass}></Comment>

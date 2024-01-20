@@ -1,7 +1,6 @@
 import NavBar from "../components/common/NavBar"
 import { PageFlex } from "../styles/globalStyle"
 import styled from "styled-components"
-import { MdChevronRight } from "react-icons/md";
 import { useState } from 'react';
 import SideBar from '../components/evaluate/SideBar';
 
@@ -18,8 +17,9 @@ const Evaluate = () => {
       <ContainerWrapper>
         <FileContainer>
         <SlideBtn role="button" onClick={toggleSide}>
-          <div><MdChevronRight /></div>
+          <div><img width="30rem" src="/img/MdChevronRight.png" /></div>
         </SlideBtn>
+        <div>지원자 선택하기</div>
         <SideBar isOpen={isOpen} currentId={undefined} setIsOpen={setIsOpen} />
         </FileContainer>
         <EvaluateContainer />       
@@ -44,7 +44,7 @@ const ContainerWrapper = styled.div`
 const FileContainer = styled.div`
   width: 55%;
   height: 68rem;
-  background: #D9D9D9;
+  /* background: #D9D9D9; */
   font-family: 'Pretendard';
   font-style: normal;
   font-weight: 400;
@@ -60,18 +60,23 @@ const FileContainer = styled.div`
 const SlideBtn = styled.div`
   z-index: 50;
   position: sticky;
+  width: 4rem;
+  height: 3rem;
   top:0;
   left: 0;
   display: flex;
-  padding: 1rem 1rem 0rem 1rem;
+  padding: 1rem 0rem 0rem 0rem;
   justify-content: center;
   align-items: center;
-  border-radius: 10rem;
+  border-radius: 20rem;
   background-color: white;
+  &:hover{
+    cursor: pointer;
+  }
 `
 const EvaluateContainer = styled.div`
   display: flex;
-  background: #D9D9D9;
+  /* background: #D9D9D9; */
   flex-direction: column;
   align-items: flex-start;
   padding: 0px;
