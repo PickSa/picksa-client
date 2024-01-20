@@ -40,12 +40,14 @@ const ListFilter = (props:FilterProps) => {
       const result = await getAllLists(order, accessToken);
       if(result === false){console.log("error")}
       else {
+        props.setMemberDatas(() => undefined);
         props.setMemberDatas(result.applicants);
       }
     } else {
       const result = await getPartLists(part, order, accessToken);
       if(result === false){console.log("error")}
       else {
+        props.setMemberDatas(() => undefined);
         props.setMemberDatas(result.applicants);
       }
     }
