@@ -1,4 +1,3 @@
-import React from 'react'
 import { LionDetailAnsType } from '../../dummy/datatypes'
 import styled from 'styled-components';
 
@@ -61,7 +60,10 @@ const Application = (props:applicationProps) => {
     }
     <AnswerWrapper>
         <div className='question'>포트폴리오 링크</div>
-        <div className='answer'>{props.portfolio}</div>
+        <div className='answer'>
+            <a href={props.portfolio}
+            target="_blank">{props.portfolio}</a>
+        </div>
     </AnswerWrapper>
     </>
   )
@@ -140,5 +142,8 @@ const AnswerWrapper = styled.div`
         font-size: 1.6rem;
         font-weight: 400;
         padding: 1rem 1.2rem 1rem 1.2rem;
+        &:hover{
+            cursor: pointer;
+        }
     }
 `
