@@ -16,13 +16,13 @@ const Evaluate = () => {
       <NavBar where="evaluate" />
       <ContainerWrapper>
         <FileContainer>
-        <SlideBtn role="button" onClick={toggleSide}>
-          <div><img width="30rem" src="/img/MdChevronRight.png" /></div>
-        </SlideBtn>
-        <div>지원자 선택하기</div>
-        <SideBar isOpen={isOpen} currentId={undefined} setIsOpen={setIsOpen} />
+          <SlideBtn role="button" onClick={toggleSide}>
+            <div><img width="30rem" src="/img/MdChevronRight.png" /></div>
+          </SlideBtn>
+          <InfoBallon>선택된 지원자가 없습니다. 버튼을 클릭하여 지원자를 선택해주세요.</InfoBallon>
+          <SideBar isOpen={isOpen} currentId={undefined} setIsOpen={setIsOpen} />
         </FileContainer>
-        <EvaluateContainer />       
+        <EvaluateContainer />
       </ContainerWrapper>  
         {isOpen && <Overlay onClick={toggleSide} />}      
     </PageFlex>     
@@ -74,6 +74,28 @@ const SlideBtn = styled.div`
     cursor: pointer;
   }
 `
+
+const InfoBallon = styled.div`
+  display: flex;
+  padding: 0.5rem 1.5rem 0.5rem 1.5rem;
+  border-radius: 1rem;
+  background-color: #73ABFF;
+  color: white;
+  font-size: 1.6rem;
+  position: absolute;
+  top: 15rem;
+  &:before{
+    border-top: 0px solid transparent;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid #73ABFF;
+    position: absolute;
+    top: -0.8rem;
+    left: 1rem;
+    content: "";
+  }
+`
+
 const EvaluateContainer = styled.div`
   display: flex;
   /* background: #D9D9D9; */
