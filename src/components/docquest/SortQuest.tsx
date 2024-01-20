@@ -84,9 +84,9 @@ const SortQuest = () => {
         </FilterWrapper>
         {
           btnClicked === true ? 
-          <EditBtn onClick={() => handleConfirmBtnClick()}>확정</EditBtn>
+          <EditBtn $type={""} onClick={() => handleConfirmBtnClick()}>확정</EditBtn>
           :
-          <EditBtn onClick={() => setBtnClicked(() => true)}>수정</EditBtn>
+          <EditBtn $type={"edit"} onClick={() => setBtnClicked(() => true)}>수정</EditBtn>
         }
         <ContentBox>
         {(btnClicked === true) ? 
@@ -161,12 +161,12 @@ const FilterSelection = styled.div`
   }
 `;
 
-const EditBtn = styled.div`
+const EditBtn = styled.div<{$type:string}>`
   display: flex;
   font-size: 1.2rem;
   font-weight: 500;
   padding: 0.5rem 1rem 0.5rem 1rem;
-  background-color: rgba(234, 241, 249, 1);
+  background-color: ${props => props.$type === "edit" ? '#D9D9D9': '#EAF1F9'};
   border-radius: 30px;
   &:hover{
     cursor: pointer;
