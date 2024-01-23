@@ -56,7 +56,7 @@ const FileContainer = styled.div`
   gap: 1.5rem;
   align-items: start;
   color: #000000;
-  overflow-y: scroll;
+  height: fit-content;
 `
 const SlideBtn = styled.div`
   z-index: 50;
@@ -84,7 +84,7 @@ const InfoBallon = styled.div`
   color: white;
   font-size: 1.6rem;
   position: absolute;
-  top: 15rem;
+  top: 16rem;
   &:before{
     border-top: 0px solid transparent;
     border-left: 10px solid transparent;
