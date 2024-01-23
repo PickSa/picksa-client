@@ -9,7 +9,9 @@ const LionListHome = () => {
   const params = useParams();
   const [bgActive, setBgActive] = useState("");
   const accessToken = useRecoilValue(accessTokenAtom);
+  const pageheight = window.innerHeight;
   const navigate = useNavigate();
+
   useEffect(() => {
     if(accessToken === ""){
       alert("로그인해주세요!");
@@ -25,7 +27,7 @@ const LionListHome = () => {
     }
   }, [params])
   return (
-    <PageFlex className={bgActive}>
+    <PageFlex className={bgActive} $innerheight={pageheight}>
       <NavBar where="lionlist" />
       <Outlet />
     </PageFlex>

@@ -17,6 +17,8 @@ const DocQuest = () => {
     const [delModalIsOpen, setDelModalIsOpen] = useState(false);
     const [deletedId, setDeletedId] = useState<number>();
     const accessToken = useRecoilValue(accessTokenAtom);
+
+    const pageheight = window.innerHeight;
     const navigate = useNavigate();
     useEffect(() => {
       if(accessToken === ""){
@@ -36,7 +38,7 @@ const DocQuest = () => {
     }, [currentTab]);
 
   return (
-    <PageFlex className='docquest-background'>
+    <PageFlex className='docquest-background' $innerheight={pageheight}>
       {
         delModalIsOpen === true && <DeleteModal deletedId={deletedId!} setDelModalIsOpen={setDelModalIsOpen} />
       }

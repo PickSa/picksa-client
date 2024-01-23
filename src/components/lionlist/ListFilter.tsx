@@ -1,7 +1,7 @@
 import { styled } from "styled-components"
 import { SpaceBetweenFlex } from "../../styles/globalStyle"
 import Select from "react-select"
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { accessTokenAtom } from "../../atom";
 import { LionListType } from "../../dummy/datatypes";
@@ -28,11 +28,19 @@ type FilterProps = {
   memberDatas : LionListType[];
   setActiveFilter : React.Dispatch<React.SetStateAction<string>>;
   setMemberDatas : React.Dispatch<React.SetStateAction<LionListType[]|undefined>>;
+  setFilterSize : React.Dispatch<React.SetStateAction<number|undefined>>;
 }
 
 const ListFilter = (props:FilterProps) => {
   const [selectedSort, setSelectedSort] = useState(sortAllOpt[0]);
   const accessToken = useRecoilValue(accessTokenAtom);
+
+  const filterRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    props.setFilterSize(filterRef.current?.offsetHeight);
+    // console.log(`filterSize : ${filterRef.current?.offsetHeight}`);
+  }, [filterRef]);
 
   //All, part별 통합 api 호출 함수
   const getListApiUni = async(part:string, order:string) => {
@@ -67,7 +75,7 @@ const ListFilter = (props:FilterProps) => {
 
 
   return (
-    <SpaceBetweenFlex>
+    <SpaceBetweenFlex ref={filterRef}>
       <FilterWrapper>
         <FilterSelection className={props.activeFilter==="ALL" ? "active" : ""} onClick={() => handlePartFilterClick("ALL")}>ALL</FilterSelection>
         <FilterSelection className={props.activeFilter==="PM" ? "active" : ""} onClick={() => handlePartFilterClick("PM")}>기획</FilterSelection>

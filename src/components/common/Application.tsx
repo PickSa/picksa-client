@@ -91,7 +91,7 @@ const InfoGrid = styled.div`
     width: 100%;
     justify-content: center;
     align-items: center;
-    margin-top: 1.2rem;
+    margin-top: 2rem;
     margin-bottom: 2rem;
     row-gap: 1px;
     background-color: #D9D9D9;
@@ -136,6 +136,7 @@ const AnswerWrapper = styled.div`
     & > .question {
         font-size: 1.7rem;
         font-weight: 700;
+        margin-bottom: 0.5rem;
     }
     & > .answer {
         background-color: white;

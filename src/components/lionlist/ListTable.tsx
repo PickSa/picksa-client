@@ -3,9 +3,14 @@ import { GridContent } from "../../styles/globalStyle"
 import ListMemberRow from "./ListMemberRow"
 import { LionListType } from "../../dummy/datatypes"
 
-const ListTable = (props: {memberDatas:LionListType[], activeFilter:string, userCount:number}) => {
+const ListTable = (props: {
+    memberDatas:LionListType[],
+    activeFilter:string,
+    userCount:number,
+    tableHeight:number,
+}) => {
   return (
-    <TableWrapper>
+    <TableWrapper $tableheight={props.tableHeight}>
         <GridContent className="listTitle">
             <div>지원파트</div>
             <div>이름</div>
@@ -53,10 +58,10 @@ const ListTable = (props: {memberDatas:LionListType[], activeFilter:string, user
 
 export default ListTable
 
-const TableWrapper = styled.div`
+const TableWrapper = styled.div<{$tableheight:number}>`
     display: flex;
     flex-direction: column;
-    height: 80vh;
+    height: ${props => props.$tableheight ? `${props.$tableheight-40}px` : '596px'};
     overflow-y: scroll;
     &::-webkit-scrollbar {
     display: none;

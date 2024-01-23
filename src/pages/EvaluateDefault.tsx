@@ -1,15 +1,19 @@
 import NavBar from "../components/common/NavBar"
 import { PageFlex } from "../styles/globalStyle"
 import styled from "styled-components"
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import SideBar from '../components/evaluate/SideBar';
 
 
 const Evaluate = () => {
   const [isOpen, setIsOpen] = useState(false);
-      const toggleSide = () => {
-          setIsOpen(true);
-      };
+  const pageheight = window.innerHeight;
+  const navRef = useRef();
+
+  const toggleSide = () => {
+      setIsOpen(true);
+  };
+
   return (
     <>      
       <PageFlex>      

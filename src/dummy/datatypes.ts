@@ -1,3 +1,5 @@
+export const NAVBARSIZE = 70;
+
 export type LionListType = {
     applicantId: number,
     part: string,
