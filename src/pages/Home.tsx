@@ -14,7 +14,7 @@ const Home = () => {
         <Title className="title-largest">성장을 향한 포효</Title>
         <Title>의와 참의 요람, 중앙대학교와 멋쟁이사자처럼이 함께합니다.</Title>
         <HomePageBtn>
-          <BtnElement>홈페이지 바로가기</BtnElement> 
+          <BtnElement onClick={() => window.open("https://cau-likelion.org/", "_blank")}>홈페이지 바로가기</BtnElement> 
           <AiOutlineArrowRight />
         </HomePageBtn>
       </ArticleFlex>
@@ -58,4 +58,7 @@ const HomePageBtn = styled.div`
 
 const BtnElement = styled.div`
   text-align: center;
+  &:hover{
+    cursor: pointer;
+  }
 `
