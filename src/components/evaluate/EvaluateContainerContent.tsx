@@ -199,7 +199,9 @@ const EvaluateContainerContent=(props:{
                         clickEdit === true ?
                         <TextBox value={texts} onChange={e=>setTexts(e.target.value)}></TextBox>
                         :
-                        <TextBoxCannotEdit>{texts}</TextBoxCannotEdit>
+                        <TextBoxCannotEdit>
+                           <div>{texts}</div>
+                        </TextBoxCannotEdit>
                     }
                 </NameContainer2>
                 <EvaluateNumContainer3>
@@ -452,9 +454,6 @@ const TextBoxCannotEdit = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
-    align-items: center;
-    padding: 1rem;
-    gap: 0.5rem;
     height: 8rem;
     width: 100%;
     background: #EAF1F9;
@@ -463,10 +462,12 @@ const TextBoxCannotEdit = styled.div`
     font-style: normal;
     font-weight: 400;
     font-size: 1.5rem;
-    /* line-height: 150%; */
     overflow-y: scroll;
-    /* or 21px */
     color: #000000;
+    & > div{
+        display: flex;
+        padding: 1rem;
+    }
 `
 const VolunteerContainer4 = styled.div<{$conheight:number}>`
     display: flex;

@@ -26,7 +26,12 @@ const SideBar= (
     const result = await getPartLists(part, "", accessToken)
       if(result){
         if(part === "PM"){
-          setPmList(result.applicants)          
+          if(result === "logout"){
+            alert("토큰이 만료되었습니다. 로그아웃 후 다시 로그인해주세요.");
+            navigate("/");
+          } else {
+            setPmList(result.applicants);
+          }        
         }
         else if(part === "DESIGN"){setDesignList(result.applicants)}
         else if(part === "FRONTEND"){setFeList(result.applicants)}
