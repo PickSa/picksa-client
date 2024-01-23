@@ -80,37 +80,57 @@ const SideBar= (
       {pmList && designList && feList && beList &&
       <PeopleList $innerheight={pageheight} $navheight={NAVBARSIZE}>
       <PartWrapper>
-        <div className='part-label'>{`기획 ${pmList.length}`}</div>
-        <ScrollBox>{pmList.map((person, idx)=>(
-          <MemberStyle key={idx} $currentid={params.id!} $memberid={String(person.applicantId)} onClick={() => handleMemberClick(person.applicantId)}>
-            {person.name}
-          </MemberStyle>
-        ))}</ScrollBox>
-      </PartWrapper>
-      <PartWrapper>
-        <div className='part-label'>{`디자인 ${designList.length}`}</div>
-        <ScrollBox>{designList.map((person, idx)=>(
-          <MemberStyle key={idx} $currentid={params.id!} $memberid={String(person.applicantId)} onClick={() => handleMemberClick(person.applicantId)}>
-            {person.name}
-          </MemberStyle>
-        ))}</ScrollBox>
-      </PartWrapper>
-      <PartWrapper>
-        <div className='part-label'>{`프론트엔드 ${feList.length}`}</div>
-        <ScrollBox>{feList.map((person, idx)=>(
-          <MemberStyle key={idx} $currentid={params.id!} $memberid={String(person.applicantId)} onClick={() => handleMemberClick(person.applicantId)}>
-            {person.name}
-          </MemberStyle>
-        ))}</ScrollBox>
-      </PartWrapper>
-      <PartWrapper>
-        <div className='part-label'>{`백엔드 ${beList.length}`}</div>
-        <ScrollBox>{beList.map((person, idx)=>(
-          <MemberStyle key={idx} $currentid={params.id!} $memberid={String(person.applicantId)} onClick={() => handleMemberClick(person.applicantId)}>
-            {person.name}
-          </MemberStyle>
-        ))}</ScrollBox>
-      </PartWrapper>
+            <div className='part-label'>
+              <div>기획</div>
+              <div className='part-num'>
+                {pmList.length}
+              </div>
+            </div>
+            <ScrollBox>{pmList.map((person, idx)=>(
+              <MemberStyle key={idx} $currentid={params.id!} $memberid={String(person.applicantId)} onClick={() => handleMemberClick(person.applicantId)}>
+                {person.name}
+              </MemberStyle>
+            ))}</ScrollBox>
+          </PartWrapper>
+          <PartWrapper>
+          <div className='part-label'>
+              <div>디자인</div>
+              <div className='part-num'>
+                {designList.length}
+              </div>
+            </div>
+            <ScrollBox>{designList.map((person, idx)=>(
+              <MemberStyle key={idx} $currentid={params.id!} $memberid={String(person.applicantId)} onClick={() => handleMemberClick(person.applicantId)}>
+                {person.name}
+              </MemberStyle>
+            ))}</ScrollBox>
+          </PartWrapper>
+          <PartWrapper>
+            <div className='part-label'>
+              <div>프론트엔드</div>
+              <div className='part-num'>
+                {feList.length}
+              </div>
+            </div>
+            <ScrollBox>{feList.map((person, idx)=>(
+              <MemberStyle key={idx} $currentid={params.id!} $memberid={String(person.applicantId)} onClick={() => handleMemberClick(person.applicantId)}>
+                {person.name}
+              </MemberStyle>
+            ))}</ScrollBox>
+          </PartWrapper>
+          <PartWrapper>
+            <div className='part-label'>
+              <div>백엔드</div>
+              <div className='part-num'>
+                {beList.length}
+              </div>
+            </div>
+            <ScrollBox>{beList.map((person, idx)=>(
+              <MemberStyle key={idx} $currentid={params.id!} $memberid={String(person.applicantId)} onClick={() => handleMemberClick(person.applicantId)}>
+                {person.name}
+              </MemberStyle>
+            ))}</ScrollBox>
+          </PartWrapper>
     </PeopleList>
       }
     </SideBarWrap>
@@ -184,6 +204,11 @@ const PartWrapper = styled.div`
     font-size: 1.6rem;
     color: #A0A0A0;
     margin-bottom: 0.8rem;
+    align-items: center;
+    gap: 0.4rem;
+    & > .part-num{
+      font-size: 1.3rem;
+    }
   }
 `
 
