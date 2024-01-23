@@ -47,7 +47,7 @@ const MakeQuest = (props:{
         if(newInputData === true){
             setNewInputData(false);
         }
-    }, [selectedSortTag, activeFilter, newInputData === true, changedIsDetermined === true, props.delModalIsOpen === false]);
+    }, [selectedSortTag, activeFilter, newInputData === true, props.delModalIsOpen === false]);
 
     useEffect(() => {
         if(changedIsDetermined === true){
@@ -74,6 +74,7 @@ const MakeQuest = (props:{
             setTimeout(() => {
                 setStatusNotiModalOpen(false);
             }, 1000);
+            requestGetAllQuestApi(activeFilter, selectedSortTag?.value);
         }
     }
 

@@ -17,7 +17,7 @@ const MakeQuestList = (props:{
 
     useEffect(() => {
         setIsChecked(() => props.lists.isDetermined);
-    }, []);
+    }, [props.lists]);
 
     const findSameId = (element:{id:number, isDetermined:boolean}) => {
         if(element.id === props.lists.id) return true
