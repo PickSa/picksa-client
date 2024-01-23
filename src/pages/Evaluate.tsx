@@ -9,7 +9,7 @@ import Application from "../components/common/Application"
 import { getLionDetail } from "../apis/lionlist"
 import { useRecoilValue } from "recoil"
 import { accessTokenAtom } from "../atom"
-import { LionDetailType } from "../dummy/datatypes"
+import { LionDetailType, NAVBARSIZE } from "../dummy/datatypes"
 
 
 
@@ -19,6 +19,8 @@ const Evaluate = () => {
   const [member, setMember] = useState<LionDetailType>();
   const params = useParams();
   const accessToken = useRecoilValue(accessTokenAtom);
+
+  const pageheight = window.innerHeight;
 
   const toggleSide = () => {
       setIsOpen(true);
@@ -40,10 +42,10 @@ const Evaluate = () => {
   }
   return (
     <>
-    <PageFlex>      
+    <PageFlex $innerheight={pageheight}>      
       <NavBar where="evaluate" />
       <ContainerWrapper>
-        <FileContainer>
+        <FileContainer $innerheight={pageheight} $navheight={NAVBARSIZE}>
         <SlideBtn role="button" onClick={toggleSide}>
           <div><img width="30rem" src="/img/MdChevronRight.png" /></div>
         </SlideBtn>
@@ -61,13 +63,14 @@ const Evaluate = () => {
           phone={member.phone}
           portfolio={member.portfolio}
           answers={member.answers} />}
-        <SideBar isOpen={isOpen} currentId={currentId} setIsOpen={setIsOpen} />
+        <SideBar isOpen={isOpen} setIsOpen={setIsOpen} />
         </FileContainer>        
-        <EvaluateContainer>
+        <EvaluateContainer $innerheight={pageheight} $navheight={NAVBARSIZE}>
           {member && 
           <EvaluateContainerContent 
             currentId={currentId}
-            memberName={member.name} />
+            memberName={member.name}
+            parentContainerHeight={pageheight-NAVBARSIZE-40} />
           }
         </EvaluateContainer>
       </ContainerWrapper>  
@@ -87,10 +90,9 @@ const ContainerWrapper = styled.div`
   align-items: flex-start;
 `
 
-const FileContainer = styled.div`
+const FileContainer = styled.div<{$innerheight:number, $navheight:number}>`
   width: 55%;
-  height: 88vh;
-  /* background: #D9D9D9; */
+  height: ${props => `${props.$innerheight - props.$navheight - 40}px`};
   font-family: 'Pretendard';
   font-style: normal;
   font-weight: 400;
@@ -123,14 +125,14 @@ const SlideBtn = styled.div`
     cursor: pointer;
   }
 `
-const EvaluateContainer = styled.div`
+const EvaluateContainer = styled.div<{$innerheight:number, $navheight:number}>`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   padding: 0px;
   gap: 1.5rem;
   width: 35%;
-  height: 68rem;
+  height: ${props => `${props.$innerheight - props.$navheight - 40}px`};
 `
 const Overlay = styled.div`
   position: fixed;

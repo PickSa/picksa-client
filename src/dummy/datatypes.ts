@@ -1,3 +1,5 @@
+export const NAVBARSIZE = 70;
+
 export type LionListType = {
     applicantId: number,
     part: string,
@@ -48,6 +50,7 @@ export type GetQuestType = {
     tagContent: string,
     writerId: number,
     writerName: string,
+    part: string,
 }
 
 export type DocQuestTagType = {

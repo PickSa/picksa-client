@@ -6,6 +6,7 @@ import { accessTokenAtom } from '../atom';
 
 const EvaluateHome = () => {
   const accessToken = useRecoilValue(accessTokenAtom);
+  const pageheight = window.innerHeight;
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -17,7 +18,7 @@ const EvaluateHome = () => {
   }, []);
   
   return (
-    <PageFlex className="liondetail-bg-active">
+    <PageFlex className="liondetail-bg-active" $innerheight={pageheight}>
       <Outlet />
     </PageFlex>
   )

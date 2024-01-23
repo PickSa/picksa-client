@@ -2,17 +2,19 @@ import { styled } from "styled-components"
 import NavBar from "../components/common/NavBar"
 import { ArticleFlex, PageFlex } from "../styles/globalStyle"
 import {AiOutlineArrowRight} from "react-icons/ai"
+import { NAVBARSIZE } from "../dummy/datatypes"
 
 const Home = () => {
+  const pageheight = window.innerHeight;
   return (
-    <PageFlex className="landing">
+    <PageFlex className="landing" $innerheight={pageheight}>
       <NavBar where="landing" />
-      <ArticleFlex className="landing">
+      <ArticleFlex className="landing" $innerheight={pageheight} $navheight={NAVBARSIZE}>
         <Title className="title-larger">Growl to Growth</Title>
         <Title className="title-largest">성장을 향한 포효</Title>
         <Title>의와 참의 요람, 중앙대학교와 멋쟁이사자처럼이 함께합니다.</Title>
         <HomePageBtn>
-          <BtnElement>홈페이지 바로가기</BtnElement> 
+          <BtnElement onClick={() => window.open("https://cau-likelion.org/", "_blank")}>홈페이지 바로가기</BtnElement> 
           <AiOutlineArrowRight />
         </HomePageBtn>
       </ArticleFlex>
@@ -56,4 +58,7 @@ const HomePageBtn = styled.div`
 
 const BtnElement = styled.div`
   text-align: center;
+  &:hover{
+    cursor: pointer;
+  }
 `

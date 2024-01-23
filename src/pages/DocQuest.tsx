@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { ArticleFlex, PageFlex } from '../styles/globalStyle'
 import NavBar from '../components/common/NavBar'
 import styled from 'styled-components'
@@ -17,6 +17,11 @@ const DocQuest = () => {
     const [delModalIsOpen, setDelModalIsOpen] = useState(false);
     const [deletedId, setDeletedId] = useState<number>();
     const accessToken = useRecoilValue(accessTokenAtom);
+
+    const pageheight = window.innerHeight;
+    const tabRef = useRef<HTMLDivElement>(null);
+    const tabRefSize = tabRef.current ? tabRef.current.offsetHeight : 58;
+
     const navigate = useNavigate();
     useEffect(() => {
       if(accessToken === ""){
@@ -36,13 +41,13 @@ const DocQuest = () => {
     }, [currentTab]);
 
   return (
-    <PageFlex className='docquest-background'>
+    <PageFlex className='docquest-background' $innerheight={pageheight}>
       {
         delModalIsOpen === true && <DeleteModal deletedId={deletedId!} setDelModalIsOpen={setDelModalIsOpen} />
       }
       <NavBar where="lionlist" />
       <ArticleFlex>
-        <TabWrapper>
+        <TabWrapper ref={tabRef}>
             <TabBtn className={listActive} onClick={() => setCurrentTab('list')}>질문 목록</TabBtn>
             <TabBtn className={sortActive} onClick={() => setCurrentTab('sort')}>질문 순서</TabBtn>
         </TabWrapper>
@@ -51,10 +56,12 @@ const DocQuest = () => {
             currentTab === 'list' ? 
             <MakeQuest 
             delModalIsOpen={delModalIsOpen}
+            tabRefSize={tabRefSize}
             setDeletedId={setDeletedId}
             setDelModalIsOpen={setDelModalIsOpen} /> 
             : 
-            <SortQuest />
+            <SortQuest
+            tabRefSize={tabRefSize} />
           }
         </ContentBackground>
       </ArticleFlex>

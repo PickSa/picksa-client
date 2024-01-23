@@ -151,6 +151,7 @@ export default NavBar
 
 const MenuWrapper = styled.div`
   display: flex;
+  margin-bottom: 1.5rem;
   & > img{
     &:hover{
       cursor: pointer;

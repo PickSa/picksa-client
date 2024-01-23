@@ -1,8 +1,9 @@
 import { styled } from "styled-components";
 
-export const PageFlex = styled.div`
+export const PageFlex = styled.div<{$innerheight?:number}>`
     display: flex;
     width: 100%;
+    height: ${props => props.$innerheight ? `${props.$innerheight}px` : ''};
     flex-direction: column;
     align-items: center;
     &.landing{
@@ -18,17 +19,18 @@ export const PageFlex = styled.div`
     }
 `
 
-export const ArticleFlex = styled.div`
+export const ArticleFlex = styled.div<{$innerheight?:number, $navheight?:number}>`
     display: flex;
     flex-direction: column;
     width: 95%;
     &.landing{
-        height: 94vh;
+        height: ${props => `${props.$innerheight! - props.$navheight!}px`};
         justify-content: center;
         align-items: center;
     }
     &.lion-detail-row{
         flex-direction: row;
+        height: ${props => `${props.$innerheight! - props.$navheight! - 20}px`};
         justify-content: space-between;
         margin-top: 2rem;
     }

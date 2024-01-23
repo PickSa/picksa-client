@@ -2,8 +2,8 @@ import { styled } from "styled-components";
 import { ArticleFlex } from "../styles/globalStyle";
 import ListFilter from "../components/lionlist/ListFilter";
 import ListTable from "../components/lionlist/ListTable";
-import { useEffect, useState } from "react";
-import { LionListType } from "../dummy/datatypes";
+import { useEffect, useRef, useState } from "react";
+import { LionListType, NAVBARSIZE } from "../dummy/datatypes";
 import { getAllLists } from "../apis/lionlist";
 import { useRecoilValue } from "recoil";
 import { accessTokenAtom } from "../atom";
@@ -12,7 +12,12 @@ const LionList = () => {
   const [activeFilter, setActiveFilter] = useState("ALL");
   const [userCount, setUserCount] = useState<number>();
   const [memberDatas, setMemberDatas] = useState<LionListType[]>();
+  const [filterSize, setFilterSize] = useState<number>();
   const accessToken = useRecoilValue(accessTokenAtom);
+
+  const pageheight = window.innerHeight;
+  const titleRef = useRef<HTMLDivElement>(null);
+  const titleSize = titleRef.current?.offsetHeight === undefined ? 50 : titleRef.current.offsetHeight;
 
   const defaultList = async() => {
     const result = await getAllLists("", accessToken);
@@ -28,8 +33,8 @@ const LionList = () => {
   }, []);
 
   return (
-    <ArticleFlex>
-      <Title>지원자 명단</Title>
+    <ArticleFlex $innerheight={pageheight} $navheight={NAVBARSIZE}>
+      <Title ref={titleRef}>지원자 명단</Title>
       {memberDatas && userCount &&
         <>
         <ListFilter
@@ -37,11 +42,13 @@ const LionList = () => {
           memberDatas={memberDatas}
           setActiveFilter={setActiveFilter}
           setMemberDatas={setMemberDatas}
+          setFilterSize={setFilterSize}
         />
         <ListTable 
         memberDatas={memberDatas}
         activeFilter={activeFilter}
-        userCount={userCount} />
+        userCount={userCount}
+        tableHeight={pageheight-(NAVBARSIZE + titleSize + (filterSize!==undefined ? filterSize : 40))} />
         </>
       }
     </ArticleFlex>
