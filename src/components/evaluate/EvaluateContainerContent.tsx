@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import CurrentEval from '../../assets/evaluate/CurrentEval.png'
 import FinishEval from '../../assets/evaluate/FinishEval.png'
 import styled from 'styled-components'
@@ -13,6 +13,7 @@ import PassFailFilter from './PassFailFilter';
 const EvaluateContainerContent=(props:{
     currentId: string|undefined, 
     memberName: string,
+    parentContainerHeight: number,
 }) => {
     const accessToken = useRecoilValue(accessTokenAtom);
     const userInfo = useRecoilValue(UserInfoAtom);
@@ -29,6 +30,12 @@ const EvaluateContainerContent=(props:{
     const [myPassResult, setMyPassResult] = useState<boolean|undefined>();
     const [editActive, setEditActive] = useState(false);
     const [clickEdit, setClickEdit] = useState(false);
+
+    const nameRef = useRef<HTMLDivElement>(null);
+    const myEvalRef = useRef<HTMLDivElement>(null);
+
+    const nameRefSize = nameRef.current ? nameRef.current.offsetHeight : 129.5;
+    const myEvalRefSize = myEvalRef.current ? myEvalRef.current.offsetHeight : 210.75;
 
     useEffect(()=>{
         const fetchComments = async()=>{
@@ -135,7 +142,7 @@ const EvaluateContainerContent=(props:{
     return(
         <>        
         {evaluationRes && <VolunteerContainer>
-            <VolunteerContainer1>
+            <VolunteerContainer1 ref={nameRef}>
                 <NameContainer>
                     <Name>{props.memberName}</Name>
                     <img src={evaluationRes.isEvaluated ? FinishEval : CurrentEval} alt="Current Evaluation" />                    
@@ -151,7 +158,7 @@ const EvaluateContainerContent=(props:{
                     </EvaluateNumContainer1>
                 </Evaluate>
             </VolunteerContainer1>
-            <VolunteerContainer1>
+            <VolunteerContainer1 ref={myEvalRef}>
                 <VolunteerContainer3>
                 <NameContainer2>
                         <Name>내 평가</Name>
@@ -211,7 +218,9 @@ const EvaluateContainerContent=(props:{
                     }
                 </EvaluateNumContainer3>
                 </VolunteerContainer3>
-                <VolunteerContainer4>
+            </VolunteerContainer1>
+            <VolunteerContainer1>
+                <VolunteerContainer4 $conheight={props.parentContainerHeight - (nameRefSize + myEvalRefSize + 60)}>
                     <Name>운영진 평가</Name>
                     <div className='comment-box'>
                     {comments && comments.map((evaluationItem, idx)=>(
@@ -459,7 +468,7 @@ const TextBoxCannotEdit = styled.div`
     /* or 21px */
     color: #000000;
 `
-const VolunteerContainer4 = styled.div`
+const VolunteerContainer4 = styled.div<{$conheight:number}>`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -470,7 +479,7 @@ const VolunteerContainer4 = styled.div`
         gap: 1.5rem;
         flex-direction: column;
         width: 100%;
-        height: 33vh;
+        height: ${props => `${props.$conheight - 31 - 15}px`};
         overflow-y: scroll;
         &::-webkit-scrollbar {
             display: none;

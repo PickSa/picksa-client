@@ -1,14 +1,13 @@
 import NavBar from "../components/common/NavBar"
 import { PageFlex } from "../styles/globalStyle"
 import styled from "styled-components"
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import SideBar from '../components/evaluate/SideBar';
 
 
 const Evaluate = () => {
   const [isOpen, setIsOpen] = useState(false);
   const pageheight = window.innerHeight;
-  const navRef = useRef();
 
   const toggleSide = () => {
       setIsOpen(true);
@@ -16,7 +15,7 @@ const Evaluate = () => {
 
   return (
     <>      
-      <PageFlex>      
+      <PageFlex $innerheight={pageheight}>      
       <NavBar where="evaluate" />
       <ContainerWrapper>
         <FileContainer>
@@ -24,7 +23,7 @@ const Evaluate = () => {
             <div><img width="30rem" src="/img/MdChevronRight.png" /></div>
           </SlideBtn>
           <InfoBallon>선택된 지원자가 없습니다. 버튼을 클릭하여 지원자를 선택해주세요.</InfoBallon>
-          <SideBar isOpen={isOpen} currentId={undefined} setIsOpen={setIsOpen} />
+          <SideBar isOpen={isOpen} setIsOpen={setIsOpen} />
         </FileContainer>
         <EvaluateContainer />
       </ContainerWrapper>  
@@ -47,8 +46,6 @@ const ContainerWrapper = styled.div`
 
 const FileContainer = styled.div`
   width: 55%;
-  height: 68rem;
-  /* background: #D9D9D9; */
   font-family: 'Pretendard';
   font-style: normal;
   font-weight: 400;
@@ -102,13 +99,11 @@ const InfoBallon = styled.div`
 
 const EvaluateContainer = styled.div`
   display: flex;
-  /* background: #D9D9D9; */
   flex-direction: column;
   align-items: flex-start;
   padding: 0px;
   gap: 1.5rem;
   width: 35%;
-  height: 68rem;
 `
 const Overlay = styled.div`
   position: fixed;
