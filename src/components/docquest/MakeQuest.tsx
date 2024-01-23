@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import Select from "react-select";
 import MakeQuestList from "./MakeQuestList";
 import { getAllQuests, patchfinalQuest } from "../../apis/docquest";
 import { useRecoilValue } from "recoil";
 import { accessTokenAtom } from "../../atom";
-import { GetQuestType } from "../../dummy/datatypes";
+import { GetQuestType, NAVBARSIZE } from "../../dummy/datatypes";
 import MakeQuestInput from "./MakeQuestInput";
 import StatusNoticeModal from "../modals/StatusNoticeModal";
 
@@ -16,6 +16,7 @@ const sortTag = [
 
 const MakeQuest = (props:{
     delModalIsOpen:boolean,
+    tabRefSize: number,
     setDeletedId:React.Dispatch<React.SetStateAction<number|undefined>>,
     setDelModalIsOpen:React.Dispatch<React.SetStateAction<boolean>>,
 }) => {
@@ -26,8 +27,14 @@ const MakeQuest = (props:{
     const [changedIsDetermined, setChangedIsDetermined] = useState(false);
     const [changedDetermineData, setChangedDetermineData] = useState<{id:number, isDetermined:boolean}[]>([]);
     const [statusNotiModalOpen, setStatusNotiModalOpen] = useState(false);
+    const [inputBoxSize, setInputBoxSize] = useState<number>();
 
     const accessToken = useRecoilValue(accessTokenAtom);
+
+    const filterRef = useRef<HTMLDivElement>(null);
+    const filterSize = filterRef.current ? filterRef.current.offsetHeight : 55;
+    
+    const curpageheight = window.innerHeight - NAVBARSIZE - props.tabRefSize - filterSize - 40;
 
     // 기본값으로(공통질문, 최신순) 질문 리스트 불러오기
     useEffect(() => {
@@ -85,7 +92,7 @@ const MakeQuest = (props:{
     <Wrapper>
         {statusNotiModalOpen === true && <StatusNoticeModal content="선택한 질문이 확정되었습니다." />}
         <SetFlexStart>
-            <FilterWrapper>
+            <FilterWrapper ref={filterRef}>
                 <FilterSelection
                 className={activeFilter === "ALL" ? "active" : ""}
                 onClick={() => handleFilterClick("ALL")}
@@ -120,7 +127,8 @@ const MakeQuest = (props:{
         </SetFlexStart>
         <MakeQuestInput 
             activeFilter={activeFilter}
-            setNewInputData={setNewInputData} />
+            setNewInputData={setNewInputData}
+            setInputBoxSize={setInputBoxSize} />
         <ContentWrapper>
             <ContentUtilBar>
                 <SelectWrapper>
@@ -136,7 +144,7 @@ const MakeQuest = (props:{
                 <div className="date">작성일자</div>
                 <div className="delete">삭제</div>
             </ContentInfoBar>
-            <ContentBox>{
+            <ContentBox $boxheight={curpageheight} $inputboxsize={inputBoxSize === undefined ? 177.5 : inputBoxSize}>{
                 questionData && questionData.map((row, idx)=>{
                     return (
                     <MakeQuestList
@@ -170,20 +178,6 @@ const SetFlexStart = styled.div`
     width: 96%;
     justify-content: flex-start;
     align-items: flex-start;
-    & > .btn{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 4rem;
-        padding-top: 1rem;
-        padding-bottom: 1rem;
-        font-size: 1.3rem;
-        background-color: rgba(234, 241, 249, 1);
-        border-radius: 15px;
-        &:hover{
-            cursor: pointer;
-        }
-    }
 `
 
 const FilterWrapper = styled.div`
@@ -229,6 +223,7 @@ const ContentWrapper = styled.div`
     display: flex;
     flex-direction: column;
     width: 96%;
+    padding-bottom: 1rem;
 `
 
 const ContentUtilBar = styled.div`
@@ -256,48 +251,50 @@ const ContentInfoBar = styled.div`
     display: flex;
     width: 100%;
     justify-content: center;
+    align-items: center;
     gap: 2rem;
     background-color: rgba(234, 241, 249, 0.2);
-    padding-top: 1rem;
-    padding-bottom: 1rem;
+    /* padding-top: 1rem;
+    padding-bottom: 1rem; */
+    height: 3.5rem;
     font-size: 1.5rem;
-    &>.is_confirm{
+    & > div{
         display: flex;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    &>.is_confirm{
         justify-content: center;
         width: 6rem;
     }
     &>.tag{
-        display: flex;
         justify-content: center;
         width: 18rem;
     }
     &>.content{
-        display: flex;
         justify-content: flex-start;
         width: 67rem;
     }
     &>.writer{
-        display: flex;
         justify-content: flex-start;
         width: 9rem;
     }
     &>.date{
-        display: flex;
         justify-content: center;
         width: 10rem;
     }
     &>.delete{
-        display: flex;
         justify-content: center;
         width: 3rem;
     }
 `
 
-const ContentBox = styled.div`
+const ContentBox = styled.div<{$boxheight:number, $inputboxsize:number}>`
     display: flex;
     flex-direction: column;
     width: 100%;
-    height: 40vh;
+    height: ${props => `${props.$boxheight - props.$inputboxsize - 40 - 38 - 35 - 20}px`};
     /* border: 1px solid red; */
     overflow-y: scroll;
     &::-webkit-scrollbar {

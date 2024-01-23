@@ -1,41 +1,59 @@
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import styled from 'styled-components'
 import { GetQuestType } from '../../dummy/datatypes';
 import { MdDragIndicator } from "react-icons/md";
+import StatusNoticeModal from '../modals/StatusNoticeModal';
 
 const SortQuestDraggableList = (props:{
     questionData : GetQuestType[], 
     setQuestionData: React.Dispatch<React.SetStateAction<GetQuestType[]|undefined>>,
 }) => {
+    const [modalText, setModalText] = useState<string|undefined>();
+    
     const dragItem = useRef<number>();
     const dragOverItem = useRef<number>();
+    const dragOverElement = useRef<HTMLElement>();
 
     const dragStart = (e:React.DragEvent<HTMLDivElement>, position:number) => {
         dragItem.current = position;
-        const eventTarget = e.target as HTMLElement;
     }
     const dragEnter = (e:React.DragEvent<HTMLDivElement>, position:number) => {
         e.preventDefault();
         dragOverItem.current = position;
-        const eventTarget = e.target as HTMLElement;
-        eventTarget.style.marginTop = "20px";
+        dragOverElement.current = e.target as HTMLElement;
+        dragOverElement.current.style.marginTop = "20px";
     }
     const dragLeave = (e:React.DragEvent<HTMLDivElement>) => {
         e.preventDefault();
-        const eventTarget = e.target as HTMLElement;
-        eventTarget.style.marginTop = "0px";
+        dragOverElement.current = e.target as HTMLElement;
+        dragOverElement.current.style.marginTop = "0px";
     }
     const drop = () => {
-        const newList = [...props.questionData];
-        const dragItemValue = newList[dragItem.current!];
-        newList.splice(dragItem.current!, 1);
-        newList.splice(dragOverItem.current!, 0, dragItemValue);
-        props.setQuestionData(newList);
-        dragItem.current = undefined;
-        dragOverItem.current = undefined;
+        if(props.questionData[dragItem.current!].part === props.questionData[dragOverItem.current!].part){
+            const newList = [...props.questionData];
+            const dragItemValue = newList[dragItem.current!];
+            newList.splice(dragItem.current!, 1);
+            newList.splice(dragOverItem.current!, 0, dragItemValue);
+            props.setQuestionData(newList);
+            dragItem.current = undefined;
+            dragOverItem.current = undefined;
+        } else {
+            setModalText("공통 질문은 상위에만 존재할 수 있습니다.");
+            setTimeout(() => {
+                setModalText(undefined);
+            }, 1000);
+            dragItem.current = undefined;
+            dragOverItem.current = undefined;
+        }
+        dragOverElement.current!.style.marginTop = "0px";
+        dragOverElement.current = undefined;
     }
+
   return (
     <Wrapper>
+        {
+            modalText && <StatusNoticeModal content={modalText}/>
+        }
         {props.questionData.map((data, idx) => (
             <ContentRow
             key={idx+1}
@@ -46,6 +64,12 @@ const SortQuestDraggableList = (props:{
             onDragEnd={drop}
             onDragOver={(e) => e.preventDefault}>
                 <div className='drag-icon'><MdDragIndicator /></div>
+                <div className='part'>
+                    {data.part === "ALL" ? "공통"
+                    : data.part === "PM" ? "기획"
+                    : data.part === "DESIGN" ? "디자인"
+                    : data.part === "FRONTEND" ? "프론트엔드" : "백엔드"}
+                </div>
                 <div className='tag'>{data.tagContent}</div>
                 <div className='content'>{data.content}</div>
             </ContentRow>
@@ -65,8 +89,9 @@ const Wrapper = styled.div`
 const ContentRow = styled.div`
     display: flex;
     width: 100%;
-    justify-content: center;
-    gap: 3rem;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 1rem;
     padding-top: 1rem;
     padding-bottom: 1rem;
     font-size: 1.5rem;
@@ -77,14 +102,18 @@ const ContentRow = styled.div`
         align-items: center;
         width: 5.5rem;
     }
+    &>.part{
+        display: flex;
+        justify-content: flex-start;
+        width: 9rem;
+    }
     &>.tag{
         display: flex;
-        justify-content: center;
-        width: 7rem;
+        justify-content: flex-start;
+        width: 6rem;
     }
     &>.content{
         display: flex;
         justify-content: flex-start;
-        width: 180rem;
     }
 `

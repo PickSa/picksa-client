@@ -10,6 +10,12 @@ const SortQuestList = (props:{questionData : GetQuestType[], setQuestionData: Re
         {props.questionData && props.questionData.map((data, idx) => (
             <ContentRow key={idx}>
                 <div className='drag-icon'><MdDragIndicator/></div>
+                <div className='part'>
+                    {data.part === "ALL" ? "공통"
+                    : data.part === "PM" ? "기획"
+                    : data.part === "DESIGN" ? "디자인"
+                    : data.part === "FRONTEND" ? "프론트엔드" : "백엔드"}
+                </div>
                 <div className='tag'>{data.tagContent}</div>
                 <div className='content'>{data.content}</div>
             </ContentRow>
@@ -29,8 +35,9 @@ const Wrapper = styled.div`
 const ContentRow = styled.div`
     display: flex;
     width: 100%;
-    justify-content: center;
-    gap: 3rem;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 1rem;
     padding-top: 1rem;
     padding-bottom: 1rem;
     font-size: 1.5rem;
@@ -41,14 +48,18 @@ const ContentRow = styled.div`
         align-items: center;
         width: 5.5rem;
     }
+    &>.part{
+        display: flex;
+        justify-content: flex-start;
+        width: 9rem;
+    }
     &>.tag{
         display: flex;
-        justify-content: center;
-        width: 7rem;
+        justify-content: flex-start;
+        width: 6rem;
     }
     &>.content{
         display: flex;
         justify-content: flex-start;
-        width: 180rem;
     }
 `

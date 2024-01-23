@@ -50,6 +50,7 @@ export type GetQuestType = {
     tagContent: string,
     writerId: number,
     writerName: string,
+    part: string,
 }
 
 export type DocQuestTagType = {

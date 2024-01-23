@@ -1,17 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import SortQuestList from "./SortQuestList";
-import { GetQuestType } from "../../dummy/datatypes";
+import { GetQuestType, NAVBARSIZE } from "../../dummy/datatypes";
 import { getQuestForSort, patchReorder } from "../../apis/docquest";
 import { useRecoilValue } from "recoil";
 import { accessTokenAtom } from "../../atom";
 import SortQuestDraggableList from "./SortQuestDraggableList";
 
-const SortQuest = () => {
+const SortQuest = (props:{tabRefSize: number}) => {
   const [activeFilter, setActiveFilter] = useState("PM");
   const [questionData, setQuestionData] = useState<GetQuestType[]|undefined>();
   const [btnClicked, setBtnClicked] = useState(false);
   const accessToken = useRecoilValue(accessTokenAtom);
+
+  const filterRef = useRef<HTMLDivElement>(null);
+  const filterSize = filterRef.current ? filterRef.current.offsetHeight : 55;
+
+  const curpageheight = window.innerHeight - NAVBARSIZE - props.tabRefSize - filterSize - 24.5 - 24;
 
   useEffect(() => {
     getQuestsApi();
@@ -42,6 +47,7 @@ const SortQuest = () => {
     if(result === false){
       console.log("error");
     } else {
+      console.log(result);
       setQuestionData(result);
     }
   }
@@ -56,7 +62,7 @@ const SortQuest = () => {
   return (
     <Wrapper>
       <SetFlexStart>
-        <FilterWrapper>
+        <FilterWrapper ref={filterRef}>
           <FilterSelection
             className={activeFilter === "PM" ? "active" : ""}
             onClick={() => handleFilterClick("PM")}
@@ -88,7 +94,7 @@ const SortQuest = () => {
           :
           <EditBtn $type={"edit"} onClick={() => setBtnClicked(() => true)}>수정</EditBtn>
         }
-        <ContentBox>
+        <ContentBox $boxheight={curpageheight}>
         {(btnClicked === true) ? 
           questionData && 
           <SortQuestDraggableList 
@@ -173,12 +179,12 @@ const EditBtn = styled.div<{$type:string}>`
   }
 `
 
-const ContentBox = styled.div`
+const ContentBox = styled.div<{$boxheight:number}>`
     display: flex;
     flex-direction: column;
     width: 100%;
-    height: 72vh;
-    /* border: 1px solid red; */
+    height: ${props => `${props.$boxheight - 50}px`};
+    padding-bottom: 1rem;
     border-top: 1px solid rgba(106, 199, 239, 1);
     overflow-y: scroll;
     &::-webkit-scrollbar {

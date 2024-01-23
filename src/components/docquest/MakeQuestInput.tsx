@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import Select from "react-select";
 import { getPartsTags, makeQuests } from '../../apis/docquest';
@@ -9,11 +9,18 @@ import { DocQuestTagType } from '../../dummy/datatypes';
 const MakeQuestInput = (props:{
     activeFilter: string,
     setNewInputData: React.Dispatch<React.SetStateAction<boolean>>,
+    setInputBoxSize: React.Dispatch<React.SetStateAction<number|undefined>>,
 }) => {
     const [inputData, setInputData] = useState('');
     const [tagList, setTagList] = useState<DocQuestTagType[]>();
     const [selectedSortTag, setSelectedSortTag] = useState<DocQuestTagType>();
     const accessToken = useRecoilValue(accessTokenAtom);
+
+    const inputRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        props.setInputBoxSize(inputRef.current?.offsetHeight);
+    }, []);
 
     const getTagsApi = async() => {
         const result = await getPartsTags(props.activeFilter, accessToken);
@@ -55,7 +62,7 @@ const MakeQuestInput = (props:{
     }
 
   return (tagList!=undefined &&
-    <InputWrapper>
+    <InputWrapper ref={inputRef}>
         <SetFlexStart>
             <SelectWrapper>
                 <Select className="select-box" options={(tagList)} placeholder="질문 태그" value={selectedSortTag} onChange={(opt)=>{opt && setSelectedSortTag(opt)}} />
