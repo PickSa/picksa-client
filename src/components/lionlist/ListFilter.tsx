@@ -39,7 +39,6 @@ const ListFilter = (props:FilterProps) => {
 
   useEffect(() => {
     props.setFilterSize(filterRef.current?.offsetHeight);
-    // console.log(`filterSize : ${filterRef.current?.offsetHeight}`);
   }, [filterRef]);
 
   //All, part별 통합 api 호출 함수

@@ -40,10 +40,6 @@ const SideBar= (
     getPartListApi("BACKEND");
   },[])
 
-  useEffect(() => {
-    console.log(params.id);
-  }, [params])
-
   const toggleSide = () => {
     setIsOpen(false);
   };  
