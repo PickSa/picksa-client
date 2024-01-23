@@ -50,6 +50,11 @@ const SideBar= (
     }
   }; 
 
+  const handleMemberClick = (id:number) => {
+    navigate(`/evaluate/${id}`);
+    toggleSide();
+  }
+
   useEffect(() => {
     document.addEventListener('mousedown', handlerOutside);
     return () => {
@@ -72,7 +77,7 @@ const SideBar= (
       <PartWrapper>
         <div className='part-label'>{`기획 ${pmList.length}`}</div>
         <ScrollBox>{pmList.map((person, idx)=>(
-          <MemberStyle key={idx} $currentid={params.id!} $memberid={String(person.applicantId)} onClick={() => navigate(`/evaluate/${person.applicantId}`)}>
+          <MemberStyle key={idx} $currentid={params.id!} $memberid={String(person.applicantId)} onClick={() => handleMemberClick(person.applicantId)}>
             {person.name}
           </MemberStyle>
         ))}</ScrollBox>
@@ -80,7 +85,7 @@ const SideBar= (
       <PartWrapper>
         <div className='part-label'>{`디자인 ${designList.length}`}</div>
         <ScrollBox>{designList.map((person, idx)=>(
-          <MemberStyle key={idx} $currentid={params.id!} $memberid={String(person.applicantId)} onClick={() => navigate(`/evaluate/${person.applicantId}`)}>
+          <MemberStyle key={idx} $currentid={params.id!} $memberid={String(person.applicantId)} onClick={() => handleMemberClick(person.applicantId)}>
             {person.name}
           </MemberStyle>
         ))}</ScrollBox>
@@ -88,7 +93,7 @@ const SideBar= (
       <PartWrapper>
         <div className='part-label'>{`프론트엔드 ${feList.length}`}</div>
         <ScrollBox>{feList.map((person, idx)=>(
-          <MemberStyle key={idx} $currentid={params.id!} $memberid={String(person.applicantId)} onClick={() => navigate(`/evaluate/${person.applicantId}`)}>
+          <MemberStyle key={idx} $currentid={params.id!} $memberid={String(person.applicantId)} onClick={() => handleMemberClick(person.applicantId)}>
             {person.name}
           </MemberStyle>
         ))}</ScrollBox>
@@ -96,7 +101,7 @@ const SideBar= (
       <PartWrapper>
         <div className='part-label'>{`백엔드 ${beList.length}`}</div>
         <ScrollBox>{beList.map((person, idx)=>(
-          <MemberStyle key={idx} $currentid={params.id!} $memberid={String(person.applicantId)} onClick={() => navigate(`/evaluate/${person.applicantId}`)}>
+          <MemberStyle key={idx} $currentid={params.id!} $memberid={String(person.applicantId)} onClick={() => handleMemberClick(person.applicantId)}>
             {person.name}
           </MemberStyle>
         ))}</ScrollBox>
