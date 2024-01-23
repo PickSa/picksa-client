@@ -47,7 +47,6 @@ const SortQuest = (props:{tabRefSize: number}) => {
     if(result === false){
       console.log("error");
     } else {
-      console.log(result);
       setQuestionData(result);
     }
   }
