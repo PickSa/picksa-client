@@ -51,9 +51,9 @@ const Application = (props:applicationProps) => {
         </TableFrame>
     </InfoGrid>
     {
-        props.answers.map((data) => (
-            <AnswerWrapper>
-                <div className='question'>{`Q${data.sequence}.${data.question}`}</div>
+        props.answers.map((data, idx) => (
+            <AnswerWrapper key={idx}>
+                <div className='question'>{`Q${idx+1}.${data.question}`}</div>
                 <div className='answer'>{data.answer}</div>
             </AnswerWrapper>
         ))

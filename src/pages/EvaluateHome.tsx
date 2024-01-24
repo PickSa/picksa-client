@@ -10,7 +10,6 @@ const EvaluateHome = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log("accessToken", accessToken)
     if(accessToken === ""){
       alert("로그인해주세요!");
       navigate("/");

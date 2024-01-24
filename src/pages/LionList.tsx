@@ -7,6 +7,7 @@ import { LionListType, NAVBARSIZE } from "../dummy/datatypes";
 import { getAllLists } from "../apis/lionlist";
 import { useRecoilValue } from "recoil";
 import { accessTokenAtom } from "../atom";
+import { useNavigate } from "react-router-dom";
 
 const LionList = () => {
   const [activeFilter, setActiveFilter] = useState("ALL");
@@ -14,6 +15,7 @@ const LionList = () => {
   const [memberDatas, setMemberDatas] = useState<LionListType[]>();
   const [filterSize, setFilterSize] = useState<number>();
   const accessToken = useRecoilValue(accessTokenAtom);
+  const navigate = useNavigate();
 
   const pageheight = window.innerHeight;
   const titleRef = useRef<HTMLDivElement>(null);
@@ -22,6 +24,10 @@ const LionList = () => {
   const defaultList = async() => {
     const result = await getAllLists("", accessToken);
     if(result === false){console.log("error")}
+    else if(result === "logout"){
+      alert("토큰이 만료되었습니다. 로그아웃 후 다시 로그인해주세요.");
+      navigate("/");
+    }
     else {
       setMemberDatas(result.applicants);
       setUserCount(result.userCount);

@@ -14,8 +14,12 @@ export const getAllLists = async(order:string, token:string) => {
             });
             return response.data;
         }
-    } catch {
-        return false;
+    } catch(error:any) {
+        if(error.code === "ERR_NETWORK"){
+            return "logout";
+        } else {
+            return false;
+        }
     }
 }
 
@@ -32,8 +36,12 @@ export const getPartLists = async(part:string, order:string, token:string) => {
             });
             return response.data;
         }
-    } catch {
-        return false;
+    } catch(error:any) {
+        if(error.code === "ERR_NETWORK"){
+            return "logout";
+        } else {
+            return false;
+        }
     }
 }
 

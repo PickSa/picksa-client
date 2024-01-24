@@ -8,6 +8,7 @@ import { accessTokenAtom } from "../../atom";
 import { GetQuestType, NAVBARSIZE } from "../../dummy/datatypes";
 import MakeQuestInput from "./MakeQuestInput";
 import StatusNoticeModal from "../modals/StatusNoticeModal";
+import { useNavigate } from "react-router-dom";
 
 const sortTag = [
     {value: "LASTEST", label: "---기본---"},
@@ -30,16 +31,12 @@ const MakeQuest = (props:{
     const [inputBoxSize, setInputBoxSize] = useState<number>();
 
     const accessToken = useRecoilValue(accessTokenAtom);
+    const navigate = useNavigate();
 
     const filterRef = useRef<HTMLDivElement>(null);
     const filterSize = filterRef.current ? filterRef.current.offsetHeight : 55;
     
     const curpageheight = window.innerHeight - NAVBARSIZE - props.tabRefSize - filterSize - 40;
-
-    // 기본값으로(공통질문, 최신순) 질문 리스트 불러오기
-    useEffect(() => {
-        requestGetAllQuestApi("ALL", "LASTEST");
-    }, []);
 
     // 필터 적용 값으로 불러오기
     useEffect(() => {
@@ -59,6 +56,9 @@ const MakeQuest = (props:{
         const result = await getAllQuests(part, order, accessToken);
         if(result === false) {
             console.log('질문 목록 불러오기 오류 발생');
+        } else if(result === "logout"){
+            alert("토큰이 만료되었습니다. 로그아웃 후 다시 로그인해주세요.");
+            navigate("/");
         } else {
             setQuestionData(() => result);
         }
