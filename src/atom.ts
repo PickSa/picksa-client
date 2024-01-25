@@ -8,7 +8,7 @@ export const UserInfoAtom = atom({
     default: {
         isUser: false,
         user: {
-            username: "",
+            username: "윤예원",
             userrole: "",
         },
     },
@@ -17,7 +17,7 @@ export const UserInfoAtom = atom({
 
 export const accessTokenAtom = atom<string>({
     key: "access_token",
-    default: "",
+    default: "eyJhbGciOiJIUzUxMiJ9.eyJpZCI6IjQiLCJwb3NpdGlvbiI6IlBSRVNJREVOVCIsInBhcnQiOiJGUk9OVEVORCIsImlhdCI6MTcwNjE2MTUyNCwiZXhwIjoxNzA2MjQ3OTI0fQ.5hXvlIYcgjF6LGGc_sk9WoqvuxGtYtscO_bHJYR8sjvLE2Z5z2D8I9br_UoVsK_V0GBbSKXiIhDOSnqSG6b7ZA",
     effects_UNSTABLE: [persistAtom],
 })
 
