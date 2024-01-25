@@ -69,7 +69,7 @@ export default MakeQuestList
 const ContentRow = styled.div`
     display: flex;
     width: 100%;
-    justify-content: center;
+    justify-content: space-around;
     gap: 2rem;
     padding-top: 1rem;
     padding-bottom: 1rem;
