@@ -251,7 +251,7 @@ const ContentUtilBar = styled.div`
 const ContentInfoBar = styled.div`
     display: flex;
     width: 100%;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
     gap: 2rem;
     background-color: rgba(234, 241, 249, 0.2);
