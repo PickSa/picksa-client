@@ -8,7 +8,7 @@ import LionDetail from "./pages/LionDetail";
 import LionListHome from "./pages/LionListHome";
 import EvaluateHome from "./pages/EvaluateHome";
 import EvaluateDefault from "./pages/EvaluateDefault";
-import NotApplicant from "./components/common/NotApplicant";
+// import NotApplicant from "./components/common/NotApplicant";
 
 const router = createBrowserRouter([
     {
