@@ -40,7 +40,7 @@ height: 1rem; /* 14px */
 gap: 0.5rem;
 font-family: 'Pretendard Variable';
 font-style: normal;
-font-weight: 500;
+font-weight: 700;
 font-size: 1.3rem;
 line-height: 0.875rem; /* 14px */
 color: #000000;
