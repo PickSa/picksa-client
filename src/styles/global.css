@@ -38,7 +38,7 @@ html {
     scroll-padding-top: 65px;
     scrollbar-width: none;
     -ms-overflow-style: none;
-    font-family: 'Pretendard-Regular';
+    font-family: 'Pretendard';
 }
 
 html::-webkit-scrollbar {
