@@ -233,7 +233,7 @@ color: #141414;
 `;
 const Text3 = styled.div`
 text-align: end;
-font-size: 1.3rem;
+font-size: 1.4rem;
 background-color: "#F7F8FA";
 font-family: 'Pretendard Variable';
 font-weight: 520;
@@ -242,7 +242,7 @@ color: #141414;
 
 const Text4 = styled.div`
 text-align: end;
-font-size: 1.3rem;
+font-size: 1.4rem;
 background-color: "#F7F8FA";
 font-family: 'Pretendard Variable';
 font-weight: 600;
