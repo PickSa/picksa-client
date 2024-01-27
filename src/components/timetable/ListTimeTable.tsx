@@ -159,7 +159,7 @@ const TableWrapper = styled.div`
     padding-left: 15px;
     padding-right: 15px;
     font-size: 1.2rem;
-    height: 53rem;   
+    height: 58rem;   
 `;
 const Table = styled.table`
 width: 100%;
