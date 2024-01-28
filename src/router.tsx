@@ -49,7 +49,7 @@ const router = createBrowserRouter([
     },
     {
         path: "/timetable",
-        element: <NotApplicant />,
+        element: <Timetable />,
     },
 ])
 
