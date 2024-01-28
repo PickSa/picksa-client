@@ -8,7 +8,7 @@ import LionDetail from "./pages/LionDetail";
 import LionListHome from "./pages/LionListHome";
 import EvaluateHome from "./pages/EvaluateHome";
 import EvaluateDefault from "./pages/EvaluateDefault";
-// import NotApplicant from "./components/common/NotApplicant";
+import NotApplicant from "./components/common/NotApplicant";
 
 const router = createBrowserRouter([
     {
@@ -17,7 +17,7 @@ const router = createBrowserRouter([
     },
     {
         path: "/pre-lionlist",
-        element: <LionListHome />,
+        element: <NotApplicant />,
         children: [
             {
                 path: '',
@@ -35,7 +35,7 @@ const router = createBrowserRouter([
     },
     {
         path: "/evaluate",
-        element: <EvaluateHome />,
+        element: <NotApplicant />,
         children: [
             {
                 path: '',
@@ -49,7 +49,7 @@ const router = createBrowserRouter([
     },
     {
         path: "/timetable",
-        element: <Timetable />,
+        element: <NotApplicant />,
     },
 ])
 
