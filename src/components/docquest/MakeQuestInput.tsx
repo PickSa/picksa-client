@@ -37,6 +37,7 @@ const MakeQuestInput = (props:{
 
     //필터 바뀔 때마다 tag 받아오기
     useEffect(() => {
+        setSelectedSortTag(() => undefined);
         getTagsApi();
     }, [props.activeFilter]);
 
@@ -49,14 +50,13 @@ const MakeQuestInput = (props:{
         if(result === false){
             console.log("error");
         } else {
-            setSelectedSortTag(() => undefined);
             setInputData('');
             props.setNewInputData(true);
         }
     }
 
     const handleInputClick = () => {
-        if(selectedSortTag?.value){
+        if(selectedSortTag){
             questPostApi(selectedSortTag.value, inputData);
         }
     }
