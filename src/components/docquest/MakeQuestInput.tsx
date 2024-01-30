@@ -14,13 +14,24 @@ const MakeQuestInput = (props:{
     const [inputData, setInputData] = useState('');
     const [tagList, setTagList] = useState<DocQuestTagType[]>();
     const [selectedSortTag, setSelectedSortTag] = useState<DocQuestTagType>();
+    const [canPost, setCanPost] = useState(false);
     const accessToken = useRecoilValue(accessTokenAtom);
 
     const inputRef = useRef<HTMLDivElement>(null);
+    const selectRef = useRef<any>(null);
 
     useEffect(() => {
         props.setInputBoxSize(inputRef.current?.offsetHeight);
     }, []);
+
+    //등록 버튼 활성화 시키기
+    useEffect(() => {
+        if(selectedSortTag!==undefined && inputData!== ''){
+            setCanPost(() => true);
+        } else {
+            setCanPost(() => false);
+        }
+    }, [selectedSortTag, inputData]);
 
     const getTagsApi = async() => {
         const result = await getPartsTags(props.activeFilter, accessToken);
@@ -31,7 +42,10 @@ const MakeQuestInput = (props:{
             for(let i=0;i<result.length;i++){
                 toTags.push({label: result[i].content, value: result[i].id});
             }
-            setSelectedSortTag(() => undefined);
+            if(selectedSortTag){
+                setSelectedSortTag(() => undefined);
+                selectRef.current.clearValue();
+            }
             setTagList(() => toTags);
         }
     }
@@ -65,13 +79,19 @@ const MakeQuestInput = (props:{
     <InputWrapper ref={inputRef}>
         <SetFlexStart>
             <SelectWrapper>
-                <Select className="select-box" options={(tagList)} placeholder="질문 태그" value={selectedSortTag} onChange={(opt)=>{opt && setSelectedSortTag(opt)}} />
+                <Select 
+                ref={selectRef}
+                className="select-box" 
+                options={(tagList)} 
+                placeholder="질문 태그" 
+                value={selectedSortTag} 
+                onChange={(opt)=>{opt && setSelectedSortTag(opt)}} />
             </SelectWrapper>
         </SetFlexStart>
         <InputBox>
             <input placeholder="질문을 입력하세요" value={inputData} onChange={(e) => onChangeInput(e)} />
         </InputBox>
-        <SetFlexStart>
+        <SetFlexStart $canpost={canPost}>
             <div className="btn" onClick={() => handleInputClick()}>등록</div>
         </SetFlexStart>
     </InputWrapper>
@@ -92,7 +112,7 @@ const InputWrapper = styled.div`
   background-color: rgba(247, 248, 250, 1);
 `;
 
-const SetFlexStart = styled.div`
+const SetFlexStart = styled.div<{$canpost?:boolean}>`
     display: flex;
     width: 96%;
     justify-content: flex-start;
@@ -102,10 +122,9 @@ const SetFlexStart = styled.div`
         justify-content: center;
         align-items: center;
         width: 4rem;
-        padding-top: 1rem;
-        padding-bottom: 1rem;
+        padding: 0.8rem 0.5rem 0.8rem 0.5rem;
         font-size: 1.3rem;
-        background-color: rgba(234, 241, 249, 1);
+        background-color: ${props => props.$canpost === true ? 'rgba(234, 241, 249, 1)' : '#DDDDDD'};
         border-radius: 15px;
         &:hover{
             cursor: pointer;
