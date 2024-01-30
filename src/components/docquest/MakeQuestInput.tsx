@@ -31,13 +31,13 @@ const MakeQuestInput = (props:{
             for(let i=0;i<result.length;i++){
                 toTags.push({label: result[i].content, value: result[i].id});
             }
+            setSelectedSortTag(() => undefined);
             setTagList(() => toTags);
         }
     }
 
     //필터 바뀔 때마다 tag 받아오기
     useEffect(() => {
-        setSelectedSortTag(() => undefined);
         getTagsApi();
     }, [props.activeFilter]);
 
