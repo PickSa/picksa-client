@@ -70,8 +70,8 @@ const MakeQuestInput = (props:{
     }
 
     const handleInputClick = () => {
-        if(selectedSortTag){
-            questPostApi(selectedSortTag.value, inputData);
+        if(canPost){
+            questPostApi(selectedSortTag!.value, inputData);
         }
     }
 
