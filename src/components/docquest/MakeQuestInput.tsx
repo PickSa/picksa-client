@@ -61,7 +61,7 @@ const MakeQuestInput = (props:{
         }
     }
 
-  return (tagList!=undefined && selectedSortTag !==undefined &&
+  return (tagList!=undefined &&
     <InputWrapper ref={inputRef}>
         <SetFlexStart>
             <SelectWrapper>
