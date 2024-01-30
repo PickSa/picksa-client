@@ -64,7 +64,7 @@ const NavBar = ({ where }: { where: string }) => {
       if(result === false){
         console.log('로그인 에러 발생: access token 취득 불가');
       } else {
-        console.log(result);
+        // console.log(result);
         // console.log(result.accessToken);
         setAccessToken(result.accessToken);
         const nameResult = await getUserName(result.accessToken);
