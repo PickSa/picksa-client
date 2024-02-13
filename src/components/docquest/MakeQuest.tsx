@@ -270,7 +270,7 @@ const ContentInfoBar = styled.div`
         width: 6rem;
     }
     &>.tag{
-        justify-content: center;
+        justify-content: flex-start;
         width: 18rem;
     }
     &>.content{

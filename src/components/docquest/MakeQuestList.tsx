@@ -84,7 +84,8 @@ const ContentRow = styled.div`
     }
     &>.tag{
         display: flex;
-        justify-content: center;
+        justify-content: flex-start;
+        align-items: center;
         width: 18rem;
     }
     &>.content{
