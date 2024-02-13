@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { LionDetailAnsType } from '../../dummy/datatypes'
 import styled from 'styled-components';
 
@@ -17,6 +18,10 @@ type applicationProps = {
 }
 
 const Application = (props:applicationProps) => {
+    const [customLink, setCustomLink] = useState<string>();
+    useEffect(() => {
+        setCustomLink(() => `http${props.portfolio.substring(props.portfolio.indexOf('http')+4, )}`)
+    }, []);
   return (
     props && 
     <>
@@ -58,13 +63,14 @@ const Application = (props:applicationProps) => {
             </AnswerWrapper>
         ))
     }
-    <AnswerWrapper>
-        <div className='question'>포트폴리오 링크</div>
-        <div className='answer'>
-            <a href={props.portfolio}
-            target="_blank">{props.portfolio}</a>
-        </div>
-    </AnswerWrapper>
+    {customLink && 
+        <AnswerWrapper>
+            <div className='question'>포트폴리오 링크</div>
+            <div className='answer'>
+                <a href={customLink} target="_blank">{customLink}</a>
+            </div>
+        </AnswerWrapper>
+    }
     </>
   )
 }
@@ -74,6 +80,7 @@ export default Application
 const NameSpace = styled.div`
     display: flex;
     flex-direction: column;
+    width: 95%;
     gap:0.4rem;
     & > .name{
         font-size: 1.8rem;
@@ -88,7 +95,7 @@ const NameSpace = styled.div`
 
 const InfoGrid = styled.div`
     display: grid;
-    width: 100%;
+    width: 95%;
     justify-content: center;
     align-items: center;
     margin-top: 2rem;
@@ -131,20 +138,18 @@ const TableFrame = styled.div`
 const AnswerWrapper = styled.div`
     display: flex;
     flex-direction: column;
-    width: 100%;
-    margin-bottom: 1.2rem;
+    width: 95%;
+    margin-bottom: 3rem;
     & > .question {
         font-size: 1.7rem;
         font-weight: 700;
-        margin-bottom: 0.5rem;
+        margin-bottom: 1rem;
     }
     & > .answer {
         background-color: white;
         font-size: 1.6rem;
         font-weight: 400;
-        padding: 1rem 1.2rem 1rem 1.2rem;
-        &:hover{
-            cursor: pointer;
-        }
+        padding: 2rem;
+        line-height: 150%;
     }
 `

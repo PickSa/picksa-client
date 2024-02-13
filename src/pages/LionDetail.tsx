@@ -138,7 +138,7 @@ export default LionDetail
 const PeopleList = styled.div<{$innerheight:number, $navheight:number}>`
   display: flex;
   flex-direction: column;
-  width: 15%;
+  width: 18rem;
   height: ${props => `${props.$innerheight - props.$navheight - 30}px`};;
   border-top: 1px solid rgba(221, 221, 221, 1);
   border-bottom: 1px solid rgba(221, 221, 221, 1);
@@ -197,8 +197,11 @@ const ContentWrapper = styled.div<{$innerheight:number, $navheight:number}>`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  align-items: flex-start;
-  width: 83%;
+  align-items: center;
+  width: 80%;
   height: ${props => `${props.$innerheight - props.$navheight - 20}px`};
   overflow-y: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `
