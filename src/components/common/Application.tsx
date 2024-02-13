@@ -67,7 +67,9 @@ const Application = (props:applicationProps) => {
         <AnswerWrapper>
             <div className='question'>포트폴리오 링크</div>
             <div className='answer'>
-                <a href={customLink} target="_blank">{customLink}</a>
+                <div>{props.portfolio}</div>
+                <br />
+                <div><a href={customLink} target="_blank">{customLink}</a></div>
             </div>
         </AnswerWrapper>
     }
