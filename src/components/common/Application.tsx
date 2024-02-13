@@ -21,7 +21,7 @@ const Application = (props:applicationProps) => {
     props && 
     <>
     <NameSpace>
-        <div className='name'>{`${props.name}(${props.gender === "female" ? "여" : "남"})`}</div>
+        <div className='name'>{`${props.name}(${props.gender === "여성" ? "여" : "남"})`}</div>
         <div className='part'>{props.part}</div>
     </NameSpace>
     <InfoGrid>
