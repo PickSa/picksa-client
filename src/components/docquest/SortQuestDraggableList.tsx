@@ -105,7 +105,7 @@ const ContentRow = styled.div`
     &>.part{
         display: flex;
         justify-content: flex-start;
-        width: 9rem;
+        width: 7rem;
     }
     &>.tag{
         display: flex;
