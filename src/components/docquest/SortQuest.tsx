@@ -162,7 +162,7 @@ const FilterSelection = styled.div`
   border-radius: 15px;
   &.active {
     color: white;
-    background-color: blue;
+    background-color: rgba(3, 104, 255, 1);
   }
 `;
 
