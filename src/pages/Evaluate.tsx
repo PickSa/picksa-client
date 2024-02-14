@@ -11,28 +11,22 @@ import { useRecoilValue } from "recoil"
 import { accessTokenAtom } from "../atom"
 import { LionDetailType, NAVBARSIZE } from "../dummy/datatypes"
 
-
-
 const Evaluate = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [currentId, setCurrentId] = useState<string|undefined>();
   const [member, setMember] = useState<LionDetailType>();
   const params = useParams();
   const accessToken = useRecoilValue(accessTokenAtom);
-
   const pageheight = window.innerHeight;
-
   const toggleSide = () => {
       setIsOpen(true);
   };
-
   useEffect(() => {
     if(params.id){
       setCurrentId(params.id);
       getDetailById(params.id);
     }
   }, [params]);
-
   const getDetailById = async(id:string) => {
     const result = await getLionDetail(id, accessToken);
     if(result === false) {console.log("error occur")}
