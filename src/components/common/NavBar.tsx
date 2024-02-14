@@ -40,14 +40,14 @@ const NavBar = ({ where }: { where: string }) => {
   }
 
   const onClickLogout = async() => {
-    setAccessToken("");
-    setUserinfo({
-      isUser: false,
-      user: {
-        username: "",
-      }
-    })
-    navigate(`/`);
+    // setAccessToken("");
+    // setUserinfo({
+    //   isUser: false,
+    //   user: {
+    //     username: "",
+    //   }
+    // })
+    // navigate(`/`);
   }
 
   const onClickLogin = async() => {
@@ -67,7 +67,7 @@ const NavBar = ({ where }: { where: string }) => {
       } else {
         console.log(result);
         console.log(result.accessToken);
-        setAccessToken(result.accessToken);
+        //setAccessToken(result.accessToken);
         console.log(accessToken);
         const nameResult = await getUserName(result.accessToken);
         if(nameResult === false){
