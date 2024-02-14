@@ -70,7 +70,7 @@ const SelectWrapper = styled.div`
   justify-content: flex-end;
    & > .select-box {
      width: 100%;
-     font-size: 1rem;
+     font-size: 1.4rem;
      font-weight: 600;
    }
    & > .select-text {

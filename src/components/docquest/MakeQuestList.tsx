@@ -27,17 +27,19 @@ const MakeQuestList = (props:{
         if(props.changedDetermineData.length === 0){
             props.setChangedDetermineData((bfData) => bfData.concat({id:props.lists.id, isDetermined:state}));
         } else {
+            //changeDetermindata에서 index 존재 여부 확인
             const ridIndex = props.changedDetermineData.findIndex(findSameId);
             if(ridIndex === -1) {
+                //changeDetermindata에서 일치하는 index가 없을 경우
                 props.setChangedDetermineData((bfData) => bfData.concat({id:props.lists.id, isDetermined:state}));
             } else {
+                //changeDetermindata에서 일치하는 index가 있을 경우
                 const newList = props.changedDetermineData
                 newList.splice(ridIndex, 1);
                 props.setChangedDetermineData(() => newList);
             }
         }
     };
-
     const onChangeInput = () => {
         handleDeterminedChanged(!isChecked);
         setIsChecked(() => !isChecked);
@@ -69,7 +71,7 @@ export default MakeQuestList
 const ContentRow = styled.div`
     display: flex;
     width: 100%;
-    justify-content: center;
+    justify-content: space-around;
     gap: 2rem;
     padding-top: 1rem;
     padding-bottom: 1rem;
@@ -83,6 +85,7 @@ const ContentRow = styled.div`
     &>.tag{
         display: flex;
         justify-content: center;
+        align-items: center;
         width: 18rem;
     }
     &>.content{

@@ -35,7 +35,7 @@ const Wrapper = styled.div`
 const ContentRow = styled.div`
     display: flex;
     width: 100%;
-    justify-content: flex-start;
+    justify-content: space-around;
     align-items: center;
     gap: 1rem;
     padding-top: 1rem;
@@ -51,7 +51,7 @@ const ContentRow = styled.div`
     &>.part{
         display: flex;
         justify-content: flex-start;
-        width: 9rem;
+        width: 7rem;
     }
     &>.tag{
         display: flex;
@@ -61,5 +61,6 @@ const ContentRow = styled.div`
     &>.content{
         display: flex;
         justify-content: flex-start;
+        width: 70%;
     }
 `

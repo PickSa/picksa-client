@@ -127,6 +127,10 @@ const EvaluateContainer = styled.div<{$innerheight:number, $navheight:number}>`
   gap: 1.5rem;
   width: 35%;
   height: ${props => `${props.$innerheight - props.$navheight - 40}px`};
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `
 const Overlay = styled.div`
   position: fixed;

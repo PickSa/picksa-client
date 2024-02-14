@@ -17,124 +17,141 @@ export type scheduleType = {
     finishAt:string
 }
 const ListTable = () => {
-    const [scheduleDay1, setScheduleDay1] = useState<scheduleType>();
-    const [scheduleDay2, setScheduleDay2] = useState<scheduleType>();
-    const [applicantLists, setApplicantLists] = useState<applicantsType[]>();
-    const accessToken = useRecoilValue(accessTokenAtom);
-    useEffect(() => {
-        async function fetchIntervieweeData() {
-          const result = await getInterviewee(accessToken);
-          console.log(result);
-          setApplicantLists(result.applicants);
-          setScheduleDay1(result.schedules[0]);
-          setScheduleDay2(result.schedules[1]);
-          console.log(result.schedules[1]);
-        }    
-        fetchIntervieweeData();
-      }, []);
-      const getTimeSlots = (start: string, end: string) => {
-        const timeSlots = [];
-        let current = new Date(`1970-01-01T${start}Z`);
-        const finish = new Date(`1970-01-01T${end}Z`);
+  const [scheduleDay1, setScheduleDay1] = useState<scheduleType>();
+  const [scheduleDay2, setScheduleDay2] = useState<scheduleType>();
+  const [applicantLists, setApplicantLists] = useState<applicantsType[]>();
+  const accessToken = useRecoilValue(accessTokenAtom);
+  useEffect(() => {
+      async function fetchIntervieweeData() {
+        const result = await getInterviewee(accessToken);
+        console.log(result);
+        setApplicantLists(result.applicants);
+        setScheduleDay1(result.schedules[0]);
+        setScheduleDay2(result.schedules[1]);
+        console.log(result.schedules[1]);
+      }    
+      fetchIntervieweeData();
+    }, []);
+    const getTimeSlots = (start: string, end: string) => {
+      const timeSlots = [];
+      let current = new Date(`1970-01-01T${start}Z`);
+      const finish = new Date(`1970-01-01T${end}Z`);
 
-        while (current <= finish) {
-            timeSlots.push(current.toISOString().slice(11,16));
-            current.setMinutes(current.getMinutes() + 60);
-        }
-        return timeSlots;
-    };
-      const start1 = scheduleDay1 ? scheduleDay1.startAt : "12:00:00";
-      const finish1 = scheduleDay1 ? scheduleDay1.finishAt : "22:00:00";
-      const start2 = scheduleDay2 ? scheduleDay2.startAt : "12:00:00";
-      const finish2 = scheduleDay2 ? scheduleDay2.finishAt : "22:00:00";
-      const timeSlots1 = getTimeSlots(start1, finish1);
-      const timeSlots2 = getTimeSlots(start2, finish2);
-    const formatDate = (date: string) =>{
-        const d= new Date(date);
-        return `${d.getMonth()+1}/${d.getDate()}`
+      while (current <= finish) {
+          timeSlots.push(current.toISOString().slice(11,16));
+          current.setMinutes(current.getMinutes() + 60);
+      }
+      return timeSlots;
+  };
+  const getTimeSlots2 = (start: string, end: string) => {
+    const timeSlots = [];
+    let current = new Date(`1970-01-01T${start}Z`);
+    const finish = new Date(`1970-01-01T${end}Z`);
+    finish.setHours(finish.getHours() + 1);
+    while (current <= finish) {
+        timeSlots.push(current.toISOString().slice(11,16));
+        current.setMinutes(current.getMinutes() + 60);
     }
-  return (
-    <TableWrapper>
-      <Scrollable>
-        <Table>
-          <tbody>
-            <tr style={{height: "4rem", background: "#F7F8FA"}}>
-              <td style={{ position: 'sticky', top: 0, zIndex: 8, left:0, background: "#F7F8FA"}}><Text1>날짜</Text1></td>
-              <td style={{width: '20rem', position: 'sticky', top: 0, left:60, zIndex: 7, background: "#F7F8FA"}}></td>
-              {timeSlots1.map((_, index) => {
-                if (index < 1) {
-                  return <Td1 style={{ position: 'sticky', top: 0,left: 5, zIndex: 6, background: "#F7F8FA" }}>{scheduleDay1 ? formatDate(scheduleDay1.date) : ""}</Td1>;
-                }
-                else {
-                  return <Td1 style={{position: 'sticky', top: 0, zIndex: 6, background: "#F7F8FA"}}></Td1>;
-                }
-              })}
-              {timeSlots2.map((_, index) => {
-                if (index < 1) {
-                  return <Td1 style={{ position: 'sticky', top: 0, zIndex: 6, background: "#F7F8FA" }}>{scheduleDay2 ? formatDate(scheduleDay2.date) : ""}</Td1>;
-                }
-                else {
-                  return <Td1 style={{position: 'sticky', top: 0, zIndex: 6, background: "#F7F8FA"}}></Td1>;
-                }
-              })}
-            </tr>
-            <tr style={{background: "#F7F8FA"}}>
-              <Td1 style = {{ position: 'sticky', top: 40, zIndex: 8, left:0, background: "#F7F8FA" }}><Text1>시간</Text1></Td1>
-              <td style={{width: '20rem', position: 'sticky', top: 40, left:60, zIndex: 7, background: "#F7F8FA"}}><Text></Text></td>
-              {timeSlots1.map((time, index) => (
-                  <Td1 key={index} style={{ position: 'sticky', top: 40, left: 5, zIndex: 5, background: "#F7F8FA" }}>{time}</Td1>
-                ))}
-                {timeSlots2.map((time, index) => (
-                  <Td1 key={index} style={ {position: 'sticky', top: 40, zIndex: 5, background: "#F7F8FA"}}>{time}</Td1>
-                ))}
-            </tr>
-            {
-              applicantLists && applicantLists.map((data: memberType, idx:number)=>(
-                <tr key={idx} style={{background: "#F7F8FA"}}>
-                  <td style={{ position: 'sticky', left: 0, zIndex: 2, background: "#F7F8FA", top: 5 }}><PartHighlight part={data.part}>{getPartName(data.part)}</PartHighlight></td>
-                  <td style={{ position: 'sticky', left: 61, zIndex: 2, background: "#F7F8FA", top: 5 }}><Text>{data.name}</Text></td>
-                  {timeSlots1.map((_, i) => {
-                    if (data.available) {
-                      const availabilityArray = data.available.split('');
-                      const isAvailable = availabilityArray[i];
-                      return <Td key={i} style={{ position: 'sticky', zIndex: 1, left: 5, top: 6 }}>{isAvailable === '1' ? <Check /> : <Nocheck />}</Td>
-                    }
-                    else {
-                      return <Td key={i} style={{ position: 'sticky', zIndex: 1, left: 5, top: 6 }}><Nocheck /></Td>
-                    }
-                  })}
-                  {timeSlots2.map((_, i) => {
-                    if (data.available) {
-                      const availabilityArray = data.available.split('');
-                      const isAvailable = availabilityArray[i];
-                      return <Td key={i} style={{ position: 'sticky', zIndex: 1, top: 6 }}>{isAvailable === '1' ? <Check /> : <Nocheck />}</Td>
-                    }
-                    else {
-                      return <Td key={i} style={{ position: 'sticky', zIndex: 1, top: 6 }}><Nocheck /></Td>
-                    }
-                  })}
-                </tr>
-              ))
-            }
-          </tbody>
-        </Table>
-      </Scrollable>
-    </TableWrapper>
-  )
+    return timeSlots;
+};
+    const start1 = scheduleDay1 ? scheduleDay1.startAt : "12:00:00";
+    const finish1 = scheduleDay1 ? scheduleDay1.finishAt : "22:00:00";
+    const start2 = scheduleDay2 ? scheduleDay2.startAt : "12:00:00";
+    const finish2 = scheduleDay2 ? scheduleDay2.finishAt : "22:00:00";
+    const timeSlots1 = getTimeSlots(start1, finish1);
+    const timeSlots2 = getTimeSlots(start2, finish2);
+    const timeSlots3 = getTimeSlots2(start2, finish2);
+  const formatDate = (date: string) =>{
+      const d= new Date(date);
+      return `${d.getMonth()+1}/${d.getDate()}`
+  }
+return (
+  <>
+  <TableWrapper>
+    <Scrollable>
+      <Table>
+        <tbody>
+          <tr style={{height: "4rem", background: "#F7F8FA"}}>
+            <td style={{ position: 'sticky', top: 0, zIndex: 8, left:0, background: "#F7F8FA"}}><Text1>날짜</Text1></td>
+            <td style={{width: '20rem', position: 'sticky', top: 0, left:60, zIndex: 7, background: "#F7F8FA"}}></td>
+            {timeSlots1.map((_, index) => {
+              if (index < 1) {
+                return <Td1 style={{ position: 'sticky', top: 0,left: 5, zIndex: 6, background: "#F7F8FA" }}><Text4>{scheduleDay1 ? formatDate(scheduleDay1.date) : ""}</Text4></Td1>;
+              }
+              else {
+                return <Td1 style={{position: 'sticky', top: 0, zIndex: 6, background: "#F7F8FA"}}></Td1>;
+              }
+            })}
+            {timeSlots2.map((_, index) => {
+              if (index < 1) {
+                return <Td1 style={{ position: 'sticky', top: 0, zIndex: 6, background: "#F7F8FA" }}><Text4>{scheduleDay2 ? formatDate(scheduleDay2.date) : ""}</Text4></Td1>;
+              }
+              else {
+                return <Td1 style={{position: 'sticky', top: 0, zIndex: 6, background: "#F7F8FA"}}></Td1>;
+              }
+            })}
+          </tr>
+          <tr style={{background: "#F7F8FA"}}>
+            <Td1 style = {{ position: 'sticky', top: 40, zIndex: 8, left:0, background: "#F7F8FA" }}><Text1>시간</Text1></Td1>
+            <td style={{width: '20rem', position: 'sticky', top: 40, left:60, zIndex: 7, background: "#F7F8FA"}}><Text></Text></td>
+            {timeSlots1.map((time, index) => (
+                <Td1 key={index} style={{ position: 'sticky', top: 40, left: 5, zIndex: 5, background: "#F7F8FA" }}><Text3>{time}</Text3></Td1>
+              ))}
+              {timeSlots3.map((time, index) => (
+                <Td1 key={index} style={ {position: 'sticky', top: 40, zIndex: 5, background: "#F7F8FA"}}><Text3>{time}</Text3></Td1>
+              ))}
+          </tr>
+          {
+            applicantLists && applicantLists.map((data: memberType, idx:number)=>(
+              <tr key={idx} style={{background: "#F7F8FA"}}>
+                <td style={{ position: 'sticky', left: 0, zIndex: 2, background: "#F7F8FA", top: 5 }}><PartHighlight part={data.part}>{getPartName(data.part)}</PartHighlight></td>
+                <td style={{ position: 'sticky', left: 61, zIndex: 2, background: "#F7F8FA", top: 5 }}><Text2>{data.name}</Text2></td>
+                <Td2 style={{ position: 'sticky', zIndex: 1, left: 5, top: 6 }}><Blank /></Td2>
+                {timeSlots1.map((_, i) => {
+                  if (data.available) {
+                    const availabilityArray = data.available.split('');
+                    const isAvailable = availabilityArray[i];
+                    return <Td2 key={i} style={{ position: 'sticky', zIndex: 1, left: 5, top: 6 }}>{isAvailable === '1' ? <Check /> : <Nocheck />}</Td2>
+                  } else {
+                    return <Td2 key={i} style={{ position: 'sticky', zIndex: 1, left: 5, top: 6 }}><Nocheck /></Td2>
+                  }
+                })}
+
+                {timeSlots2.map((_, i) => {
+                  if (data.available) {
+                    const availabilityArray = data.available.split('');
+                    const isAvailable = availabilityArray[i];
+                    return <Td2 key={i} style={{ position: 'sticky', zIndex: 1, top: 6 }}>{isAvailable === '1' ? <Check /> : <Nocheck />}</Td2>
+                  }
+                  else {
+                    return <Td2 key={i} style={{ position: 'sticky', zIndex: 1, top: 6 }}><Nocheck /></Td2>
+                  }
+                })}
+              </tr>
+            ))
+          }
+        </tbody>
+      </Table>
+    </Scrollable>
+  </TableWrapper>
+  
+</>
+ 
+)
 }
 function getPartName(part:string){
-    switch(part){
-        case "PM":
-            return "기획";
-        case "DESIGN":
-            return "디자인";
-        case "FRONTEND":
-            return "프론트엔드";
-        case "BACKEND":
-            return "백엔드";
-    }
+  switch(part){
+      case "PM":
+          return "기획";
+      case "DESIGN":
+          return "디자인";
+      case "FRONTEND":
+          return "프론트";
+      case "BACKEND":
+          return "백엔드";
+  }
 }
-export default ListTable
+export default ListTable;
 const TableWrapper = styled.div`
     display: flex;
     flex-direction: row;
@@ -142,7 +159,7 @@ const TableWrapper = styled.div`
     padding-left: 15px;
     padding-right: 15px;
     font-size: 1.2rem;
-    height: 48rem;   
+    height: 58rem;   
 `;
 const Table = styled.table`
 width: 100%;
@@ -151,14 +168,25 @@ const Td = styled.td`
 padding-top: 2rem;
 font-size: 1.4rem;
 `;
+const Td2 = styled.td`
+padding-top: 2rem;
+font-size: 1.4rem;
+padding-right: 1.6rem;
+`;
 const Td1 = styled.td`
 font-size: 1.4rem;
-width: 5rem;
+width: 20rem;
+background: "#F7F8FA";
 `;
-const ListTitle = styled.tr`
-padding-bottom: 1rem;
+const Div1 = styled.div`
+  position: sticky;
+  z-index: 1;
+  left: 5px;
+  top: 6px;
+  display: flex;
+  flex-direction: row;
+`;
 
-`;
 const MemberList = styled.div`
 gap: 5rem;
 display: flex;
@@ -181,18 +209,52 @@ font-size: 1.4rem;
 background-color: "#F7F8FA";
 z-index:7;
 text-align: center;
+font-family: 'Pretendard Variable';
+`;
+const Text2 = styled.div`
+width: 8rem;
+font-size: 1.4rem;
+background-color: "#F7F8FA";
+z-index:7;
+text-align: center;
+font-family: 'Pretendard Variable';
+font-style: normal;
+font-weight: 700;
+color: #141414;
 `;
 
 const Text1 = styled.div`
 text-align: center;
 font-size: 1.4rem;
 background-color: "#F7F8FA";
+font-family: 'Pretendard Variable';
+font-weight: 550;
+color: #141414;
+`;
+const Text3 = styled.div`
+text-align: end;
+font-size: 1.4rem;
+background-color: "#F7F8FA";
+font-family: 'Pretendard Variable';
+font-weight: 520;
+color: #141414;
+`;
+
+const Text4 = styled.div`
+text-align: end;
+font-size: 1.4rem;
+background-color: "#F7F8FA";
+font-family: 'Pretendard Variable';
+font-weight: 600;
+color: #141414;
 `;
 const PartHighlight = styled.div<{part:string}>`
     font-size: 1.4rem;
     text-align: center;
+    font-family: 'Pretendard Variable';
+    font-weight: 510;
     width: 4.5rem;
-    padding: 0.5rem 0.5rem 0.5rem 0.9rem;
+    padding: 0.5rem 0.9rem 0.5rem 0.9rem;
     border-radius: 10px;
     ${(props) => {
         if(props.part === "PM"){
@@ -217,14 +279,19 @@ const PartHighlight = styled.div<{part:string}>`
 const Check = styled.div`
 background: #73ABFF;
 border-radius: 10px;
-width: 5rem; /* adjust as needed */
+width: 6rem; /* adjust as needed */
 height: 3rem; /* adjust as needed */
 `;
+const Blank = styled.div`
+width: 2rem; /* adjust as needed */
+height: 3rem; /* adjust as needed */
+background: "#F7F8FA";
+border-radius: 10px;
+`;
 const Nocheck = styled.div`
-
 background: #EAF1F9;
 border-radius: 10px;
-width: 5rem; /* adjust as needed */
+width: 6rem; /* adjust as needed */
 height: 3rem; /* adjust as needed */
 `;
 const Sticky = styled.td`

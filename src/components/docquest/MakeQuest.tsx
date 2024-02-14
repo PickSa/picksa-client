@@ -201,7 +201,7 @@ const FilterSelection = styled.div`
   border-radius: 15px;
   &.active{
     color: white;
-    background-color: blue;
+    background-color: rgba(3, 104, 255, 1);
   }
 `
 
@@ -251,7 +251,7 @@ const ContentUtilBar = styled.div`
 const ContentInfoBar = styled.div`
     display: flex;
     width: 100%;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
     gap: 2rem;
     background-color: rgba(234, 241, 249, 0.2);

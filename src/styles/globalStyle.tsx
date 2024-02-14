@@ -31,7 +31,7 @@ export const ArticleFlex = styled.div<{$innerheight?:number, $navheight?:number}
     &.lion-detail-row{
         flex-direction: row;
         height: ${props => `${props.$innerheight! - props.$navheight! - 20}px`};
-        justify-content: space-between;
+        justify-content: space-around;
         margin-top: 2rem;
     }
 `
@@ -40,7 +40,7 @@ export const GridContent = styled.div`
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     padding-left: 10rem;
-    font-size: 1.2rem;
+    font-size: 1.6rem;
     &.listTitle{
         font-weight: bolder;
         background-color: #ddf1fb;

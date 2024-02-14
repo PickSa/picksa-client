@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { TABS } from "../../assets/tabs";
 import { useEffect, useState } from "react";
 import { SpaceBetweenFlex } from "../../styles/globalStyle";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { LoginCodeAtom, UserInfoAtom, accessTokenAtom } from "../../atom";
 import { getLoginLink, getToken, getUserName } from "../../apis/login";
 
@@ -13,7 +13,6 @@ const NavBar = ({ where }: { where: string }) => {
 	const [tab, setTab] = useState(TABS.HOME);
   const [userinfo, setUserinfo] = useRecoilState(UserInfoAtom);
   const setAccessToken = useSetRecoilState(accessTokenAtom);
-  const accessToken = useRecoilValue(accessTokenAtom);
   const [code, setCode] = useRecoilState(LoginCodeAtom);
 
 	useEffect(() => {
@@ -66,14 +65,13 @@ const NavBar = ({ where }: { where: string }) => {
         console.log('로그인 에러 발생: access token 취득 불가');
       } else {
         console.log(result);
-        console.log(result.accessToken);
-        //setAccessToken(result.accessToken);
-        console.log(accessToken);
+        // console.log(result.accessToken);
+        setAccessToken(result.accessToken);
         const nameResult = await getUserName(result.accessToken);
         if(nameResult === false){
           console.log('유저 이름을 찾을 수 없음');
         } else {
-          console.log(nameResult);
+          // console.log(nameResult);
           setUserinfo({
             isUser : true,
             user : {
@@ -87,9 +85,7 @@ const NavBar = ({ where }: { where: string }) => {
   }
 
   useEffect(() => {
-    console.log(accessToken);
     if(code !== undefined){
-      console.log(1);
       getAccessToken();
     }
   }, [code]);
