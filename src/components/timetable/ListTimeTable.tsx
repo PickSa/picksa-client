@@ -19,16 +19,19 @@ export type scheduleType = {
 const ListTable = () => {
   const [scheduleDay1, setScheduleDay1] = useState<scheduleType>();
   const [scheduleDay2, setScheduleDay2] = useState<scheduleType>();
+  const [scheduleDay3, setScheduleDay3] = useState<scheduleType>();
   const [applicantLists, setApplicantLists] = useState<applicantsType[]>();
   const accessToken = useRecoilValue(accessTokenAtom);
   useEffect(() => {
       async function fetchIntervieweeData() {
         const result = await getInterviewee(accessToken);
         console.log(result);
+        const itemCount  = result.schedules.length;
         setApplicantLists(result.applicants);
         setScheduleDay1(result.schedules[0]);
         setScheduleDay2(result.schedules[1]);
-        console.log(result.schedules[1]);
+        setScheduleDay3(result.schedules[2]);
+        console.log(itemCount);
       }    
       fetchIntervieweeData();
     }, []);
@@ -43,6 +46,7 @@ const ListTable = () => {
       }
       return timeSlots;
   };
+  //마지막
   const getTimeSlots2 = (start: string, end: string) => {
     const timeSlots = [];
     let current = new Date(`1970-01-01T${start}Z`);
@@ -90,6 +94,14 @@ return (
                 return <Td1 style={{position: 'sticky', top: 0, zIndex: 6, background: "#F7F8FA"}}></Td1>;
               }
             })}
+            {timeSlots2.map((_, index) => {
+              if (index < 1) {
+                return <Td1 style={{ position: 'sticky', top: 0, zIndex: 6, background: "#F7F8FA" }}><Text4>{scheduleDay3 ? formatDate(scheduleDay3.date) : ""}</Text4></Td1>;
+              }
+              else {
+                return <Td1 style={{position: 'sticky', top: 0, zIndex: 6, background: "#F7F8FA"}}></Td1>;
+              }
+            })}
           </tr>
           <tr style={{background: "#F7F8FA"}}>
             <Td1 style = {{ position: 'sticky', top: 40, zIndex: 8, left:0, background: "#F7F8FA" }}><Text1>시간</Text1></Td1>
@@ -97,7 +109,10 @@ return (
             {timeSlots1.map((time, index) => (
                 <Td1 key={index} style={{ position: 'sticky', top: 40, left: 5, zIndex: 5, background: "#F7F8FA" }}><Text3>{time}</Text3></Td1>
               ))}
-              {timeSlots3.map((time, index) => (
+              {timeSlots2.map((time, index) => (
+                <Td1 key={index} style={ {position: 'sticky', top: 40, zIndex: 5, background: "#F7F8FA"}}><Text3>{time}</Text3></Td1>
+              ))}
+              {timeSlots2.map((time, index) => (
                 <Td1 key={index} style={ {position: 'sticky', top: 40, zIndex: 5, background: "#F7F8FA"}}><Text3>{time}</Text3></Td1>
               ))}
           </tr>
@@ -111,20 +126,34 @@ return (
                   if (data.available) {
                     const availabilityArray = data.available.split('');
                     const isAvailable = availabilityArray[i];
-                    return <Td2 key={i} style={{ position: 'sticky', zIndex: 1, left: 5, top: 6 }}>{isAvailable === '1' ? <Check /> : <Nocheck />}</Td2>
-                  } else {
-                    return <Td2 key={i} style={{ position: 'sticky', zIndex: 1, left: 5, top: 6 }}><Nocheck /></Td2>
+                    if(i !== 10){
+                      return <Td2 key={i} style={{ position: 'sticky', zIndex: 1, left: 5, top: 6 }}>{isAvailable === '1' ? <Check /> : <Nocheck />}</Td2>
+                    }
+                    if(i === 10){
+                      return <Td2 key={i} style={{ position: 'sticky', zIndex: 1, left: 5, top: 6 }}><Nocheck /></Td2>
+                    }
                   }
                 })}
 
+                {timeSlots1.map((_, i) => {
+                  if (data.available) {
+                    const availabilityArray = data.available.split('');
+                    const isAvailable = availabilityArray[i+10];
+                    if(i !== 10){
+                      return <Td2 key={i} style={{ position: 'sticky', zIndex: 1, left: 5, top: 6 }}>{isAvailable === '1' ? <Check /> : <Nocheck />}</Td2>
+                    }
+                    if(i === 10){
+                      return <Td2 key={i} style={{ position: 'sticky', zIndex: 1, left: 5, top: 6 }}><Nocheck /></Td2>
+                    }
+                  }
+                })}
                 {timeSlots2.map((_, i) => {
                   if (data.available) {
                     const availabilityArray = data.available.split('');
-                    const isAvailable = availabilityArray[i];
-                    return <Td2 key={i} style={{ position: 'sticky', zIndex: 1, top: 6 }}>{isAvailable === '1' ? <Check /> : <Nocheck />}</Td2>
-                  }
-                  else {
-                    return <Td2 key={i} style={{ position: 'sticky', zIndex: 1, top: 6 }}><Nocheck /></Td2>
+                    const isAvailable = availabilityArray[i+20];
+                    if(i !== 10){
+                      return <Td2 key={i} style={{ position: 'sticky', zIndex: 1, left: 5, top: 6 }}>{isAvailable === '1' ? <Check /> : <Nocheck />}</Td2>
+                    }
                   }
                 })}
               </tr>
