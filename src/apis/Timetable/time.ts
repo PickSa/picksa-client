@@ -30,7 +30,11 @@ export const getInterviewee = async (accessToken: string) => {
         headers: { 'Authorization': `Bearer ${accessToken}` }
       })
       return response.data;
-    } catch {
-      return false;
-    }
+    } catch(error:any) {
+      if(error.code === "ERR_NETWORK"){
+          return "logout";
+      } else {
+          return false;
+      }
+  }
   }

@@ -2,7 +2,7 @@ import NavBar from "../components/common/NavBar"
 import { PageFlex } from "../styles/globalStyle"
 import styled from "styled-components"
 import EvaluateContainerContent from "../components/evaluate/EvaluateContainerContent"
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import SideBar from '../components/evaluate/SideBar';
 import { useParams } from "react-router-dom"
 import Application from "../components/common/Application"
@@ -18,6 +18,9 @@ const Evaluate = () => {
   const params = useParams();
   const accessToken = useRecoilValue(accessTokenAtom);
   const pageheight = window.innerHeight;
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const evalScrollRef = useRef<HTMLDivElement>(null);
+
   const toggleSide = () => {
       setIsOpen(true);
   };
@@ -27,19 +30,23 @@ const Evaluate = () => {
       getDetailById(params.id);
     }
   }, [params]);
+
   const getDetailById = async(id:string) => {
     const result = await getLionDetail(id, accessToken);
     if(result === false) {console.log("error occur")}
     else {
       setMember(result);
+      scrollRef.current?.scroll({top:0})
+      evalScrollRef.current?.scroll({top:0})
     }
   }
+
   return (
     <>
     <PageFlex $innerheight={pageheight}>      
       <NavBar where="evaluate" />
       <ContainerWrapper>
-        <FileContainer $innerheight={pageheight} $navheight={NAVBARSIZE}>
+        <FileContainer ref={scrollRef} $innerheight={pageheight} $navheight={NAVBARSIZE}>
         <SlideBtn role="button" onClick={toggleSide}>
           <div><img width="30rem" src="/img/MdChevronRight.png" /></div>
         </SlideBtn>
@@ -59,7 +66,7 @@ const Evaluate = () => {
           answers={member.answers} />}
         <SideBar isOpen={isOpen} setIsOpen={setIsOpen} />
         </FileContainer>        
-        <EvaluateContainer $innerheight={pageheight} $navheight={NAVBARSIZE}>
+        <EvaluateContainer ref={evalScrollRef} $innerheight={pageheight} $navheight={NAVBARSIZE}>
           {member && 
           <EvaluateContainerContent 
             currentId={currentId}
