@@ -23,7 +23,7 @@ export default Comment
 const CommentContainer = styled.div`
 display: flex;
 flex-direction: column;
-align-items: flex-end;
+align-items: center;
 gap: 1rem; /* 10px */
 width: 90%;
 /* Blue/Blue2 */
@@ -36,6 +36,8 @@ border-radius: 0.5rem; /* 8px */
 const NameContainer = styled.div`
 display: flex;
 flex-direction: row;
+width: 90%;
+justify-content: flex-end;
 height: 1rem; /* 14px */
 gap: 0.5rem;
 font-family: 'Pretendard Variable';
@@ -57,6 +59,7 @@ line-height: 150%;
 padding: 1.25rem; /* 20px */
 color: #000000;
 margin-left: 2rem;
+margin-right: 2rem;
 `
 const PassText = styled.span<{pass:boolean}>`
     color: ${props => props.pass ? "blue" : "red"};
