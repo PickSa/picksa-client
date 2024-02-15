@@ -69,7 +69,13 @@ const Application = (props:applicationProps) => {
         props.answers.map((data, idx) => (
             <AnswerWrapper key={idx}>
                 <div className='question'>{`Q${idx+1}.${data.question}`}</div>
-                <div className='answer'>{data.answer}</div>
+                <div className='answer'>{
+                data.answer && data.answer.split('\n').map((line, index) => (
+                    <div key={index}>
+                        {line}
+                        <br />
+                    </div>
+                ))}</div>
             </AnswerWrapper>
         ))
     }
