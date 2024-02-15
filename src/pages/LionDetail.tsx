@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { ArticleFlex } from '../styles/globalStyle'
 import styled from 'styled-components'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -19,23 +19,30 @@ const LionDetail = () => {
   const [member, setMember] = useState<LionDetailType>();
 
   const pageheight = window.innerHeight;
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   const getDetailById = async(id:string) => {
     const result = await getLionDetail(id, accessToken);
     if(result === false) {console.log("error occur")}
     else {
       setMember(result);
+      scrollRef.current?.scroll({top:0})
     }
   }
 
   const getPartListApi = async(part:string) => {
     const result = await getPartLists(part, "", accessToken);
     if(result){
-      if(part === "PM") {
-        setPmList(result.applicants)
+      if(part === "PM"){
+        if(result === "logout"){
+          alert("토큰이 만료되었습니다. 로그아웃 후 다시 로그인해주세요.");
+          navigate("/");
+        } else {
+          setPmList(result.applicants);
+        }        
       }
-      else if(part === "DESIGN") {setDesignList(result.applicants)}
-      else if(part === "FRONTEND") {setFeList(result.applicants)}
+      else if(part === "DESIGN"){setDesignList(result.applicants)}
+      else if(part === "FRONTEND"){setFeList(result.applicants)}
       else {setBeList(result.applicants)}
     }
   }
@@ -113,7 +120,7 @@ const LionDetail = () => {
           </PartWrapper>
         </PeopleList>
       }
-      <ContentWrapper $innerheight={pageheight} $navheight={NAVBARSIZE}>
+      <ContentWrapper ref={scrollRef} $innerheight={pageheight} $navheight={NAVBARSIZE}>
         {member && 
         <Application
           id={member.id}
