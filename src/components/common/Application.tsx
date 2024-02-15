@@ -18,9 +18,18 @@ type applicationProps = {
 }
 
 const Application = (props:applicationProps) => {
-    const [customLink, setCustomLink] = useState<string>();
+    const [customLink, setCustomLink] = useState<string|null>();
     useEffect(() => {
-        setCustomLink(() => `http${props.portfolio.substring(props.portfolio.indexOf('http')+4, )}`)
+        if(props.portfolio){
+            try{
+                setCustomLink(() => `http${props.portfolio.substring(props.portfolio.indexOf('http')+4, )}`)
+            } catch{
+                setCustomLink(() => props.portfolio)
+            }
+        }
+        else {
+            setCustomLink(() => null);
+        }
     }, []);
   return (
     props && 
