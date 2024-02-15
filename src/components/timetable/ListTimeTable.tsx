@@ -130,7 +130,7 @@ return (
                       return <Td2 key={i} style={{ position: 'sticky', zIndex: 1, left: 5, top: 6 }}>{isAvailable === '1' ? <Check /> : <Nocheck />}</Td2>
                     }
                     if(i === 10){
-                      return <Td2 key={i} style={{ position: 'sticky', zIndex: 1, left: 5, top: 6 }}><Nocheck /></Td2>
+                      return <Td2 key={i} style={{ position: 'sticky', zIndex: 1, left: 5, top: 6 }}><Nocheck2 /></Td2>
                     }
                   }
                 })}
@@ -143,7 +143,7 @@ return (
                       return <Td2 key={i} style={{ position: 'sticky', zIndex: 1, left: 5, top: 6 }}>{isAvailable === '1' ? <Check /> : <Nocheck />}</Td2>
                     }
                     if(i === 10){
-                      return <Td2 key={i} style={{ position: 'sticky', zIndex: 1, left: 5, top: 6 }}><Nocheck /></Td2>
+                      return <Td2 key={i} style={{ position: 'sticky', zIndex: 1, left: 5, top: 6 }}><Nocheck2 /></Td2>
                     }
                   }
                 })}
@@ -321,6 +321,12 @@ const Nocheck = styled.div`
 background: #EAF1F9;
 border-radius: 10px;
 width: 6rem; /* adjust as needed */
+height: 3rem; /* adjust as needed */
+`;
+const Nocheck2 = styled.div`
+background: #F7F8FA;
+border-radius: 10px;
+width: 4.8rem; /* adjust as needed */
 height: 3rem; /* adjust as needed */
 `;
 const Sticky = styled.td`
