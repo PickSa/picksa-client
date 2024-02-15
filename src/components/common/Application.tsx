@@ -18,20 +18,56 @@ type applicationProps = {
 }
 
 const Application = (props:applicationProps) => {
-    const [customLink, setCustomLink] = useState<string|null>();
+    const [customLink, setCustomLink] = useState<string[]|null>();
     useEffect(() => {
         setCustomLink(() => undefined)
         if(props.portfolio!==null && props.portfolio!==undefined){
-            try{
-                setCustomLink(() => `http${props.portfolio!.substring(props.portfolio!.indexOf('http')+4, )}`)
-            } catch{
-                setCustomLink(() => props.portfolio)
+            if(props.portfolio.includes('\n')){
+                try{
+                    const arr = props.portfolio.split('\n');
+                    const modifiedArr = arr.map((element) => {
+                        return (`http${element.substring(element.indexOf('http')+4, )}`)
+                    });
+                    setCustomLink(() => modifiedArr);
+                } catch {
+                    setCustomLink(() => [props.portfolio!])
+                }
+            } else if (props.portfolio.includes(',')){
+                try{
+                    const arr = props.portfolio.split(',');
+                    const modifiedArr = arr.map((element) => {
+                        return (`http${element.substring(element.indexOf('http')+4, )}`)
+                    });
+                    setCustomLink(() => modifiedArr);
+                } catch {
+                    setCustomLink(() => [props.portfolio!])
+                }
+            } else if (props.portfolio.includes(' ')){
+                try{
+                    const arr = props.portfolio.split(' ');
+                    const modifiedArr = arr.map((element) => {
+                        if(element.includes('http')){
+                            return (`http${element.substring(element.indexOf('http')+4, )}`);
+                        } else {
+                            return ''
+                        }
+                    });
+                    setCustomLink(() => modifiedArr);
+                } catch {
+                    setCustomLink(() => [props.portfolio!])
+                }
+            } else {
+                try{
+                    setCustomLink(() => [`http${props.portfolio!.substring(props.portfolio!.indexOf('http')+4, )}`])
+                } catch{
+                    setCustomLink(() => [props.portfolio!])
+                }
             }
         }
         else {
             setCustomLink(() => null);
         }
-    }, [props]);
+    }, [props.portfolio]);
   return (
     props && 
     <>
@@ -86,7 +122,15 @@ const Application = (props:applicationProps) => {
             <>
                 <div>{props.portfolio}</div>
                 <br />
-                <div><a href={customLink} target="_blank">{customLink}</a></div>
+                {
+                    customLink.map((link, idx) => (
+                        <>
+                        <div>
+                            <a key={idx} href={link} target="_blank">{link}</a>
+                        </div>
+                        </>
+                    ))
+                }
             </>
             }
         </div>
