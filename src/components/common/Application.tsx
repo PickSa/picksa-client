@@ -13,16 +13,17 @@ type applicationProps = {
     part: string,
     email: string,
     phone: string,
-    portfolio: string,
+    portfolio: string|null,
     answers: LionDetailAnsType[],
 }
 
 const Application = (props:applicationProps) => {
     const [customLink, setCustomLink] = useState<string|null>();
     useEffect(() => {
-        if(props.portfolio!==null){
+        setCustomLink(() => undefined)
+        if(props.portfolio!==null || props.portfolio!==undefined){
             try{
-                setCustomLink(() => `http${props.portfolio.substring(props.portfolio.indexOf('http')+4, )}`)
+                setCustomLink(() => `http${props.portfolio!.substring(props.portfolio!.indexOf('http')+4, )}`)
             } catch{
                 setCustomLink(() => props.portfolio)
             }
