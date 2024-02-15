@@ -21,7 +21,7 @@ const Application = (props:applicationProps) => {
     const [customLink, setCustomLink] = useState<string|null>();
     useEffect(() => {
         setCustomLink(() => undefined)
-        if(props.portfolio!==null || props.portfolio!==undefined){
+        if(props.portfolio!==null && props.portfolio!==undefined){
             try{
                 setCustomLink(() => `http${props.portfolio!.substring(props.portfolio!.indexOf('http')+4, )}`)
             } catch{
