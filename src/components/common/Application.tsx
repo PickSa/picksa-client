@@ -31,7 +31,7 @@ const Application = (props:applicationProps) => {
         else {
             setCustomLink(() => null);
         }
-    }, []);
+    }, [props]);
   return (
     props && 
     <>
