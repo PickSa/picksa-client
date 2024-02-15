@@ -194,10 +194,10 @@ const EvaluateContainerContent=(props:{
                 <NameContainer2>
                     {
                         isEval === false ? 
-                        <TextBox value={texts} onChange={e=>setTexts(e.target.value)}></TextBox>
+                        <TextBox maxLength={250} value={texts} onChange={e=>setTexts(e.target.value)}></TextBox>
                         :
                         clickEdit === true ?
-                        <TextBox value={texts} onChange={e=>setTexts(e.target.value)}></TextBox>
+                        <TextBox maxLength={250} value={texts} onChange={e=>setTexts(e.target.value)}></TextBox>
                         :
                         <TextBoxCannotEdit>
                            <div>{texts}</div>
