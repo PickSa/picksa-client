@@ -20,7 +20,7 @@ type applicationProps = {
 const Application = (props:applicationProps) => {
     const [customLink, setCustomLink] = useState<string|null>();
     useEffect(() => {
-        if(props.portfolio){
+        if(props.portfolio!==null){
             try{
                 setCustomLink(() => `http${props.portfolio.substring(props.portfolio.indexOf('http')+4, )}`)
             } catch{
@@ -72,16 +72,18 @@ const Application = (props:applicationProps) => {
             </AnswerWrapper>
         ))
     }
-    {customLink && 
-        <AnswerWrapper>
-            <div className='question'>포트폴리오 링크</div>
-            <div className='answer'>
+    <AnswerWrapper>
+        <div className='question'>포트폴리오 링크</div>
+        <div className='answer'>
+            {customLink && 
+            <>
                 <div>{props.portfolio}</div>
                 <br />
                 <div><a href={customLink} target="_blank">{customLink}</a></div>
-            </div>
-        </AnswerWrapper>
-    }
+            </>
+            }
+        </div>
+    </AnswerWrapper>
     </>
   )
 }
