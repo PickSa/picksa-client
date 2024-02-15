@@ -33,9 +33,15 @@ const EvaluateContainerContent=(props:{
 
     const nameRef = useRef<HTMLDivElement>(null);
     const myEvalRef = useRef<HTMLDivElement>(null);
+    const textarea = useRef<HTMLTextAreaElement>(null);
 
     const nameRefSize = nameRef.current ? nameRef.current.offsetHeight : 129.5;
     const myEvalRefSize = myEvalRef.current ? myEvalRef.current.offsetHeight : 210.75;
+
+    const handleResizeHeight = () => {
+        textarea.current!.style.height = 'auto'; //height 초기화
+        textarea.current!.style.height = textarea.current!.scrollHeight + 'px';
+    };
 
     useEffect(()=>{
         const fetchComments = async()=>{
@@ -139,6 +145,11 @@ const EvaluateContainerContent=(props:{
         }
     }
 
+    const handleOnChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        handleResizeHeight();
+        setTexts(e.target.value);
+    }
+
     return(
         <>        
         {evaluationRes && <VolunteerContainer>
@@ -194,10 +205,10 @@ const EvaluateContainerContent=(props:{
                 <NameContainer2>
                     {
                         isEval === false ? 
-                        <TextBox maxLength={250} value={texts} onChange={e=>setTexts(e.target.value)}></TextBox>
+                        <TextBox ref={textarea} maxLength={250} value={texts} onChange={e=>handleOnChange(e)}></TextBox>
                         :
                         clickEdit === true ?
-                        <TextBox maxLength={250} value={texts} onChange={e=>setTexts(e.target.value)}></TextBox>
+                        <TextBox ref={textarea} maxLength={250} value={texts} onChange={e=>handleOnChange(e)}></TextBox>
                         :
                         <TextBoxCannotEdit>
                            <div>{texts}</div>
@@ -435,7 +446,7 @@ const TextBox = styled.textarea`
     align-items: center;
     padding: 1rem;
     gap: 0.5rem;
-    height: 8rem;
+    /* height: 8rem; */
     width: 100%;
     background: #FFFFFF;
     border: 1px solid #000000;
@@ -454,7 +465,7 @@ const TextBoxCannotEdit = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
-    height: 8rem;
+    /* height: 8rem; */
     width: 100%;
     background: #EAF1F9;
     border-radius: 0.125rem;
@@ -462,6 +473,7 @@ const TextBoxCannotEdit = styled.div`
     font-style: normal;
     font-weight: 400;
     font-size: 1.5rem;
+    line-height: 150%;
     overflow-y: scroll;
     color: #000000;
     & > div{
