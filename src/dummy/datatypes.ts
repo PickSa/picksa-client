@@ -36,7 +36,7 @@ export type LionDetailType = {
     phone: string,
     score: number,
     evaluated: number,
-    portfolio: string,
+    portfolio: string|null,
     answers: LionDetailAnsType[],
 }
 
