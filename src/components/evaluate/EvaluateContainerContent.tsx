@@ -211,7 +211,12 @@ const EvaluateContainerContent=(props:{
                         <TextBox ref={textarea} maxLength={250} value={texts} onChange={e=>handleOnChange(e)}></TextBox>
                         :
                         <TextBoxCannotEdit>
-                           <div>{texts}</div>
+                           <div>{texts && texts.split('\n').map((line, index) => (
+                                <div key={index}>
+                                    {line}
+                                    <br />
+                                </div>
+                             ))}</div>
                         </TextBoxCannotEdit>
                     }
                 </NameContainer2>
@@ -478,6 +483,7 @@ const TextBoxCannotEdit = styled.div`
     color: #000000;
     & > div{
         display: flex;
+        flex-direction: column;
         padding: 1rem;
     }
 `

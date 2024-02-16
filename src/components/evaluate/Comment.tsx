@@ -8,7 +8,13 @@ interface CommentProps {
 const Comment: React.FC<CommentProps> = ({content, name, pass}) => {
     return(
         <CommentContainer>
-            <CommentContent>{content}</CommentContent>
+            <CommentContent>
+                {content && content.split('\n').map((line, index) => (
+                    <div key={index}>
+                        {line}
+                        <br />
+                    </div>
+            ))}</CommentContent>
             <NameContainer>{name}
             <PassText pass={pass}>
                 {pass? "합격선택" : "불합선택"}
