@@ -111,10 +111,15 @@ const Application = (props:applicationProps) => {
                         {line}
                         <br />
                     </div>))}
-                    <div className='count-len'>
-                        <div>{`${data.answer.length}`}</div>
-                        <div style={{color : "#797979"}}>{`/${data.question.substring(data.question.lastIndexOf('(')+1, data.question.lastIndexOf('자'))}`}</div>
-                    </div>
+                    {
+                        data.question.includes('(') ? 
+                        <div className='count-len'>
+                            <div>{`${data.answer.length}`}</div>
+                            <div style={{color : "#797979"}}>{`/${data.question.substring(data.question.lastIndexOf('(')+1, data.question.lastIndexOf('자'))}`}</div>
+                        </div>
+                        :
+                        <></>
+                    }
                 </div>
             </AnswerWrapper>
         ))
