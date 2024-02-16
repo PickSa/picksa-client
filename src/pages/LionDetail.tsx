@@ -165,7 +165,7 @@ const PeopleList = styled.div<{$innerheight:number, $navheight:number}>`
 const PartWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  height: 23%;
+  height: 20%;
   gap: 0.4rem;
   & > .part-label{
     display: flex;
@@ -192,6 +192,14 @@ const ScrollBox = styled.div`
   &::-webkit-scrollbar {
     width: 5px;
     height: auto;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: rgba(3, 104, 255, 1);
+    border-radius: 5rem;
+  }
+  &::-webkit-scrollbar-track {
+    background: rgba(106, 199, 239, 0.2);
+    border-radius: 10rem;
   }
 `
 
