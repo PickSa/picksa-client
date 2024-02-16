@@ -182,7 +182,7 @@ const PeopleList = styled.div<{$innerheight:number, $navheight:number}>`
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: ${props => `${props.$innerheight - props.$navheight - 50}px`};;
+  height: ${props => `${props.$innerheight - props.$navheight - 60}px`};;
   background-color: white;
   gap: 1.8rem;
   & > .title{
@@ -199,6 +199,7 @@ const PartWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
+  height: 23%;
   & > .part-label{
     display: flex;
     font-size: 1.6rem;
@@ -217,10 +218,22 @@ const ScrollBox = styled.div`
   flex-direction: column;
   font-size: 1.6rem;
   overflow-y: scroll;
-  height: 10rem;
+  height: 90%;
   /* border: 1px solid blue; */
   margin-left: 0.5rem;
   gap: 0.6rem;
+  &::-webkit-scrollbar {
+    width: 5px;
+    height: auto;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: rgba(3, 104, 255, 1);
+    border-radius: 5rem;
+  }
+  &::-webkit-scrollbar-track {
+    background: rgba(106, 199, 239, 0.2);
+    border-radius: 10rem;
+  }
 `
 
 const MemberStyle = styled.div<{$currentid:string, $memberid:string}>`
