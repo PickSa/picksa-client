@@ -106,11 +106,19 @@ const Application = (props:applicationProps) => {
             <AnswerWrapper key={idx}>
                 <div className='question'>{`Q${idx+1}.${data.question}`}</div>
                 <div className='answer'>
-                    {data.answer && data.answer.split('\n').map((line, index) => (
-                    <div key={index}>
-                        {line}
-                        <br />
-                    </div>))}
+                    {data.answer && 
+                    data.answer.split('\n').map((line, index) => (
+                        (line[0] === ' ') ? 
+                        <div key={index}>
+                            &nbsp;{line}
+                            <br />
+                        </div>
+                        :
+                        <div key={index}>
+                            {line}
+                            <br />
+                        </div>
+                    ))}
                     {
                         data.question.includes('(') ? 
                         <div className='count-len'>
@@ -231,6 +239,8 @@ const AnswerWrapper = styled.div`
         & > .count-len{
             display: flex;
             justify-content: flex-end;
+            margin-top: 1rem;
+            font-weight: 600;
         }
     }
 `
