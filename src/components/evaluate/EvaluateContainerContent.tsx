@@ -48,7 +48,18 @@ const EvaluateContainerContent=(props:{
             const res = await getEvalOthers(props.currentId!, accessToken);
             if (res!== undefined && res.length!==0) {
                 if(res[0].name === userInfo.user.username){
+                    //본인이 작성한 평가가 있을 경우
                     setIsEval(true);
+                    if(localStorage.getItem("lists")){
+                        if(!((JSON.parse(localStorage.getItem("lists")!)).includes(props.currentId))){
+                            const newArr = JSON.parse(localStorage.getItem("lists")!);
+                            newArr.push(props.currentId);
+                            localStorage.setItem("lists", JSON.stringify(newArr));
+                        }
+                    } else {
+                        const newArr = [props.currentId];
+                        localStorage.setItem("lists", JSON.stringify(newArr));
+                    }
                     setTexts(res[0].comment);
                     setMyPassResult(res[0].pass);
                     setManageBefore({

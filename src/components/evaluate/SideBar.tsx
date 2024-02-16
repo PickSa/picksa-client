@@ -6,6 +6,8 @@ import { accessTokenAtom } from '../../atom';
 import { LionListType, NAVBARSIZE } from '../../dummy/datatypes';
 import { getPartLists } from '../../apis/lionlist';
 import { useNavigate, useParams } from 'react-router-dom';
+import { FaCheckCircle } from "react-icons/fa";
+
 const SideBar= (
   { isOpen, setIsOpen }: 
   { isOpen: boolean;
@@ -19,6 +21,7 @@ const SideBar= (
   const [designList, setDesignList] = useState<LionListType[]>();
   const [feList, setFeList] = useState<LionListType[]>();
   const [beList, setBeList] = useState<LionListType[]>();
+  const [evalList, setEvalList] = useState<string[]|null>();
 
   const pageheight = window.innerHeight;
 
@@ -38,6 +41,16 @@ const SideBar= (
         else {setBeList(result.applicants)}
       }
   }
+  useEffect(() => {
+    try{
+      const output = localStorage.getItem("lists");
+      console.log(output);
+      setEvalList(() => JSON.parse(output!));
+    } catch{
+      setEvalList(null);
+    }
+  }, [params, isOpen])
+
   useEffect(()=>{
     getPartListApi("PM");
     getPartListApi("DESIGN");
@@ -77,7 +90,7 @@ const SideBar= (
         onClick={toggleSide}
         onKeyDown={toggleSide}/>
       </ApplicantList>
-      {pmList && designList && feList && beList &&
+      {pmList && designList && feList && beList && evalList!==undefined &&
       <PeopleList $innerheight={pageheight} $navheight={NAVBARSIZE}>
       <PartWrapper>
             <div className='part-label'>
@@ -88,7 +101,13 @@ const SideBar= (
             </div>
             <ScrollBox>{pmList.map((person, idx)=>(
               <MemberStyle key={idx} $currentid={params.id!} $memberid={String(person.applicantId)} onClick={() => handleMemberClick(person.applicantId)}>
-                {person.name}
+                <div>{person.name}</div>
+                {
+                  evalList && (evalList.includes(String(person.applicantId))) ? 
+                  <div className='check-tag'>&nbsp;<FaCheckCircle /></div>
+                  :
+                  <></>
+                }
               </MemberStyle>
             ))}</ScrollBox>
           </PartWrapper>
@@ -101,7 +120,13 @@ const SideBar= (
             </div>
             <ScrollBox>{designList.map((person, idx)=>(
               <MemberStyle key={idx} $currentid={params.id!} $memberid={String(person.applicantId)} onClick={() => handleMemberClick(person.applicantId)}>
-                {person.name}
+                <div>{person.name}</div>
+                {
+                  evalList && (evalList.includes(String(person.applicantId))) ? 
+                  <div className='check-tag'>&nbsp;<FaCheckCircle /></div>
+                  :
+                  <></>
+                }
               </MemberStyle>
             ))}</ScrollBox>
           </PartWrapper>
@@ -114,7 +139,13 @@ const SideBar= (
             </div>
             <ScrollBox>{feList.map((person, idx)=>(
               <MemberStyle key={idx} $currentid={params.id!} $memberid={String(person.applicantId)} onClick={() => handleMemberClick(person.applicantId)}>
-                {person.name}
+                <div>{person.name}</div>
+                {
+                  evalList && (evalList.includes(String(person.applicantId))) ? 
+                  <div className='check-tag'>&nbsp;<FaCheckCircle /></div>
+                  :
+                  <></>
+                }
               </MemberStyle>
             ))}</ScrollBox>
           </PartWrapper>
@@ -127,7 +158,13 @@ const SideBar= (
             </div>
             <ScrollBox>{beList.map((person, idx)=>(
               <MemberStyle key={idx} $currentid={params.id!} $memberid={String(person.applicantId)} onClick={() => handleMemberClick(person.applicantId)}>
-                {person.name}
+                <div>{person.name}</div>
+                {
+                  evalList && (evalList.includes(String(person.applicantId))) ? 
+                  <div className='check-tag'>&nbsp;<FaCheckCircle /></div>
+                  :
+                  <></>
+                }
               </MemberStyle>
             ))}</ScrollBox>
           </PartWrapper>
@@ -240,8 +277,13 @@ const MemberStyle = styled.div<{$currentid:string, $memberid:string}>`
   display: flex;
   font-weight: ${props => props.$currentid === props.$memberid ? '600' : '400'};
   color: ${props => props.$currentid === props.$memberid ? '#0368FF' : 'black'};
+  & > .check-tag{
+    display: flex;
+    width: 15px;
+    align-items: center;
+  }
   &:hover{
       cursor: pointer;
       color: #EAF1F9;
-    }
+  }
 `
