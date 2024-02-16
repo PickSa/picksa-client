@@ -251,11 +251,15 @@ const EvaluateContainerContent=(props:{
             <VolunteerContainer1>
                 <VolunteerContainer4 $conheight={props.parentContainerHeight - (nameRefSize + myEvalRefSize + 60)}>
                     <Name>운영진 평가</Name>
-                    <div className='comment-box'>
-                    {comments && comments.map((evaluationItem, idx)=>(
-                        <Comment key={idx} content = {evaluationItem.comment} name={evaluationItem.name} pass={evaluationItem.pass}></Comment>
-                    ))}
-                    </div>
+                    {isEval ?
+                        <div className='comment-box'>
+                        {comments && comments.map((evaluationItem, idx)=>(
+                            <Comment key={idx} content = {evaluationItem.comment} name={evaluationItem.name} pass={evaluationItem.pass}></Comment>
+                        ))}
+                        </div>
+                        :
+                        <div className='notice'>평가 후 확인이 가능합니다</div>
+                    }
                 </VolunteerContainer4>       
             </VolunteerContainer1>            
         </VolunteerContainer>}
@@ -514,6 +518,12 @@ const VolunteerContainer4 = styled.div<{$conheight:number}>`
         &::-webkit-scrollbar {
             display: none;
         } */
+    }
+    & > .notice{
+        font-family: 'Pretendard';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 1.5rem;
     }
 `
 
