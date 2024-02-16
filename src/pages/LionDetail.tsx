@@ -165,6 +165,7 @@ const PeopleList = styled.div<{$innerheight:number, $navheight:number}>`
 const PartWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  height: 23%;
   gap: 0.4rem;
   & > .part-label{
     display: flex;
@@ -184,10 +185,14 @@ const ScrollBox = styled.div`
   flex-direction: column;
   font-size: 1.6rem;
   overflow-y: scroll;
-  height: 10rem;
+  height: 90%;
   /* border: 1px solid blue; */
   margin-left: 0.5rem;
   gap: 0.6rem;
+  &::-webkit-scrollbar {
+    width: 5px;
+    height: auto;
+  }
 `
 
 const MemberStyle = styled.div<{$currentid:string, $memberid:string}>`
