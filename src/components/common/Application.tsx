@@ -105,13 +105,17 @@ const Application = (props:applicationProps) => {
         props.answers.map((data, idx) => (
             <AnswerWrapper key={idx}>
                 <div className='question'>{`Q${idx+1}.${data.question}`}</div>
-                <div className='answer'>{
-                data.answer && data.answer.split('\n').map((line, index) => (
+                <div className='answer'>
+                    {data.answer && data.answer.split('\n').map((line, index) => (
                     <div key={index}>
                         {line}
                         <br />
+                    </div>))}
+                    <div className='count-len'>
+                        <div>{`${data.answer.length}`}</div>
+                        <div style={{color : "#797979"}}>{`/${data.question.substring(data.question.lastIndexOf('(')+1, data.question.lastIndexOf('자'))}`}</div>
                     </div>
-                ))}</div>
+                </div>
             </AnswerWrapper>
         ))
     }
@@ -210,10 +214,16 @@ const AnswerWrapper = styled.div`
         margin-bottom: 1rem;
     }
     & > .answer {
+        display: flex;
+        flex-direction: column;
         background-color: white;
         font-size: 1.6rem;
         font-weight: 400;
         padding: 2rem;
         line-height: 150%;
+        & > .count-len{
+            display: flex;
+            justify-content: flex-end;
+        }
     }
 `
