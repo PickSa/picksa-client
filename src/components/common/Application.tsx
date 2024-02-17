@@ -26,7 +26,11 @@ const Application = (props:applicationProps) => {
                 try{
                     const arr = props.portfolio.split('\n');
                     const modifiedArr = arr.map((element) => {
-                        return (`http${element.substring(element.indexOf('http')+4, )}`)
+                        if(element.includes('http')){
+                            return (`http${element.substring(element.indexOf('http')+4, )}`);
+                        } else {
+                            return ''
+                        }
                     });
                     setCustomLink(() => modifiedArr);
                 } catch {
@@ -36,7 +40,11 @@ const Application = (props:applicationProps) => {
                 try{
                     const arr = props.portfolio.split(',');
                     const modifiedArr = arr.map((element) => {
-                        return (`http${element.substring(element.indexOf('http')+4, )}`)
+                        if(element.includes('http')){
+                            return (`http${element.substring(element.indexOf('http')+4, )}`);
+                        } else {
+                            return ''
+                        }
                     });
                     setCustomLink(() => modifiedArr);
                 } catch {
