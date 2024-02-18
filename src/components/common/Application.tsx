@@ -96,7 +96,6 @@ const Application = (props:applicationProps) => {
             <div className='btn-wrapper' onClick={() => navigate(`/evaluate/${params.id}`)}>지원자 평가페이지 바로가기</div>
         }
     </NameSpace>
-    <Notice>재제출 문항이 있는 지원자입니다. 유의하여 지원서 확인 바랍니다.</Notice>
     <InfoGrid>
         <TableFrame>
             <div className='title'>학번</div>
