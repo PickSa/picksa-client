@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { LionDetailAnsType } from '../../dummy/datatypes'
 import styled from 'styled-components';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 type applicationProps = {
     id: number,
@@ -19,7 +20,13 @@ type applicationProps = {
 
 const Application = (props:applicationProps) => {
     const [customLink, setCustomLink] = useState<string[]|null>();
+
+    const navigate = useNavigate();
+    const params = useParams();
+    const currentLocation = useLocation();
+
     useEffect(() => {
+        console.log(currentLocation.pathname);
         setCustomLink(() => undefined)
         if(props.portfolio!==null && props.portfolio!==undefined){
             if(props.portfolio.includes('\n')){
@@ -76,13 +83,20 @@ const Application = (props:applicationProps) => {
             setCustomLink(() => null);
         }
     }, [props.portfolio]);
+
   return (
     props && 
     <>
-    <NameSpace>
-        <div className='name'>{`${props.name}(${props.gender === "여성" ? "여" : "남"})`}</div>
-        <div className='part'>{props.part}</div>
+    <NameSpace $inEval={currentLocation.pathname.includes('evaluate') ? false : true}>
+        <div className='name-wrapper'>
+            <div className='name'>{`${props.name}(${props.gender === "여성" ? "여" : "남"})`}</div>
+            <div className='part'>{props.part}</div>
+        </div>
+        {!(currentLocation.pathname.includes('evaluate')) && 
+            <div className='btn-wrapper' onClick={() => navigate(`/evaluate/${params.id}`)}>지원자 평가페이지 바로가기</div>
+        }
     </NameSpace>
+    <Notice>재제출 문항이 있는 지원자입니다. 유의하여 지원서 확인 바랍니다.</Notice>
     <InfoGrid>
         <TableFrame>
             <div className='title'>학번</div>
@@ -112,9 +126,47 @@ const Application = (props:applicationProps) => {
     {
         props.answers.map((data, idx) => (
             <AnswerWrapper key={idx}>
-                <div className='question'>{`Q${idx+1}.${data.question}`}</div>
+                <div className='question'>
+                    <div>{`Q${idx+1}.${data.question}`}</div>
+                    {data.answer.includes('[!]') ? 
+                        <div className='notice'>{`(파란 글씨 부분은 지원자가 서류 제출시 작성하지 않아 메일로 재제출된 답변입니다.)`}</div>
+                        :
+                        <></>
+                    }
+                </div>
                 <div className='answer'>
                     {data.answer && 
+                    /* 재제출 구분을 위한 코드 */
+                    data.answer.includes('[!]') ? 
+                    data.answer.split('[!]').map((column, index) => {
+                        if(index === 0) {
+                            return column.split('\n').map((line, index) => (
+                                (line[0] === ' ') ? 
+                                <div key={index}>
+                                    &nbsp;{line}
+                                    <br />
+                                </div>
+                                :
+                                <div key={index}>
+                                    {line}
+                                    <br />
+                                </div>))
+                        } else {
+                            return column.split('\n').map((line, index) => (
+                                (line[0] === ' ') ? 
+                                <div className='color-ans' key={index}>
+                                    &nbsp;{line}
+                                    <br />
+                                </div>
+                                :
+                                <div className='color-ans' key={index}>
+                                    {line}
+                                    <br />
+                                </div>))
+                        }
+                    })
+                    :
+                    /* 기존 코드 */
                     data.answer.split('\n').map((line, index) => (
                         (line[0] === ' ') ? 
                         <div key={index}>
@@ -168,20 +220,47 @@ const Application = (props:applicationProps) => {
 
 export default Application
 
-const NameSpace = styled.div`
+const NameSpace = styled.div<{$inEval:boolean}>`
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    justify-content: space-between;
     width: 95%;
     gap:0.4rem;
-    & > .name{
+    & > .name-wrapper{
+        flex-direction: column;
+        & > .name{
         font-size: 1.8rem;
         font-weight: 700;
+        }
+        & > .part{
+            font-size: 1.7rem;
+            font-weight: 700;
+            color: rgba(160, 160, 160, 1);
+        }
     }
-    & > .part{
-        font-size: 1.7rem;
-        font-weight: 700;
-        color: rgba(160, 160, 160, 1);
+    & > .btn-wrapper{
+        display: flex;
+        padding: 1rem;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.6rem;
+        font-weight: 500;
+        border-radius: 1rem;
+        color: white;
+        background-color: #0368FF;
+        &:hover{
+            cursor: pointer;
+        }
     }
+`
+
+const Notice = styled.div`
+    display: flex;
+    width: 95%;
+    margin-top: 1rem;
+    color: #0368FF;
+    font-size: 1.7rem;
+    font-weight: 700;
 `
 
 const InfoGrid = styled.div`
@@ -232,9 +311,16 @@ const AnswerWrapper = styled.div`
     width: 95%;
     margin-bottom: 3rem;
     & > .question {
+        display: flex;
+        flex-direction: column;
         font-size: 1.7rem;
         font-weight: 700;
         margin-bottom: 1rem;
+        & > .notice{
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #0368FF;
+        }
     }
     & > .answer {
         display: flex;
@@ -244,6 +330,9 @@ const AnswerWrapper = styled.div`
         font-weight: 400;
         padding: 2rem;
         line-height: 150%;
+        & > .color-ans{
+            color: #0368FF;
+        }
         & > .count-len{
             display: flex;
             justify-content: flex-end;
