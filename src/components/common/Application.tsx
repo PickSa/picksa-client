@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { LionDetailAnsType } from '../../dummy/datatypes'
 import styled from 'styled-components';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 type applicationProps = {
     id: number,
@@ -19,7 +20,13 @@ type applicationProps = {
 
 const Application = (props:applicationProps) => {
     const [customLink, setCustomLink] = useState<string[]|null>();
+    
+    const navigate = useNavigate();
+    const params = useParams();
+    const currentLocation = useLocation();
+
     useEffect(() => {
+        console.log(currentLocation.pathname);
         setCustomLink(() => undefined)
         if(props.portfolio!==null && props.portfolio!==undefined){
             if(props.portfolio.includes('\n')){
@@ -68,12 +75,18 @@ const Application = (props:applicationProps) => {
             setCustomLink(() => null);
         }
     }, [props.portfolio]);
+
   return (
     props && 
     <>
-    <NameSpace>
-        <div className='name'>{`${props.name}(${props.gender === "여성" ? "여" : "남"})`}</div>
-        <div className='part'>{props.part}</div>
+    <NameSpace $inEval={currentLocation.pathname.includes('evaluate') ? false : true}>
+        <div className='name-wrapper'>
+            <div className='name'>{`${props.name}(${props.gender === "여성" ? "여" : "남"})`}</div>
+            <div className='part'>{props.part}</div>
+        </div>
+        {!(currentLocation.pathname.includes('evaluate')) && 
+            <div className='btn-wrapper' onClick={() => navigate(`/evaluate/${params.id}`)}>지원자 평가페이지 바로가기</div>
+        }
     </NameSpace>
     <InfoGrid>
         <TableFrame>
@@ -160,19 +173,37 @@ const Application = (props:applicationProps) => {
 
 export default Application
 
-const NameSpace = styled.div`
+const NameSpace = styled.div<{$inEval:boolean}>`
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    justify-content: space-between;
     width: 95%;
     gap:0.4rem;
-    & > .name{
+    & > .name-wrapper{
+        flex-direction: column;
+        & > .name{
         font-size: 1.8rem;
         font-weight: 700;
+        }
+        & > .part{
+            font-size: 1.7rem;
+            font-weight: 700;
+            color: rgba(160, 160, 160, 1);
+        }
     }
-    & > .part{
-        font-size: 1.7rem;
-        font-weight: 700;
-        color: rgba(160, 160, 160, 1);
+    & > .btn-wrapper{
+        display: flex;
+        padding: 1rem;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.6rem;
+        font-weight: 500;
+        border-radius: 1rem;
+        color: white;
+        background-color: #0368FF;
+        &:hover{
+            cursor: pointer;
+        }
     }
 `
 

@@ -219,7 +219,8 @@ const ContentWrapper = styled.div<{$innerheight:number, $navheight:number}>`
   justify-content: flex-start;
   align-items: center;
   width: 80%;
-  height: ${props => `${props.$innerheight - props.$navheight - 20}px`};
+  margin-top: 2rem;
+  height: ${props => `${props.$innerheight - props.$navheight - 40}px`};
   overflow-y: scroll;
   &::-webkit-scrollbar {
     display: none;
