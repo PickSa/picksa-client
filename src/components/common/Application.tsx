@@ -293,10 +293,15 @@ const TableFrame = styled.div`
     font-weight: 500;
     background-color: white;
     text-align: center;
+    height: 100%;
     & > div{
+        display: flex;
+        align-items: center;
+        justify-content: center;
         width: 70%;
         padding-top: 0.8rem;
         padding-bottom: 0.8rem;
+        word-break: break-all;
     }
     & > .title{
         width: 30%;
