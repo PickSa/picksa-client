@@ -28,10 +28,12 @@ const ListMemberRow = (props:ListMemberRowType) => {
         <div>{props.studentId}</div>
         <div>{`${props.score}/${props.userCount}`}</div>
         <div>{props.result === "PASS" ? "합격" : props.result === "PENDING" ? "미정" : "불합격"}</div>
-        <div>{typeof(props.isEvaluated) === "string" ?
-        props.isEvaluated
-        :
-        props.isEvaluated === true ? "평가완료" : "평가진행중"}</div>
+        <div>
+            {
+            // typeof(props.isEvaluated) === "string" ?
+            // props.isEvaluated
+            // :
+            props.isEvaluated === true ? "평가완료" : "평가진행중"}</div>
         <div>{props.phone}</div>
     </GridContent>
   )
