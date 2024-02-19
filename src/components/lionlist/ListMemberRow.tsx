@@ -33,7 +33,7 @@ const ListMemberRow = (props:ListMemberRowType) => {
             // typeof(props.isEvaluated) === "string" ?
             // props.isEvaluated
             // :
-            props.isEvaluated === true ? "평가완료" : "평가진행중"}</div>
+            props.isEvaluated ? "평가완료" : "평가진행중"}</div>
         <div>{props.phone}</div>
     </GridContent>
   )
