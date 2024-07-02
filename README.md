@@ -61,7 +61,8 @@
 `feature/[기능별]` : 기능별 개발 브랜치 <br>
 
 ## 팀원
-- `ver 1.0.0`
+- `ver 1.0.0` <br>
+
 |이름|학과|github|
 |-|-|-|
 |박경빈|중앙대학교 소프트웨어학부|[@Gyeongbin](https://github.com/Gyeongbin)|
