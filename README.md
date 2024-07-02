@@ -22,8 +22,8 @@
 ### Components
 1. 공통 컴포넌트
 - `src/styles/` : 스타일 공통 규칙
-- `src/components/common` : 지원서(`Application`) 및 비지원기간 표출(`NotApplicant`), NavBar
-- `src/components/modals` <br>
+- `src/components/common/` : 지원서(`Application`) 및 비지원기간 표출(`NotApplicant`), NavBar
+- `src/components/modals/` <br>
 
 2. LionList 관련 컴포넌트
 - `src/pages/LionListHome`
